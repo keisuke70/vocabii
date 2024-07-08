@@ -124,7 +124,15 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    await signIn('credentials', formData);
+    const email = formData.get('email');
+		const password = formData.get('password');
+
+    await signIn('credentials', {
+      redirect: true, // This is important to trigger the redirection
+      redirectTo: '/dashboard', // The path you want to redirect to after successful sign-in
+      email,
+      password
+    });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
