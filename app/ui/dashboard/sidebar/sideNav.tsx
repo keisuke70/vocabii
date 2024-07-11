@@ -1,7 +1,7 @@
 import Link from "next/link";
-import NavLinks from "@/app/ui/dashboard/nav-links";
+import NavLinks from "@/app/ui/dashboard/sidebar/navLinks";
 import AcmeLogo from "@/app/ui/acme-logo";
-import UserProfile from "@/components/UserProfile";
+import UserProfile from "./UserProfile";
 
 export default function SideNav() {
   return (

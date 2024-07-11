@@ -128,8 +128,8 @@ export async function authenticate(
 		const password = formData.get('password');
 
     await signIn('credentials', {
-      redirect: true, // This is important to trigger the redirection
-      redirectTo: '/dashboard', // The path you want to redirect to after successful sign-in
+      redirect: true,
+      redirectTo: '/dashboard',
       email,
       password
     });
@@ -144,4 +144,8 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+export async function googleAuthenticate () {
+  await signIn("google");
 }

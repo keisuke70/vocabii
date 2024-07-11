@@ -1,4 +1,4 @@
-import Header from "@/components/header";
+import Header from "@/app/ui/header";
 import Image from "next/image";
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
         </p>
 
         <div className="mt-10 flex">
-          <Image src="/toppage.jpeg" width={800} height={500} alt="App screenshot 2" className="w-40 h-auto mx-2" />
+          <Image src="/toppage.jpeg" width={800} height={500} alt="App screenshot 2" className="w-80 h-auto mx-2" />
         </div>
       </div>
     </main>
