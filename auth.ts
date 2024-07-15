@@ -43,4 +43,5 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     }),
     Google,
   ],
+  secret: process.env.AUTH_SECRET,
 });
