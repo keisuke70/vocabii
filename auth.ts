@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import Google from "next-auth/providers/google"
 import bcrypt from 'bcrypt';
 import { sql } from '@vercel/postgres';
 import { z } from 'zod';
@@ -16,10 +17,11 @@ async function getUser(email: string): Promise<User | undefined> {
   }
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
   providers: [
-    Credentials({
+    // Email and Password Provider
+    CredentialsProvider({
       async authorize(credentials) {
         const parsedCredentials = z
           .object({ email: z.string().email(), password: z.string().min(6) })
@@ -39,5 +41,6 @@ export const { auth, signIn, signOut } = NextAuth({
         return null;
       },
     }),
+    Google,
   ],
 });
