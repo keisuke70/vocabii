@@ -87,8 +87,8 @@ const AddWords: React.FC = () => {
   return (
       <form action={formAction}>
         <div className="max-w-2xl mx-auto p-4">
-          <div className="flex flex-col items-center space-y-4">
-            <h1 className="text-2xl font-bold mb-6">Add a New Word</h1>
+          <div className="flex flex-col items-center space-y-6">
+            <h1 className="text-2xl font-bold mt-4 mb-2">Add a New Word</h1>
             {error && <Alert className="mb-4">{error}</Alert>}
             {serverMessage && <Alert className="mb-4">{serverMessage}</Alert>}
             <Tooltip open={showTooltip}>
