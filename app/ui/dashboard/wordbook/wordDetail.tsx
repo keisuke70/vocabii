@@ -5,25 +5,25 @@ interface WordDetailProps {
   pronunciation: string;
   meanings: string[];
   exampleSentences: string[];
-  audioUrl: string;
+  detailedDescription: string;
 }
 
-const WordDetail: React.FC<WordDetailProps> = ({ word, pronunciation, meanings, exampleSentences, audioUrl }) => {
+const WordDetail: React.FC<WordDetailProps> = ({ word, pronunciation, meanings, exampleSentences, detailedDescription }) => {
   return (
-    <div>
-      <h2>{word}</h2>
-      <p>Pronunciation: {pronunciation}</p>
-      <button onClick={() => new Audio(audioUrl).play()}>Play Pronunciation</button>
-      <h3>Meanings</h3>
-      <ul>
+    <div className="p-3 bg-gray-50 rounded-md shadow-md">
+      
+      <p className="text-lg mb-2"><strong>Pronunciation:</strong> {pronunciation}</p>
+      <p className="text-lg mb-4"><strong>Detailed Description:</strong> {detailedDescription}</p>
+      <h4 className="font-semibold text-lg mt-4">Meanings:</h4>
+      <ul className="list-disc list-inside pl-5 text-lg">
         {meanings.map((meaning, index) => (
-          <li key={index}>{meaning}</li>
+          <li key={index} className="mb-1">{meaning}</li>
         ))}
       </ul>
-      <h3>Example Sentences</h3>
-      <ul>
+      <h4 className="font-semibold text-lg mt-4">Example Sentences:</h4>
+      <ul className="list-disc list-inside pl-5 text-lg">
         {exampleSentences.map((sentence, index) => (
-          <li key={index}>{sentence}</li>
+          <li key={index} className="mb-1">{sentence}</li>
         ))}
       </ul>
     </div>
