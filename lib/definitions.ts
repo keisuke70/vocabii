@@ -4,3 +4,14 @@ export type User = {
     email: string;
     password: string;
   };
+
+
+export interface Word {
+    id: number;
+    word: string;
+    pronunciation: string;
+    keymeanings: string;
+    audiourl?: string;
+    examplesentences: string;
+    detaileddescription: string;
+  }

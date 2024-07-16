@@ -46,8 +46,12 @@ export async function addWord(prevState: State, formData: FormData) {
 
   // Prepare data for insertion into the database
   const { word, pronunciation, keyMeanings, exampleSentences, detailedDescription } = validatedFields.data;
+  
+  const keyMeaningsString = JSON.stringify(keyMeanings);
+  const exampleSentencesString = JSON.stringify(exampleSentences);
 
-
+  const key= JSON.parse(keyMeaningsString);
+  const example=JSON.parse(exampleSentencesString);
   // Insert data into the database
   try {
     await sql`
@@ -55,8 +59,8 @@ export async function addWord(prevState: State, formData: FormData) {
       VALUES (
         ${word},
         ${pronunciation || null},
-        ARRAY[${keyMeanings.map(km => `'${km}'`).join(', ')}]::TEXT[],
-        ARRAY[${exampleSentences.map(es => `'${es}'`).join(', ')}]::TEXT[],
+        ${keyMeaningsString},
+        ${exampleSentencesString},
         ${detailedDescription || null}
       )
       ON CONFLICT (word) DO NOTHING;

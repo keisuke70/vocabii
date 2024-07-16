@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { addWord, State } from "@/lib/actions";
@@ -59,118 +58,95 @@ const AddWords: React.FC = () => {
     }
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-
-    setDetails((prevDetails) => {
-      if (name.startsWith("keyMeanings-")) {
-        const index = parseInt(name.split("-")[1], 10);
-        const newKeyMeanings = [...prevDetails.keyMeanings];
-        newKeyMeanings[index] = value;
-        return { ...prevDetails, keyMeanings: newKeyMeanings };
-      } else if (name.startsWith("exampleSentences-")) {
-        const index = parseInt(name.split("-")[1], 10);
-        const newExampleSentences = [...prevDetails.exampleSentences];
-        newExampleSentences[index] = value;
-        return { ...prevDetails, exampleSentences: newExampleSentences };
-      } else {
-        return { ...prevDetails, [name]: value };
-      }
-    });
-  };
-
   const initialState: State = {};
   const [state, formAction] = useActionState(addWord, initialState);
 
   return (
-      <form action={formAction}>
-        <div className="max-w-2xl mx-auto p-4">
-          <div className="flex flex-col items-center space-y-6">
-            <h1 className="text-2xl font-bold mt-4 mb-2">Add a New Word</h1>
-            {error && <Alert className="mb-4">{error}</Alert>}
-            {serverMessage && <Alert className="mb-4">{serverMessage}</Alert>}
-            <Tooltip open={showTooltip}>
-              <TooltipTrigger>
-                <Input
-                  type="text"
-                  name="word"
-                  placeholder="Enter a word"
-                  value={word}
-                  onChange={(e) => setWord(e.target.value)}
-                  className="w-full"
-                />
-              </TooltipTrigger>
-              <TooltipContent>Word corrected to {word}</TooltipContent>
-            </Tooltip>
-            <Button
-              type="button"
-              onClick={handleFetchDetails}
-              disabled={isLoading}
-              className=""
-            >
-              {isLoading ? "Fetching..." : "Fetch Details"}
-            </Button>
-          </div>
-          {isFetched && (
-            <div>
-              <div className="mb-4">
-                <label className="block font-semibold">Pronunciation:</label>
-                <Input
-                  type="text"
-                  name="pronunciation"
-                  value={details.pronunciation}
-                  onChange={handleInputChange}
-                  className="w-full"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block font-semibold">Key Meanings:</label>
-                {details.keyMeanings.map((meaning, index) => (
-                  <Input
-                    key={index}
-                    type="text"
-                    name={`keyMeanings-${index}`}
-                    value={meaning}
-                    onChange={handleInputChange}
-                    className="w-full mb-2"
-                  />
-                ))}
-              </div>
-              <div className="mb-4">
-                <label className="block font-semibold">
-                  Example Sentences:
-                </label>
-                {details.exampleSentences.map((sentence, index) => (
-                  <Input
-                    key={index}
-                    type="text"
-                    name={`exampleSentences-${index}`}
-                    value={sentence}
-                    onChange={handleInputChange}
-                    className="w-full mb-2"
-                  />
-                ))}
-              </div>
-              <div className="mb-4">
-                <label className="block font-semibold">
-                  Detailed Description:
-                </label>
-                <Textarea
-                  name="detailedDescription"
-                  value={details.detailedDescription}
-                  onChange={handleInputChange}
-                  className="w-full"
-                  rows={6}
-                />
-              </div>
-
-              <Button type="submit">Add word</Button>
-            </div>
+    <form action={formAction}>
+      <div className="max-w-2xl mx-auto p-4">
+        <div className="flex flex-col items-center space-y-6">
+          <h1 className="text-4xl font-bold mt-4 mb-2">Add a New Word</h1>
+          {error && <Alert className="mb-4">{error}</Alert>}
+          {state.errors && (
+            <Alert className="mb-4">
+              {Object.entries(state.errors).map(([key, errors]) => (
+                <div key={key}>{errors.join(', ')}</div>
+              ))}
+            </Alert>
           )}
+          {serverMessage && <Alert className="mb-4">{serverMessage}</Alert>}
+          <Tooltip open={showTooltip}>
+            <TooltipTrigger>
+              <Input
+                type="text"
+                name="word"
+                placeholder="Enter a word"
+                value={word}
+                onChange={(e) => setWord(e.target.value)}
+                className="w-full"
+              />
+            </TooltipTrigger>
+            <TooltipContent>Word corrected to {word}</TooltipContent>
+          </Tooltip>
+          <Button
+            type="button"
+            onClick={handleFetchDetails}
+            disabled={isLoading}
+            className=""
+          >
+            {isLoading ? "Fetching..." : "Fetch Details"}
+          </Button>
         </div>
-      </form>
+        {isFetched && (
+          <div>
+            <div className="mb-4">
+              <label className="block font-semibold">Pronunciation:</label>
+              <Input
+                type="text"
+                name="pronunciation"
+                defaultValue={details.pronunciation}
+                className="w-full"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-semibold">Key Meanings:</label>
+              {details.keyMeanings.map((meaning, index) => (
+                <Input
+                  key={index}
+                  type="text"
+                  name="keyMeanings"
+                  defaultValue={meaning}
+                  className="w-full mb-2"
+                />
+              ))}
+            </div>
+            <div className="mb-4">
+              <label className="block font-semibold">Example Sentences:</label>
+              {details.exampleSentences.map((sentence, index) => (
+                <Input
+                  key={index}
+                  type="text"
+                  name="exampleSentences"
+                  defaultValue={sentence}
+                  className="w-full mb-2"
+                />
+              ))}
+            </div>
+            <div className="mb-4">
+              <label className="block font-semibold">Detailed Description:</label>
+              <Textarea
+                name="detailedDescription"
+                defaultValue={details.detailedDescription}
+                className="w-full"
+                rows={6}
+              />
+            </div>
+
+            <Button type="submit">Add word</Button>
+          </div>
+        )}
+      </div>
+    </form>
   );
 };
 
