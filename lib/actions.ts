@@ -50,8 +50,6 @@ export async function addWord(prevState: State, formData: FormData) {
   const keyMeaningsString = JSON.stringify(keyMeanings);
   const exampleSentencesString = JSON.stringify(exampleSentences);
 
-  const key= JSON.parse(keyMeaningsString);
-  const example=JSON.parse(exampleSentencesString);
   // Insert data into the database
   try {
     await sql`

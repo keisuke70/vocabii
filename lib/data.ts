@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
-import { User, Word } from './definitions'; 
+import { Word } from './definitions'; 
 
 
 export async function fetchWord() {

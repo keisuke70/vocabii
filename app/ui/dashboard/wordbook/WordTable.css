@@ -1,0 +1,24 @@
+.word-detail-enter {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 600ms ease-out, opacity 600ms ease-out;
+  }
+  
+  .word-detail-enter-active {
+    max-height: 500px; /* Adjust as needed */
+    opacity: 1;
+  }
+  
+  .word-detail-exit {
+    max-height: 500px; /* Adjust as needed */
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 600ms ease-in, opacity 600ms ease-in;
+  }
+  
+  .word-detail-exit-active {
+    max-height: 0;
+    opacity: 0;
+  }
+  

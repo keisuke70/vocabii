@@ -58,35 +58,39 @@ const AddWords: React.FC = () => {
     }
   };
 
-  const initialState: State = {};
+  const initialState: State = {
+    errors: undefined,
+    message: null,
+  };
+
   const [state, formAction] = useActionState(addWord, initialState);
 
   return (
     <form action={formAction}>
       <div className="max-w-2xl mx-auto p-4">
         <div className="flex flex-col items-center space-y-6">
-          <h1 className="text-4xl font-bold mt-4 mb-2">Add a New Word</h1>
+          <h1 className="text-4xl font-bold mt-2 mb-6">Add a New Word</h1>
           {error && <Alert className="mb-4">{error}</Alert>}
           {state.errors && (
             <Alert className="mb-4">
               {Object.entries(state.errors).map(([key, errors]) => (
-                <div key={key}>{errors.join(', ')}</div>
+                <div key={key}>{errors.join(", ")}</div>
               ))}
             </Alert>
           )}
           {serverMessage && <Alert className="mb-4">{serverMessage}</Alert>}
           <Tooltip open={showTooltip}>
-            <TooltipTrigger>
+            <TooltipContent side="top">Word corrected to <div className="text-lg text-center text-sky-800">Suppose</div></TooltipContent>
+            <TooltipTrigger type="button">
               <Input
                 type="text"
                 name="word"
                 placeholder="Enter a word"
                 value={word}
                 onChange={(e) => setWord(e.target.value)}
-                className="w-full"
+                className="w-full mt-2"
               />
             </TooltipTrigger>
-            <TooltipContent>Word corrected to {word}</TooltipContent>
           </Tooltip>
           <Button
             type="button"
@@ -133,7 +137,9 @@ const AddWords: React.FC = () => {
               ))}
             </div>
             <div className="mb-4">
-              <label className="block font-semibold">Detailed Description:</label>
+              <label className="block font-semibold">
+                Detailed Description:
+              </label>
               <Textarea
                 name="detailedDescription"
                 defaultValue={details.detailedDescription}
