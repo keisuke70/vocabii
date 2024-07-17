@@ -66,10 +66,10 @@ const AddWords: React.FC = () => {
   const [state, formAction] = useActionState(addWord, initialState);
 
   return (
-    <form action={formAction}>
+    <form action={formAction} autoComplete="off">
       <div className="max-w-2xl mx-auto p-4">
-        <div className="flex flex-col items-center space-y-6">
-          <h1 className="text-4xl font-bold mt-2 mb-6">Add a New Word</h1>
+        <div className="flex flex-col items-center space-y-9">
+          <h1 className="text-4xl font-bold mt-2 mb-2">Add a New Word</h1>
           {error && <Alert className="mb-4">{error}</Alert>}
           {state.errors && (
             <Alert className="mb-4">
@@ -80,7 +80,10 @@ const AddWords: React.FC = () => {
           )}
           {serverMessage && <Alert className="mb-4">{serverMessage}</Alert>}
           <Tooltip open={showTooltip}>
-            <TooltipContent side="top">Word corrected to <div className="text-lg text-center text-sky-800">Suppose</div></TooltipContent>
+            <TooltipContent side="top">
+              Word corrected to
+              <div className="text-lg text-center text-sky-800">{word}</div>
+            </TooltipContent>
             <TooltipTrigger type="button">
               <Input
                 type="text"
@@ -88,7 +91,7 @@ const AddWords: React.FC = () => {
                 placeholder="Enter a word"
                 value={word}
                 onChange={(e) => setWord(e.target.value)}
-                className="w-full mt-2"
+                className="w-96"
               />
             </TooltipTrigger>
           </Tooltip>
@@ -96,7 +99,7 @@ const AddWords: React.FC = () => {
             type="button"
             onClick={handleFetchDetails}
             disabled={isLoading}
-            className=""
+            className="bg-sky-800 hover:bg-sky-900 mt-2"
           >
             {isLoading ? "Fetching..." : "Fetch Details"}
           </Button>
@@ -148,7 +151,7 @@ const AddWords: React.FC = () => {
               />
             </div>
 
-            <Button type="submit">Add word</Button>
+            <div className="flex justify-center"><Button type="submit" className="px-4 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 justify-center">Add word</Button></div>
           </div>
         )}
       </div>

@@ -69,8 +69,8 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                 <TableCell className="px-4 text-base border-r border-gray-300 align-middle">
                   <div className="py-4">{word.pronunciation}</div>
                 </TableCell>
-                <TableCell className="ml-2 pl-4 border-r border-gray-300">
-                  <div className="py-4">
+                <TableCell className="border-r border-gray-300">
+                  <div className="py-4 flex justify-center">
                     <Button
                       className="rounded-full bg-gray-700 hover:bg-gray-800"
                       onClick={(e) => {
