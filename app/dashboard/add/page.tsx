@@ -30,6 +30,7 @@ const AddWords: React.FC = () => {
     keyMeanings: [""],
     exampleSentences: [""],
     detailedDescription: "",
+    audioUrl: "", // Add audioUrl to the state
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
@@ -151,7 +152,21 @@ const AddWords: React.FC = () => {
               />
             </div>
 
-            <div className="flex justify-center"><Button type="submit" className="px-4 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 justify-center">Add word</Button></div>
+            {/* Hidden input field for audioUrl */}
+            <Input
+              //type="hidden"
+              name="audioUrl"
+              defaultValue={details.audioUrl}
+            />
+
+            <div className="flex justify-center">
+              <Button
+                type="submit"
+                className="px-4 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 justify-center"
+              >
+                Add word
+              </Button>
+            </div>
           </div>
         )}
       </div>
