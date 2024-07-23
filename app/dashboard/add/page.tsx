@@ -30,7 +30,7 @@ const AddWords: React.FC = () => {
     keyMeanings: [""],
     exampleSentences: [""],
     detailedDescription: "",
-    audioUrl: "", // Add audioUrl to the state
+    audioUrl: "", 
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
@@ -154,7 +154,7 @@ const AddWords: React.FC = () => {
 
             {/* Hidden input field for audioUrl */}
             <Input
-              //type="hidden"
+              type="hidden"
               name="audioUrl"
               defaultValue={details.audioUrl}
             />

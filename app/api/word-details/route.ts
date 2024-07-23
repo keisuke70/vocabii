@@ -5,6 +5,7 @@ import { openai } from "@ai-sdk/openai";
 import * as textToSpeech from "@google-cloud/text-to-speech";
 import { Storage } from "@google-cloud/storage";
 import { v4 as uuidv4 } from "uuid";
+import { sql } from "@vercel/postgres";
 
 const wordSchema = z.object({
   word: z.string(),
@@ -19,13 +20,15 @@ const option = {
 };
 
 const client = new textToSpeech.TextToSpeechClient(option);
-const storage = new Storage(option);
+const storage = new Storage({
+  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+});
 
 const bucketName = process.env.BUCKET_NAME ?? "";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const word = searchParams.get("word");
+  let word = searchParams.get("word");
 
   if (!word) {
     return NextResponse.json(
@@ -35,6 +38,31 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    const { object: correctedObject } = await generateObject({
+      model: openai("gpt-4o"),
+      schema: z.object({ correctedWord: z.string() }),
+      prompt: `Please check and correct the spelling of the word "${word}". If the word is correct, return it as is.`,
+    });
+
+    word = correctedObject.correctedWord;
+
+    const res = await sql`
+    SELECT * FROM words WHERE word = ${word};
+  `;
+  if (res.rows.length > 0) {
+    // Return the word details from the database
+    const wordDetails = res.rows[0];
+
+    return NextResponse.json({
+      word: wordDetails.word,
+      pronunciation: wordDetails.pronunciation,
+      keyMeanings: JSON.parse(wordDetails.keymeanings) || [],
+      exampleSentences: JSON.parse(wordDetails.examplesentences) || [],
+      detailedDescription: wordDetails.detaileddescription  || "",
+      audioUrl: wordDetails.audiourl || ""
+    }, { status: 200 });
+  }
+
     const { object } = await generateObject({
       model: openai("gpt-4o"),
       schema: wordSchema,
@@ -50,13 +78,10 @@ export async function GET(req: NextRequest) {
 
     const [response] = await client.synthesizeSpeech(request);
 
-    // Check the size and content of the response.audioContent
-    const audioContent = response.audioContent as Buffer;
-    console.log('Audio content size:', audioContent.length);
-    console.log('Audio content (first 100 bytes):', audioContent.slice(0, 100));
+    const audioContent = response.audioContent as unknown as Buffer;
 
     if (audioContent.length === 0) {
-      throw new Error('Audio content is empty');
+      throw new Error("Audio content is empty");
     }
 
     const filename = `${uuidv4()}.mp3`;
@@ -64,7 +89,6 @@ export async function GET(req: NextRequest) {
 
     await file.save(audioContent, {
       contentType: "audio/mpeg",
-      public: true,
     });
 
     const audioUrl = `https://storage.googleapis.com/${bucketName}/${filename}`;
@@ -78,7 +102,6 @@ export async function GET(req: NextRequest) {
       errorMessage = error;
     }
 
-    console.error('Error:', errorMessage);
     return NextResponse.json(
       { error: `Failed to generate word information: ${errorMessage}` },
       { status: 500 }
