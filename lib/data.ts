@@ -4,18 +4,18 @@ import { auth } from "@/auth";
 import format from "pg-format";
 
 function sanitizeEmail(email: string) {
-  return email.replace(/[^a-zA-Z0-9]/g, "_");
+  return email?.replace(/[^a-zA-Z0-9]/g, "_");
 }
 
 export async function fetchWord() {
   noStore();
- 
-    const session = await auth();
-    //id can't be retrived by default and since email is unique for the auth.js,
-    //using email for the id.
-    const userId = sanitizeEmail(session?.user?.email!);
-    const tableName = `user_words_${userId}`;
 
+  const session = await auth();
+  //id can't be retrived by default and since email is unique for the auth.js,
+  //using email for the id.
+  const userId = sanitizeEmail(session?.user?.email!);
+  const tableName = `user_words_${userId}`;
+  try {
     const tableCheckQuery = format(
       `
 SELECT EXISTS (
@@ -27,7 +27,7 @@ SELECT EXISTS (
     );
     const client = await db.connect();
     const tableCheckResult = await client.query(tableCheckQuery);
- 
+
     const tableExists = tableCheckResult.rows[0]?.exists;
 
     if (!tableExists) {
@@ -38,7 +38,7 @@ SELECT EXISTS (
     // Fetch data from the table if it exists
     const fetchQuery = format(`SELECT * FROM %I`, tableName);
     const data = await client.query(fetchQuery);
-    
+
     // Parsing keyMeanings to ensure it's an array of strings
     const words = data.rows.map((word) => ({
       ...word,
@@ -47,7 +47,6 @@ SELECT EXISTS (
     }));
 
     return words;
-    try { 
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch words.");

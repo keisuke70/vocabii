@@ -34,6 +34,7 @@
     "react-dom": "19.0.0-rc-6230622a1a-20240610",
     "react-icons": "^5.2.1",
     "react-transition-group": "^4.4.5",
+    "resend": "^3.5.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^9.0.4",

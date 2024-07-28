@@ -2,14 +2,21 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-
-export function SignIn({
-  ...props
-}: React.ComponentPropsWithRef<typeof Button>) {
+export function SignIn(props: React.ComponentPropsWithRef<typeof Button>) {
   return (
     <Link href="/login" passHref>
-      <Button {...props}>
+      <Button {...props} className="text-white bg-blue-500 hover:bg-blue-600">
         Sign In
+      </Button>
+    </Link>
+  );
+}
+
+export function SignUp(props: React.ComponentPropsWithRef<typeof Button>) {
+  return (
+    <Link href="/signup" passHref>
+      <Button {...props} className="text-white bg-green-500 hover:bg-green-600">
+        Sign Up
       </Button>
     </Link>
   );

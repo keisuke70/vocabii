@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
     const { object } = await generateObject({
       model: openai("gpt-4o"),
       schema: wordSchema,
-      prompt: `Provide detailed information for the word "${word}", check the spelling and return the corrected spelling, including pronunciation (based on IPA pronunciation guide), key meaning(s) (main meanings only and express in short words), example sentences, and a detailed description.`,
+      prompt: `Provide detailed information for the word "${word}", return the word including pronunciation (based on IPA pronunciation guide), key meaning(s) (main meanings only and express in short words), example sentences, and a detailed description.`,
     });
 
     const request: textToSpeech.protos.google.cloud.texttospeech.v1.ISynthesizeSpeechRequest =

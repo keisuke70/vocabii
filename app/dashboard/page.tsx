@@ -4,7 +4,6 @@ import { fetchWord } from '@/lib/data';
 
 const Dashboard: React.FC = async() => {
   const fetchedWords = await fetchWord();
-
   return (
     <div>
       <WordTable words={fetchedWords} />

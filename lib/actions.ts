@@ -6,9 +6,26 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { auth } from "@/auth";
-import { db, VercelPoolClient } from "@vercel/postgres";
+import { sql, db, VercelPoolClient } from "@vercel/postgres";
 import format from "pg-format";
+import { v4 as uuidv4 } from "uuid";
+import { Resend } from "resend";
+import { EmailTemplate } from "@/app/ui/email-template";
+import { NextResponse } from "next/server";
+import crypto from 'crypto';
 
+
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
+const SALT = process.env.SALT;
+
+function encrypt(text: string): string {
+  const iv = crypto.randomBytes(16);
+  const key = crypto.scryptSync(ENCRYPTION_KEY!, SALT!, 32) as Buffer;
+  const cipher = crypto.createCipheriv('aes-256-cbc', key as unknown as Uint8Array, iv as unknown as Uint8Array);
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return `${iv.toString('hex')}:${encrypted}`;
+}
 // Define the form schema for adding words
 const WordFormSchema = z.object({
   word: z.string().min(1, "Word is required."),
@@ -36,7 +53,6 @@ export type State = {
 };
 
 async function ensureUserTable(userId: string, client: VercelPoolClient) {
-  
   const tableName = `user_words_${userId}`;
 
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -59,7 +75,7 @@ async function ensureUserTable(userId: string, client: VercelPoolClient) {
   );
 
   await client.query(query);
-  
+
   return tableName;
 }
 
@@ -101,7 +117,6 @@ export async function addWord(prevState: State, formData: FormData) {
   const keyMeaningsString = JSON.stringify(keyMeanings);
   const exampleSentencesString = JSON.stringify(exampleSentences);
 
-
   const client = await db.connect();
 
   const userTableName = await ensureUserTable(userId, client);
@@ -129,7 +144,7 @@ export async function addWord(prevState: State, formData: FormData) {
       detailedDescription,
       audioUrl
     );
-  
+
     await client.query(insertQuery);
   } catch (error) {
     console.error("Database Error:", error);
@@ -168,6 +183,62 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const sendEmail = async (
+  to: string,
+  verificationLink: string,
+  userName: string
+) => {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Acme <onboarding@resend.dev>",
+      to: to,
+      subject: "Verify your email address",
+      react: EmailTemplate({ userName, verificationLink }),
+    });
+
+    if (error) {
+      return NextResponse.json({ error }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 });
+  }
+};
+
+export async function signup(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const userName = formData.get("name") as string;
+  const encryptedPassword = encrypt(password);
+
+  const verificationToken = uuidv4();
+  const verificationLink = `http://localhost:3000/api/verify?token=${verificationToken}`;
+
+  // Check if the email already exists
+  const existingUser = await sql`select * from users where email = ${email};`;
+
+  if (existingUser.rows.length > 0) {
+    return `This email is already used`;
+  }
+
+  await sql`insert into users (name, email, password, verification_token) values( ${userName}, ${email}, ${encryptedPassword}, ${verificationToken}); `;
+
+
+  try {
+    const result = await sendEmail("keith235670@gmail.com", verificationLink, userName);
+  } catch (error) {
+    console.error("Failed to send email:", error);
+  }
+
+  redirect("/verification-pending");
 }
 
 export async function googleAuthenticate() {
