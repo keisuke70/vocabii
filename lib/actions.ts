@@ -220,7 +220,7 @@ export async function signup(
   const encryptedPassword = encrypt(password);
 
   const verificationToken = uuidv4();
-  const verificationLink = `http://localhost:3000/api/verify?token=${verificationToken}`;
+  const verificationLink = `https://vocabii.com/api/verify?token=${verificationToken}`;
 
   // Check if the email already exists
   const existingUser = await sql`select * from users where email = ${email};`;
