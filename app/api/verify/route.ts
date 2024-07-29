@@ -35,12 +35,12 @@ export async function GET(req: NextRequest) {
     
     const password = bcryptedPassword as FormDataEntryValue | null;
     
-    await signIn("credentials", {
-      redirect: true,
-      redirectTo: "/dashboard",
-      email,
-      password ,
-    });
+    // await signIn("credentials", {
+    //   redirect: true,
+    //   redirectTo: "/dashboard",
+    //   email,
+    //   password ,
+    // });
 
   } else {
     return NextResponse.json(
