@@ -53,7 +53,7 @@ const AddWords: React.FC = () => {
       }
       setIsFetched(true);
     } catch (error) {
-      setError("Please enter a valid word to fetch details.");
+      setError(`${error}`);
     } finally {
       setIsLoading(false);
     }
