@@ -8,6 +8,7 @@ export default function VerificationPending() {
       <p className="text-center text-gray-600">
         Thank you for signing up! Please check your email and click on the
         verification link to activate your account.
+        You can close this window.
       </p>
     </div>
   );
