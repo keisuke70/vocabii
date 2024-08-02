@@ -233,7 +233,7 @@ export async function signup(
 
 
   try {
-    const result = await sendEmail("keith235670@gmail.com", verificationLink, userName);
+    const result = await sendEmail(email, verificationLink, userName);
   } catch (error) {
     console.error("Failed to send email:", error);
   }
