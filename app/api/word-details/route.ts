@@ -7,7 +7,7 @@ import { Storage } from "@google-cloud/storage";
 import { v4 as uuidv4 } from "uuid";
 import { sql } from "@vercel/postgres";
 import fs from "fs";
-import path from "path";
+
 
 // Decode the base64 encoded GOOGLE_APPLICATION_CREDENTIALS_BASE64
 const base64EncodedCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;

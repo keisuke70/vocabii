@@ -194,7 +194,7 @@ const sendEmail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: "kk@mail.vocabii.com",
+      from: "SendOnly@mail.vocabii.com",
       to: to,
       subject: "Verify your email address",
       react: EmailTemplate({ userName, verificationLink }),
