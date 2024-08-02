@@ -195,7 +195,7 @@ const sendEmail = async (
   try {
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
-      to: "ykei2356@gmail.com",
+      to: "keith235670@gmail.com",
       subject: "Verify your email address",
       react: EmailTemplate({ userName, verificationLink }),
     });
