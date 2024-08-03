@@ -7,7 +7,7 @@ import { Storage } from "@google-cloud/storage";
 import { v4 as uuidv4 } from "uuid";
 import { sql } from "@vercel/postgres";
 import fs from "fs";
-
+import path from "path";
 
 // Decode the base64 encoded GOOGLE_APPLICATION_CREDENTIALS_BASE64
 const base64EncodedCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
@@ -17,11 +17,12 @@ if (!base64EncodedCredentials) {
 
 const decodedCredentials = Buffer.from(base64EncodedCredentials, 'base64').toString('utf8');
 
-// Write the JSON content to a temporary file
-fs.writeFileSync('./secret.json', decodedCredentials);
+// Write the JSON content to a temporary file in the /tmp directory
+const tmpFilePath = path.join('/tmp', 'secret.json');
+fs.writeFileSync(tmpFilePath, decodedCredentials);
 
 const option = {
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  keyFilename: tmpFilePath,
 };
 
 const wordSchema = z.object({
@@ -34,7 +35,7 @@ const wordSchema = z.object({
 
 const client = new textToSpeech.TextToSpeechClient(option);
 const storage = new Storage({
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  keyFilename: tmpFilePath,
 });
 
 const bucketName = process.env.BUCKET_NAME ?? "";
