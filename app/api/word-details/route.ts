@@ -7,19 +7,25 @@ import { Storage } from "@google-cloud/storage";
 import { v4 as uuidv4 } from "uuid";
 import { sql } from "@vercel/postgres";
 import fs from "fs";
-import path from "path";
 
-// Decode the base64 encoded GOOGLE_APPLICATION_CREDENTIALS_BASE64
-const base64EncodedCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
-if (!base64EncodedCredentials) {
-  throw new Error("Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable");
+// Write the JSON content to a temporary file in the /tmp directory once
+const tmpFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+if (!fs.existsSync(tmpFilePath!)) {
+  // Decode the base64 encoded GOOGLE_APPLICATION_CREDENTIALS_BASE64
+  const base64EncodedCredentials =
+    process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+  if (!base64EncodedCredentials) {
+    throw new Error(
+      "Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable"
+    );
+  }
+
+  const decodedCredentials = Buffer.from(
+    base64EncodedCredentials,
+    "base64"
+  ).toString("utf8");
+  fs.writeFileSync(tmpFilePath!, decodedCredentials);
 }
-
-const decodedCredentials = Buffer.from(base64EncodedCredentials, 'base64').toString('utf8');
-
-// Write the JSON content to a temporary file in the /tmp directory
-const tmpFilePath = path.join('/tmp', 'secret.json');
-fs.writeFileSync(tmpFilePath, decodedCredentials);
 
 const option = {
   keyFilename: tmpFilePath,
@@ -63,19 +69,22 @@ export async function GET(req: NextRequest) {
     const res = await sql`
     SELECT * FROM words WHERE word = ${word};
   `;
-  if (res.rows.length > 0) {
-    // Return the word details from the database
-    const wordDetails = res.rows[0];
+    if (res.rows.length > 0) {
+      // Return the word details from the database
+      const wordDetails = res.rows[0];
 
-    return NextResponse.json({
-      word: wordDetails.word,
-      pronunciation: wordDetails.pronunciation,
-      keyMeanings: JSON.parse(wordDetails.keymeanings) || [],
-      exampleSentences: JSON.parse(wordDetails.examplesentences) || [],
-      detailedDescription: wordDetails.detaileddescription  || "",
-      audioUrl: wordDetails.audiourl || ""
-    }, { status: 200 });
-  }
+      return NextResponse.json(
+        {
+          word: wordDetails.word,
+          pronunciation: wordDetails.pronunciation,
+          keyMeanings: JSON.parse(wordDetails.keymeanings) || [],
+          exampleSentences: JSON.parse(wordDetails.examplesentences) || [],
+          detailedDescription: wordDetails.detaileddescription || "",
+          audioUrl: wordDetails.audiourl || "",
+        },
+        { status: 200 }
+      );
+    }
 
     const { object } = await generateObject({
       model: openai("gpt-4o"),
@@ -106,6 +115,14 @@ export async function GET(req: NextRequest) {
     });
 
     const audioUrl = `https://storage.googleapis.com/${bucketName}/${filename}`;
+
+    const keyMeaningsString = JSON.stringify(object.keyMeanings);
+    const exampleSentencesString = JSON.stringify(object.exampleSentences);
+
+    await sql`insert into words (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl)
+    VALUES( 
+    ${object.word}, ${object.pronunciation}, ${keyMeaningsString},${exampleSentencesString},${object.detailedDescription},${audioUrl}
+  );`;
 
     return NextResponse.json({ ...object, audioUrl }, { status: 200 });
   } catch (error) {

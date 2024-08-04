@@ -30,7 +30,7 @@ const AddWords: React.FC = () => {
     keyMeanings: [""],
     exampleSentences: [""],
     detailedDescription: "",
-    audioUrl: "", 
+    audioUrl: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
@@ -57,6 +57,24 @@ const AddWords: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newWord = e.target.value;
+    console.log("kkkk");
+    setWord(newWord);
+    setDetails({
+      word: "",
+      pronunciation: "",
+      keyMeanings: [""],
+      exampleSentences: [""],
+      detailedDescription: "",
+      audioUrl: "",
+    });
+    console.log(details.pronunciation);
+    setIsFetched(false);
+    setError("");
+    setServerMessage("");
   };
 
   const initialState: State = {
@@ -91,7 +109,7 @@ const AddWords: React.FC = () => {
                 name="word"
                 placeholder="Enter a word"
                 value={word}
-                onChange={(e) => setWord(e.target.value)}
+                onChange={handleWordChange}
                 className="w-96"
               />
             </TooltipTrigger>

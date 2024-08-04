@@ -29,14 +29,14 @@ function encrypt(text: string): string {
 // Define the form schema for adding words
 const WordFormSchema = z.object({
   word: z.string().min(1, "Word is required."),
-  pronunciation: z.string().optional(),
+  pronunciation: z.string(),
   keyMeanings: z
     .array(z.string())
     .min(1, "At least one key meaning is required."),
   exampleSentences: z
     .array(z.string())
     .min(1, "At least one example sentence is required."),
-  detailedDescription: z.string().optional(),
+  detailedDescription: z.string(),
   audioUrl: z.string().optional(),
 });
 
