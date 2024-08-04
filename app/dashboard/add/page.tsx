@@ -37,7 +37,7 @@ const AddWords: React.FC = () => {
   const [error, setError] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
   const [serverMessage, setServerMessage] = useState("");
-
+  const [adding, setAdding] = useState(false);
   const handleFetchDetails = async () => {
     setIsLoading(true);
     setError("");
@@ -76,6 +76,10 @@ const AddWords: React.FC = () => {
     setError("");
     setServerMessage("");
   };
+
+  const handleAdding = () => {
+    setAdding(true);
+  }
 
   const initialState: State = {
     errors: undefined,
@@ -180,9 +184,10 @@ const AddWords: React.FC = () => {
             <div className="flex justify-center">
               <Button
                 type="submit"
+                onClick={handleAdding}
                 className="px-4 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 justify-center"
               >
-                Add word
+                {adding ? "Adding..." : "Add word"}
               </Button>
             </div>
           </div>

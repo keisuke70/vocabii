@@ -41,7 +41,7 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
     <div className="overflow-x-auto">
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
-          <TableRow className="grid grid-cols-4 border-b border-gray-300">
+          <TableRow className="grid grid-cols-5 border-b border-gray-300" style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}>
             <TableHead className="py-2 px-4 border-r border-gray-300 text-left align-middle">
               <div className="pl-4">Word</div>
             </TableHead>
@@ -61,7 +61,7 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
             <React.Fragment key={word.id}>
               <TableRow
                 onClick={() => handleWordClick(word.id)}
-                className="grid grid-cols-4 cursor-pointer hover:bg-gray-100 border-b border-gray-300"
+                className="grid grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300" style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
               >
                 <TableCell className="pl-4 text-base border-r font-medium border-gray-300 align-middle">
                   <div className="py-4">{word.word}</div>
