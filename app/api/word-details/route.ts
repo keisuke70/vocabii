@@ -37,6 +37,8 @@ const wordSchema = z.object({
   keyMeanings: z.array(z.string()),
   exampleSentences: z.array(z.string()),
   detailedDescription: z.string(),
+  nounPlural: z.string().nullable(),
+  verbConjugations: z.string().nullable(),
 });
 
 const client = new textToSpeech.TextToSpeechClient(option);
@@ -81,6 +83,8 @@ export async function GET(req: NextRequest) {
           exampleSentences: JSON.parse(wordDetails.examplesentences) || [],
           detailedDescription: wordDetails.detaileddescription || "",
           audioUrl: wordDetails.audiourl || "",
+          nounPlural: wordDetails.nounplural || null,
+          verbConjugations: wordDetails.verbconjugations || null,
         },
         { status: 200 }
       );
@@ -89,7 +93,13 @@ export async function GET(req: NextRequest) {
     const { object } = await generateObject({
       model: openai("gpt-4o"),
       schema: wordSchema,
-      prompt: `Provide detailed information for the word "${word}", return the word including pronunciation (based on IPA pronunciation guide), key meaning(s) (main meanings only and express in short words), example sentences, and a detailed description.`,
+      prompt: `Give detailed information for the word '${word}'. Include:
+      - Pronunciation (using IPA),
+      - keyMeanings (main meanings only and express in short words),
+      - exampleSentences,
+      - DetailedDescription,
+      - nounPlural: plural form for noun if not, null,
+      - verbConjugations: For verbs (if not, null) present participle, past tense, past participle, third person singular present forms.`,
     });
 
     const request: textToSpeech.protos.google.cloud.texttospeech.v1.ISynthesizeSpeechRequest =
@@ -119,10 +129,9 @@ export async function GET(req: NextRequest) {
     const keyMeaningsString = JSON.stringify(object.keyMeanings);
     const exampleSentencesString = JSON.stringify(object.exampleSentences);
 
-    await sql`insert into words (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl)
+    await sql`insert into words (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations)
     VALUES( 
-    ${object.word}, ${object.pronunciation}, ${keyMeaningsString},${exampleSentencesString},${object.detailedDescription},${audioUrl}
-  );`;
+    ${object.word}, ${object.pronunciation}, ${keyMeaningsString},${exampleSentencesString},${object.detailedDescription},${audioUrl},${object.nounPlural},${object.verbConjugations})`;
 
     return NextResponse.json({ ...object, audioUrl }, { status: 200 });
   } catch (error) {

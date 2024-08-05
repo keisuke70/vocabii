@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import WordDetail from "./wordDetail";
 import { FaCirclePlay } from "react-icons/fa6";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./WordTable.css"; // Import the CSS file for transitions
 
 export interface word {
@@ -23,6 +23,8 @@ export interface word {
   audiourl?: string;
   examplesentences: string[];
   detaileddescription: string;
+  nounplural?: string | null;
+  verbconjugations?: string | null;
 }
 
 interface WordTableProps {
@@ -34,14 +36,24 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
   const nodeRef = useRef(null);
 
   const handleWordClick = (wordId: number) => {
-    setSelectedWordId(selectedWordId === wordId ? null : wordId);
+    if (selectedWordId === wordId) {
+      setSelectedWordId(null);
+    } else {
+      setSelectedWordId(null); // Close any open row first
+      setTimeout(() => {
+        setSelectedWordId(wordId);
+      }, 300); // Delay to allow closing animation to complete
+    }
   };
 
   return (
     <div className="overflow-x-auto">
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
-          <TableRow className="grid grid-cols-5 border-b border-gray-300" style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}>
+          <TableRow
+            className="grid grid-cols-5 border-b border-gray-300"
+            style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
+          >
             <TableHead className="py-2 px-4 border-r border-gray-300 text-left align-middle">
               <div className="pl-4">Word</div>
             </TableHead>
@@ -61,7 +73,8 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
             <React.Fragment key={word.id}>
               <TableRow
                 onClick={() => handleWordClick(word.id)}
-                className="grid grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300" style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
+                className="grid grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300"
+                style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
               >
                 <TableCell className="pl-4 text-base border-r font-medium border-gray-300 align-middle">
                   <div className="py-4">{word.word}</div>
@@ -86,29 +99,32 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                 <TableCell className="py-1 px-4 align-middle">
                   <ul className="list-disc list-inside pl-5 text-lg">
                     {word.keymeanings.map((km, index) => (
-                      <li key={index}>
-                        {km}
-                      </li>
+                      <li key={index}>{km}</li>
                     ))}
                   </ul>
                 </TableCell>
               </TableRow>
-              <CSSTransition
-                nodeRef={nodeRef}
-                in={selectedWordId === word.id}
-                timeout={600}
-                classNames="word-detail"
-                unmountOnExit
-              >
-                <TableRow ref={nodeRef} className="grid grid-cols-1 bg-gray-50">
-                  <TableCell colSpan={4} className="py-3 px-3">
-                    <WordDetail
-                      exampleSentences={word.examplesentences}
-                      detailedDescription={word.detaileddescription}
-                    />
-                  </TableCell>
-                </TableRow>
-              </CSSTransition>
+              <TransitionGroup>
+                {selectedWordId === word.id && (
+                  <CSSTransition
+                    key={word.id}
+                    nodeRef={nodeRef}
+                    timeout={600}
+                    classNames="word-detail"
+                  >
+                    <TableRow ref={nodeRef} className="grid grid-cols-1 bg-gray-50">
+                      <TableCell colSpan={4} className="py-3 px-3">
+                        <WordDetail
+                          exampleSentences={word.examplesentences}
+                          detailedDescription={word.detaileddescription}
+                          nounPlural={word.nounplural}
+                          verbConjugations={word.verbconjugations}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  </CSSTransition>
+                )}
+              </TransitionGroup>
             </React.Fragment>
           ))}
         </TableBody>

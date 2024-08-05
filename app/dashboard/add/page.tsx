@@ -31,6 +31,8 @@ const AddWords: React.FC = () => {
     exampleSentences: [""],
     detailedDescription: "",
     audioUrl: "",
+    nounPlural: null,
+    verbConjugations: null,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
@@ -38,6 +40,7 @@ const AddWords: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [serverMessage, setServerMessage] = useState("");
   const [adding, setAdding] = useState(false);
+
   const handleFetchDetails = async () => {
     setIsLoading(true);
     setError("");
@@ -61,7 +64,6 @@ const AddWords: React.FC = () => {
 
   const handleWordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newWord = e.target.value;
-    console.log("kkkk");
     setWord(newWord);
     setDetails({
       word: "",
@@ -70,8 +72,9 @@ const AddWords: React.FC = () => {
       exampleSentences: [""],
       detailedDescription: "",
       audioUrl: "",
+      nounPlural: null,
+      verbConjugations: null,
     });
-    console.log(details.pronunciation);
     setIsFetched(false);
     setError("");
     setServerMessage("");
@@ -171,6 +174,25 @@ const AddWords: React.FC = () => {
                 defaultValue={details.detailedDescription}
                 className="w-full"
                 rows={6}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block font-semibold">Noun Variation:</label>
+              <Input
+                type="text"
+                name="nounPlural"
+                defaultValue={details.nounPlural || ""}
+                className="w-full"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-semibold">Verb Variation:</label>
+              <Input
+                type="text"
+                name="verbConjugations"
+                defaultValue={details.verbConjugations || ""}
+                className="w-full"
               />
             </div>
 

@@ -38,6 +38,8 @@ const WordFormSchema = z.object({
     .min(1, "At least one example sentence is required."),
   detailedDescription: z.string(),
   audioUrl: z.string().optional(),
+  nounPlural: z.string().nullable().optional(),
+  verbConjugations: z.string().nullable().optional(),
 });
 
 export type State = {
@@ -48,9 +50,12 @@ export type State = {
     exampleSentences?: string[];
     detailedDescription?: string[];
     audioUrl?: string[];
+    nounPlural?: string[];
+    verbConjugations?: string[];
   };
   message?: string | null;
 };
+
 
 async function ensureUserTable(userId: string, client: VercelPoolClient) {
   const tableName = `user_words_${userId}`;
@@ -69,6 +74,8 @@ async function ensureUserTable(userId: string, client: VercelPoolClient) {
       examplesentences TEXT,
       detaileddescription TEXT,
       audiourl TEXT,
+      nounplural TEXT,
+      verbconjugations TEXT,
       "order" INT DEFAULT nextval('word_order_seq')
     );`,
     tableName
@@ -95,6 +102,8 @@ export async function addWord(prevState: State, formData: FormData) {
     exampleSentences: formData.getAll("exampleSentences"),
     detailedDescription: formData.get("detailedDescription"),
     audioUrl: formData.get("audioUrl"),
+    nounPlural: formData.get("nounPlural"),
+    verbConjugations: formData.get("verbConjugations"),
   });
 
   if (!validatedFields.success) {
@@ -112,6 +121,8 @@ export async function addWord(prevState: State, formData: FormData) {
     exampleSentences,
     detailedDescription,
     audioUrl,
+    nounPlural,
+    verbConjugations,
   } = validatedFields.data;
 
   const keyMeaningsString = JSON.stringify(keyMeanings);
@@ -133,8 +144,8 @@ export async function addWord(prevState: State, formData: FormData) {
   try {
     const insertQuery = format(
       `
-      INSERT INTO %I (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl)
-      VALUES (%L, %L, %L, %L, %L, %L);
+      INSERT INTO %I (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations)
+      VALUES (%L, %L, %L, %L, %L, %L, %L, %L);
       `,
       userTableName,
       word,
@@ -142,7 +153,9 @@ export async function addWord(prevState: State, formData: FormData) {
       keyMeaningsString,
       exampleSentencesString,
       detailedDescription,
-      audioUrl
+      audioUrl,
+      nounPlural,
+      verbConjugations
     );
 
     await client.query(insertQuery);
