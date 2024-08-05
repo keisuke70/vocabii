@@ -54,14 +54,14 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
             className="grid grid-cols-5 border-b border-gray-300"
             style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
           >
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left align-middle">
-              <div className="pl-4">Word</div>
+            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
+              <div className="flex justify-center items-center">Word</div>
             </TableHead>
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left align-middle">
-              <div className="pl-4">Pronunciation</div>
+            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
+              <div className="flex justify-center items-center">Pronunciation</div>
             </TableHead>
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left align-middle">
-              <div className="pl-4">Play Pronunciation</div>
+            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
+              <div className="flex justify-center items-center">Play Pronunciation</div>
             </TableHead>
             <TableHead className="py-2 px-4 text-left align-middle">
               <div className="pl-4">Key Meanings</div>
@@ -76,11 +76,11 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                 className="grid grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300"
                 style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
               >
-                <TableCell className="pl-4 text-base border-r font-medium border-gray-300 align-middle">
-                  <div className="py-4">{word.word}</div>
+                <TableCell className="text-base border-r font-medium border-gray-300 align-middle">
+                  <div className="flex justify-center items-center h-full py-4">{word.word}</div>
                 </TableCell>
-                <TableCell className="px-4 text-base border-r border-gray-300 align-middle">
-                  <div className="py-4">{word.pronunciation}</div>
+                <TableCell className="text-base border-r border-gray-300 align-middle">
+                  <div className="flex justify-center items-center h-full py-4">{word.pronunciation}</div>
                 </TableCell>
                 <TableCell className="border-r border-gray-300">
                   <div className="py-4 flex justify-center">
@@ -104,7 +104,7 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                   </ul>
                 </TableCell>
               </TableRow>
-              <TransitionGroup>
+              <TransitionGroup component={null}>
                 {selectedWordId === word.id && (
                   <CSSTransition
                     key={word.id}
@@ -113,7 +113,7 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                     classNames="word-detail"
                   >
                     <TableRow ref={nodeRef} className="grid grid-cols-1 bg-gray-50">
-                      <TableCell colSpan={4} className="py-3 px-3">
+                      <TableCell colSpan={4} className="py-3 px-3 flex justify-center items-center">
                         <WordDetail
                           exampleSentences={word.examplesentences}
                           detailedDescription={word.detaileddescription}
