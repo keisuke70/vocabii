@@ -8,6 +8,12 @@ import { v4 as uuidv4 } from "uuid";
 import { sql } from "@vercel/postgres";
 import fs from "fs";
 
+
+const tmpDir = './tmp';
+if (!fs.existsSync(tmpDir)) {
+  fs.mkdirSync(tmpDir);
+}
+
 // Write the JSON content to a temporary file in the /tmp directory once
 const tmpFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 if (!fs.existsSync(tmpFilePath!)) {
