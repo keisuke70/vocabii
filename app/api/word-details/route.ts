@@ -6,33 +6,22 @@ import * as textToSpeech from "@google-cloud/text-to-speech";
 import { Storage } from "@google-cloud/storage";
 import { v4 as uuidv4 } from "uuid";
 import { sql } from "@vercel/postgres";
-import fs from "fs";
 
-
-
-
-// Write the JSON content to a temporary file in the /tmp directory once
-const tmpFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-if (!fs.existsSync(tmpFilePath!)) {
-  fs.mkdirSync('./tmp');
-  // Decode the base64 encoded GOOGLE_APPLICATION_CREDENTIALS_BASE64
-  const base64EncodedCredentials =
-    process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
-  if (!base64EncodedCredentials) {
-    throw new Error(
-      "Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable"
-    );
-  }
-
-  const decodedCredentials = Buffer.from(
-    base64EncodedCredentials,
-    "base64"
-  ).toString("utf8");
-  fs.writeFileSync(tmpFilePath!, decodedCredentials);
+// Decode the base64 encoded GOOGLE_APPLICATION_CREDENTIALS_BASE64
+const base64EncodedCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+if (!base64EncodedCredentials) {
+  throw new Error(
+    "Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable"
+  );
 }
 
+const decodedCredentials = Buffer.from(
+  base64EncodedCredentials,
+  "base64"
+).toString("utf8");
+
 const option = {
-  keyFilename: tmpFilePath,
+  credentials: JSON.parse(decodedCredentials),
 };
 
 const wordSchema = z.object({
@@ -46,9 +35,7 @@ const wordSchema = z.object({
 });
 
 const client = new textToSpeech.TextToSpeechClient(option);
-const storage = new Storage({
-  keyFilename: tmpFilePath,
-});
+const storage = new Storage(option);
 
 const bucketName = process.env.BUCKET_NAME ?? "";
 
