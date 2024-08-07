@@ -7,23 +7,19 @@ import { Storage } from "@google-cloud/storage";
 import { v4 as uuidv4 } from "uuid";
 import { sql } from "@vercel/postgres";
 
-// Decode the base64 encoded GOOGLE_APPLICATION_CREDENTIALS_BASE64
-const base64EncodedCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
-if (!base64EncodedCredentials) {
-  throw new Error(
-    "Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable"
-  );
+let options: { credentials: any } | undefined;
+
+function getOptions() {
+  if (!options) {
+    const base64EncodedCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+
+    const decodedCredentials = Buffer.from(base64EncodedCredentials!, "base64").toString("utf8");
+    options = {
+      credentials: JSON.parse(decodedCredentials),
+    };
+  }
+  return options;
 }
-
-const decodedCredentials = Buffer.from(
-  base64EncodedCredentials,
-  "base64"
-).toString("utf8");
-
-const option = {
-  credentials: JSON.parse(decodedCredentials),
-};
-
 const wordSchema = z.object({
   word: z.string(),
   pronunciation: z.string(),
@@ -34,8 +30,8 @@ const wordSchema = z.object({
   verbConjugations: z.string().nullable(),
 });
 
-const client = new textToSpeech.TextToSpeechClient(option);
-const storage = new Storage(option);
+const client = new textToSpeech.TextToSpeechClient(getOptions());
+const storage = new Storage(getOptions());
 
 const bucketName = process.env.BUCKET_NAME ?? "";
 
