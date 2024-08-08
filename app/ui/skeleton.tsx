@@ -12,21 +12,24 @@ import {
 import { Button } from "@/components/ui/button";
 
 const DashboardSkeleton: React.FC = () => {
-  const placeholders = Array(5).fill(0); // Array to generate 5 placeholder rows
+  const placeholders = Array(6).fill(0); // Array to generate 5 placeholder rows
 
   return (
     <div className="overflow-x-auto">
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
-          <TableRow className="grid grid-cols-4 border-b border-gray-300">
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left align-middle">
-              <div className="pl-4">Word</div>
+          <TableRow
+            className="grid grid-cols-5 border-b border-gray-300"
+            style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
+          >
+            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
+              <div className="flex justify-center items-center">Word</div>
             </TableHead>
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left align-middle">
-              <div className="pl-4">Pronunciation</div>
+            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
+              <div className="flex justify-center items-center">Pronunciation</div>
             </TableHead>
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left align-middle">
-              <div className="pl-4">Play Pronunciation</div>
+            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
+              <div className="flex justify-center items-center">Play Pronunciation</div>
             </TableHead>
             <TableHead className="py-2 px-4 text-left align-middle">
               <div className="pl-4">Key Meanings</div>
@@ -36,12 +39,16 @@ const DashboardSkeleton: React.FC = () => {
         <TableBody>
           {placeholders.map((_, index) => (
             <React.Fragment key={index}>
-              <TableRow className="grid grid-cols-4 cursor-pointer hover:bg-gray-100 border-b border-gray-300">
-                <TableCell className="pl-4 text-base border-r font-medium border-gray-300 align-middle">
-                  <div className="py-4 animate-pulse bg-gray-200 rounded h-6 w-24"></div>
+              <TableRow className="grid grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300">
+                <TableCell className="text-base border-r font-medium border-gray-300 align-middle">
+                  <div className="flex justify-center items-center h-full py-4">
+                    <div className="py-4 animate-pulse bg-gray-200 rounded h-6 w-24"></div>
+                  </div>
                 </TableCell>
-                <TableCell className="px-4 text-base border-r border-gray-300 align-middle">
-                  <div className="py-4 animate-pulse bg-gray-200 rounded h-6 w-24"></div>
+                <TableCell className="text-base border-r border-gray-300 align-middle">
+                  <div className="flex justify-center items-center h-full py-4">
+                    <div className="py-4 animate-pulse bg-gray-200 rounded h-6 w-24"></div>
+                  </div>
                 </TableCell>
                 <TableCell className="border-r border-gray-300">
                   <div className="py-4 flex justify-center">
@@ -53,11 +60,6 @@ const DashboardSkeleton: React.FC = () => {
                     <li className="animate-pulse bg-gray-200 rounded h-6 w-24"></li>
                     <li className="animate-pulse bg-gray-200 rounded h-6 w-24 mt-2"></li>
                   </ul>
-                </TableCell>
-              </TableRow>
-              <TableRow className="grid grid-cols-1 bg-gray-50">
-                <TableCell colSpan={4} className="py-3 px-3">
-                  <div className="animate-pulse bg-gray-200 rounded h-20 w-full"></div>
                 </TableCell>
               </TableRow>
             </React.Fragment>

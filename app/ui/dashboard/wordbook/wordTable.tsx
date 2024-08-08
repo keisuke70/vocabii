@@ -54,14 +54,18 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
             className="grid grid-cols-5 border-b border-gray-300"
             style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
           >
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
+            <TableHead className="py-2 px-4 border-r border-gray-300">
               <div className="flex justify-center items-center">Word</div>
             </TableHead>
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
-              <div className="flex justify-center items-center">Pronunciation</div>
+            <TableHead className="py-2 px-4 border-r border-gray-300">
+              <div className="flex justify-center items-center">
+                Pronunciation
+              </div>
             </TableHead>
-            <TableHead className="py-2 px-4 border-r border-gray-300 text-left">
-              <div className="flex justify-center items-center">Play Pronunciation</div>
+            <TableHead className="py-2 px-4 border-r border-gray-300">
+              <div className="flex justify-center items-center">
+                Play Pronunciation
+              </div>
             </TableHead>
             <TableHead className="py-2 px-4 text-left align-middle">
               <div className="pl-4">Key Meanings</div>
@@ -77,10 +81,14 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                 style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
               >
                 <TableCell className="text-base border-r font-medium border-gray-300 align-middle">
-                  <div className="flex justify-center items-center h-full py-4">{word.word}</div>
+                  <div className="flex justify-center items-center h-full py-4">
+                    {word.word}
+                  </div>
                 </TableCell>
                 <TableCell className="text-base border-r border-gray-300 align-middle">
-                  <div className="flex justify-center items-center h-full py-4">{word.pronunciation}</div>
+                  <div className="flex justify-center items-center h-full py-4">
+                    {word.pronunciation}
+                  </div>
                 </TableCell>
                 <TableCell className="border-r border-gray-300">
                   <div className="py-4 flex justify-center">
@@ -112,8 +120,14 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                     timeout={600}
                     classNames="word-detail"
                   >
-                    <TableRow ref={nodeRef} className="grid grid-cols-1 bg-gray-50">
-                      <TableCell colSpan={4} className="py-3 px-3 flex justify-center items-center">
+                    <TableRow
+                      ref={nodeRef}
+                      className="grid grid-cols-1 bg-gray-50"
+                    >
+                      <TableCell
+                        colSpan={4}
+                        className="py-3 px-3 flex justify-center items-center"
+                      >
                         <WordDetail
                           exampleSentences={word.examplesentences}
                           detailedDescription={word.detaileddescription}

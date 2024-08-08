@@ -80,13 +80,13 @@ export async function GET(req: NextRequest) {
     const { object } = await generateObject({
       model: openai("gpt-4o"),
       schema: wordSchema,
-      prompt: `Give detailed information for the word '${word}'. Include:
+      prompt: `Please give detailed information about the '${word}'. Include the following:
       - Pronunciation (using IPA),
-      - keyMeanings (main meanings only and express in short words),
-      - exampleSentences,
-      - DetailedDescription,
-      - nounPlural: plural form for noun if not, null,
-      - verbConjugations: For verbs (if not, null) present participle, past tense, past participle, third person singular present forms.`,
+      - keyMeanings (main meaning only, expressed in short words),
+      - Example sentences,
+      - DetailedDescription (useful description of the word. For nouns, please include a description of countability),
+      - nounPlural: plural for countable nouns, null otherwise,
+      - Verb conjugation: verb (if not null) present participle, past tense, past participle, third person singular present tense, separated by commas and spaces.`,
     });
 
     const request: textToSpeech.protos.google.cloud.texttospeech.v1.ISynthesizeSpeechRequest =
