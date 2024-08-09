@@ -33,7 +33,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <div className="flex flex-col justify-between w-full h-screen">
-          <main className="flex-auto h-full w-full px-4 mx-auto sm:px-6 md:px-6">
+          <main className="flex-auto h-full w-full">
             {children}
           </main>
         </div>

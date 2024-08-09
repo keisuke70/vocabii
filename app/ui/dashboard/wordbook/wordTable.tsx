@@ -50,25 +50,18 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
     <div className="overflow-x-auto">
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
-          <TableRow
-            className="grid grid-cols-5 border-b border-gray-300"
-            style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
-          >
-            <TableHead className="py-2 px-4 border-r border-gray-300">
-              <div className="flex justify-center items-center">Word</div>
+          <TableRow className="grid grid-cols-5 border-b border-gray-300">
+            <TableHead className="border-r border-gray-300">
+              <div className="flex justify-center items-center  h-full min-w-[60px]">Word</div>
             </TableHead>
-            <TableHead className="py-2 px-4 border-r border-gray-300">
-              <div className="flex justify-center items-center">
-                Pronunciation
-              </div>
+            <TableHead className="border-r border-gray-300">
+              <div className="flex justify-center items-center  h-full min-w-[60px]">Pronunciation</div>
             </TableHead>
-            <TableHead className="py-2 px-4 border-r border-gray-300">
-              <div className="flex justify-center items-center">
-                Play Pronunciation
-              </div>
+            <TableHead className="border-r border-gray-300">
+              <div className="flex justify-center items-center h-full min-w-[90px]">Play Pronunciation</div>
             </TableHead>
-            <TableHead className="py-2 px-4 text-left align-middle">
-              <div className="pl-4">Key Meanings</div>
+            <TableHead>
+              <div className="flex justify-center items-center h-full min-w-[100px]">Key Meanings</div>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -78,20 +71,15 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
               <TableRow
                 onClick={() => handleWordClick(word.id)}
                 className="grid grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300"
-                style={{ gridTemplateColumns: "1fr 1fr 1fr 2fr" }}
               >
-                <TableCell className="text-base border-r font-medium border-gray-300 align-middle">
-                  <div className="flex justify-center items-center h-full py-4">
-                    {word.word}
-                  </div>
+                <TableCell className="text-base border-r font-medium border-gray-300 ">
+                  <div className="flex justify-center items-center h-full min-w-[70px]">{word.word}</div>
                 </TableCell>
-                <TableCell className="text-base border-r border-gray-300 align-middle">
-                  <div className="flex justify-center items-center h-full py-4">
-                    {word.pronunciation}
-                  </div>
+                <TableCell className="text-base border-r border-gray-300">
+                  <div className="flex justify-center items-center h-full min-w-[60px]">{word.pronunciation}</div>
                 </TableCell>
                 <TableCell className="border-r border-gray-300">
-                  <div className="py-4 flex justify-center">
+                  <div className="flex justify-center items-center h-full min-w-[90px]">
                     <Button
                       className="rounded-full bg-gray-700 hover:bg-gray-800"
                       onClick={(e) => {
@@ -104,8 +92,8 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                     </Button>
                   </div>
                 </TableCell>
-                <TableCell className="py-1 px-4 align-middle">
-                  <ul className="list-disc list-inside pl-5 text-lg">
+                <TableCell className="py-1 col-span-2">
+                  <ul className="list-disc list-inside pl-5 text-lg min-w-[100px] ">
                     {word.keymeanings.map((km, index) => (
                       <li key={index}>{km}</li>
                     ))}
@@ -120,14 +108,8 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                     timeout={600}
                     classNames="word-detail"
                   >
-                    <TableRow
-                      ref={nodeRef}
-                      className="grid grid-cols-1 bg-gray-50"
-                    >
-                      <TableCell
-                        colSpan={4}
-                        className="py-3 px-3 flex justify-center items-center"
-                      >
+                    <TableRow ref={nodeRef} className="grid grid-cols-1 bg-gray-50">
+                      <TableCell colSpan={4} className="py-3 px-3 flex justify-center items-center">
                         <WordDetail
                           exampleSentences={word.examplesentences}
                           detailedDescription={word.detaileddescription}

@@ -16,7 +16,7 @@ export default function SideNav() {
       <div className="flex flex-grow flex-col space-y-4">
         <NavLinks />
       </div>
-      <div className="mt-auto mb-6">
+      <div className="my-3">
         <UserProfile />
       </div>
     </div>
