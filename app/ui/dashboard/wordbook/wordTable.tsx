@@ -52,16 +52,24 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
         <TableHeader>
           <TableRow className="grid grid-cols-5 border-b border-gray-300">
             <TableHead className="border-r border-gray-300">
-              <div className="flex justify-center items-center  h-full min-w-[60px]">Word</div>
+              <div className="flex justify-center items-center h-full min-w-[60px] md:text-base text-xs">
+                Word
+              </div>
             </TableHead>
             <TableHead className="border-r border-gray-300">
-              <div className="flex justify-center items-center  h-full min-w-[60px]">Pronunciation</div>
+              <div className="flex justify-center items-center h-full min-w-[60px] md:text-base text-xs">
+                Pronunciation
+              </div>
             </TableHead>
             <TableHead className="border-r border-gray-300">
-              <div className="flex justify-center items-center h-full min-w-[90px]">Play Pronunciation</div>
+              <div className="flex justify-center items-center h-full min-w-[90px] md:text-base text-xs">
+                Play Pronunciation
+              </div>
             </TableHead>
             <TableHead>
-              <div className="flex justify-center items-center h-full min-w-[100px]">Key Meanings</div>
+              <div className="flex justify-center items-center h-full min-w-[100px] md:text-base text-xs">
+                Key Meanings
+              </div>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -72,28 +80,32 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                 onClick={() => handleWordClick(word.id)}
                 className="grid grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300"
               >
-                <TableCell className="text-base border-r font-medium border-gray-300 ">
-                  <div className="flex justify-center items-center h-full min-w-[70px]">{word.word}</div>
+                <TableCell className="text-xs md:text-base border-r font-medium border-gray-300 truncate">
+                  <div className="flex justify-center items-center h-full min-w-[50px]">
+                    {word.word}
+                  </div>
                 </TableCell>
-                <TableCell className="text-base border-r border-gray-300">
-                  <div className="flex justify-center items-center h-full min-w-[60px]">{word.pronunciation}</div>
+                <TableCell className="text-xs md:text-base border-r border-gray-300 truncate">
+                  <div className="flex justify-center items-center h-full min-w-[45px]">
+                    {word.pronunciation}
+                  </div>
                 </TableCell>
                 <TableCell className="border-r border-gray-300">
-                  <div className="flex justify-center items-center h-full min-w-[90px]">
+                  <div className="flex justify-center items-center h-full min-w-[40px]">
                     <Button
-                      className="rounded-full bg-gray-700 hover:bg-gray-800"
+                      className="rounded-full bg-gray-700 hover:bg-gray-800 md:text-base text-xs px-2 py-1"
                       onClick={(e) => {
                         e.stopPropagation();
                         new Audio(word.audiourl).play();
                       }}
                     >
-                      <FaCirclePlay className="mr-2 text-lg" />
-                      <div className="text-base">Play</div>
+                      <FaCirclePlay className="mr-1 text-xs md:text-lg md:mr-2" />
+                      <div className="md:text-base text-xs">Play</div>
                     </Button>
                   </div>
                 </TableCell>
                 <TableCell className="py-1 col-span-2">
-                  <ul className="list-disc list-inside pl-5 text-lg min-w-[100px] ">
+                  <ul className="list-disc list-inside pl-5 md:text-lg text-xs truncate">
                     {word.keymeanings.map((km, index) => (
                       <li key={index}>{km}</li>
                     ))}
@@ -108,8 +120,14 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                     timeout={600}
                     classNames="word-detail"
                   >
-                    <TableRow ref={nodeRef} className="grid grid-cols-1 bg-gray-50">
-                      <TableCell colSpan={4} className="py-3 px-3 flex justify-center items-center">
+                    <TableRow
+                      ref={nodeRef}
+                      className="grid grid-cols-1 bg-gray-50"
+                    >
+                      <TableCell
+                        colSpan={4}
+                        className="py-3 px-3 flex justify-center items-center"
+                      >
                         <WordDetail
                           exampleSentences={word.examplesentences}
                           detailedDescription={word.detaileddescription}
