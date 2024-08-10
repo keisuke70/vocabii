@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 const AddButton: React.FC = () => {
   return (
-    <div className="mt-4 flex justify-center sticky bottom-2 md:bottom-0">
+    <div className="mt-4 flex justify-center sticky">
       <Link href="/dashboard/add" passHref>
         <Button className="px-4 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700">
           Add Word

@@ -47,7 +47,7 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div>
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
           <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-gray-300">
