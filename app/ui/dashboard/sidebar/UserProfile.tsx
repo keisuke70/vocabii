@@ -18,11 +18,11 @@ export default async function UserProfile() {
 
   return (
     <div className="p-2 bg-#f3f4f6 border border-gray-500 rounded-lg shadow-sm">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center md:gap-1 lg:gap-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative w-12 h-12 rounded-full">
-              <Avatar className="w-10 h-10">
+            <Button variant="ghost" className="relative md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full p-0 mr-3 md:mr-1 lg:mr-3">
+              <Avatar className="md:w-8 md:h-8 lg:w-10 lg:h-10">
                 {session.user.image && (
                   <AvatarImage
                     src={session.user.image}
@@ -67,7 +67,7 @@ export default async function UserProfile() {
           <p className="text-sm font-medium leading-none">
             {session.user.name}
           </p>
-          <p className="text-xs leading-none text-muted-foreground">
+          <p className="text-xs leading-none text-muted-foreground whitespace-normal break-all">
             {session.user.email}
           </p>
         </div>
