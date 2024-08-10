@@ -25,12 +25,12 @@ const WordDetail: React.FC<WordDetailProps> = ({
   const hasBothConjugationsAndNounPlural = verbConjugations && nounPlural;
 
   return (
-    <div className="p-6 bg-gray-100 rounded-md shadow-lg">
+    <div className=" p-3 md:p-6 bg-gray-100 rounded-md shadow-lg">
       {(nounPlural || verbConjugations) && (
         <div className="flex flex-col md:flex-row mb-4  md:space-y-0 md:space-x-6">
           {verbConjugations && (
             <div className="flex-1 mr-5">
-              <h2 className="md:text-lg text-base font-bold">
+              <h2 className="md:text-lg text-sm  font-bold">
                 Verb Conjugations
               </h2>
               <ul className="list-disc list-inside md:pl-5 md:text-base text-xs">
@@ -67,7 +67,7 @@ const WordDetail: React.FC<WordDetailProps> = ({
                 hasBothConjugationsAndNounPlural ? "mt-4 md:mt-0" : ""
               }`}
             >
-              <h2 className="md:text-lg text-base font-bold">
+              <h2 className="md:text-lg text-sm font-bold">
                 Noun Plural Form
               </h2>
               <p className="md:text-base text-xs">{nounPlural}</p>
@@ -77,12 +77,12 @@ const WordDetail: React.FC<WordDetailProps> = ({
       )}
 
       <div className="mb-4">
-        <h2 className="md:text-lg text-base font-bold">Detailed Description</h2>
+        <h2 className="md:text-lg text-sm font-bold">Detailed Description</h2>
         <p className="md:text-base text-xs">{detailedDescription}</p>
       </div>
 
       <div>
-        <h2 className="md:text-lg text-base font-bold">Example Sentences</h2>
+        <h2 className="md:text-lg text-sm  font-bold">Example Sentences</h2>
         <ul className="list-disc list-inside md:pl-5 md:text-base text-xs">
           {exampleSentences.map((sentence, index) => (
             <li key={index} className="mb-1">
