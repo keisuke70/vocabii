@@ -5,14 +5,14 @@ import UserProfile from "./UserProfile";
 
 export default function SideNav() {
   return (
-    <div className="flex h-50 md:h-screen flex-col px-3 py-2 md:px-4 bg-customGray text-white">
+    <div className="flex h-50 h-screen flex-col p-6 bg-gradient-to-b from-customGray to-customWhite shadow-lg rounded-lg text-gray-900">
       <Link
-        className="mb-6 flex h-15 items-center justify-center rounded-md px-6  sm:px-6 md:p-2 md:h-29"
+        className="mb-6 flex h-15 items-center justify-center rounded-md md:h-29 hover:shadow-md transition-shadow duration-200"
         href="/"
       >
         <AcmeLogo />
       </Link>
-      <div className="flex md:flex-grow flex-col space-y-4">
+      <div className="flex-grow flex flex-col space-y-6">
         <NavLinks />
       </div>
       <div className="my-3">
@@ -21,4 +21,3 @@ export default function SideNav() {
     </div>
   );
 }
-
