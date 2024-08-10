@@ -5,7 +5,7 @@ export const experimental_ppr = true;
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen flex-col md:flex-row">
+    <div className="flex h-screen flex-col md:flex-row overflow-y-hidden">
       <div className="block md:hidden w-full h-1/7">
         <DashboardHeader />
       </div>
