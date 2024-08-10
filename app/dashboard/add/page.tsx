@@ -48,7 +48,7 @@ const AddWords: React.FC = () => {
     <form action={formAction} autoComplete="off">
       <div className="max-w-2xl mx-auto p-4">
         <div className="flex flex-col items-center space-y-9">
-          <h1 className="text-4xl font-bold mt-2 mb-2">Add a New Word</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mt-2 mb-2">Add a New Word</h1>
           {state.errors && (
             <Alert className="mb-4">
               {Object.entries(state.errors).map(([key, errors]) => (
@@ -70,7 +70,7 @@ const AddWords: React.FC = () => {
                 onChange={(e) => {
                   handleWordChange(e.target.value);
                 }}
-                className="w-96"
+                className="w-60 md:w-96"
               />
             </TooltipTrigger>
           </Tooltip>
