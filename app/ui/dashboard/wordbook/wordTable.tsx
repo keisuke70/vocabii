@@ -52,22 +52,22 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
         <TableHeader>
           <TableRow className="grid grid-cols-5 border-b border-gray-300">
             <TableHead className="border-r border-gray-300">
-              <div className="flex justify-center items-center h-full min-w-[60px] md:text-base text-xs">
+              <div className="flex justify-center items-center h-full min-w-[30px] md:text-base text-xs">
                 Word
               </div>
             </TableHead>
             <TableHead className="border-r border-gray-300">
-              <div className="flex justify-center items-center h-full min-w-[60px] md:text-base text-xs">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs">
                 Pronunciation
               </div>
             </TableHead>
             <TableHead className="border-r border-gray-300">
-              <div className="flex justify-center items-center h-full min-w-[90px] md:text-base text-xs">
+              <div className="flex justify-center items-center h-full min-w-[60px] md:text-base text-xs">
                 Play Pronunciation
               </div>
             </TableHead>
             <TableHead>
-              <div className="flex justify-center items-center h-full min-w-[100px] md:text-base text-xs">
+              <div className="flex justify-center items-center h-full min-w-[70px] md:text-base text-xs">
                 Key Meanings
               </div>
             </TableHead>
@@ -105,7 +105,7 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                   </div>
                 </TableCell>
                 <TableCell className="py-1 col-span-2">
-                  <ul className="list-disc list-inside pl-5 md:text-lg text-xs truncate">
+                  <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs">
                     {word.keymeanings.map((km, index) => (
                       <li key={index}>{km}</li>
                     ))}
