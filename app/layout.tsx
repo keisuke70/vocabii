@@ -32,8 +32,8 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" />
       </head>
       <body className={inter.className}>
-        <div className="flex flex-col justify-between w-full h-screen">
-          <main className="flex-auto h-full w-full">
+        <div className="flex flex-col justify-between w-full min-h-screen">
+          <main className="flex-grow w-full">
             {children}
           </main>
         </div>
