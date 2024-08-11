@@ -5,13 +5,15 @@ import { Textarea } from "@/components/ui/textarea";
 import AddWordSkelton from "@/app/ui/dashboard/add/skelton";
 
 const fetchWordDetails = async (word: string) => {
-  const response = await fetch(`/api/word-details?word=${word}`);
+  const lowerCaseWord = word.toLowerCase();
+  const response = await fetch(`/api/word-details?word=${lowerCaseWord}`);
   if (!response.ok) {
     throw new Error("Failed to fetch word details");
   }
   const data = await response.json();
   return data;
 };
+
 
 interface AddWordsDetailsProps {
   word: string;
@@ -51,9 +53,9 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
       try {
         const fetchedDetails = await fetchWordDetails(word);
         setDetails(fetchedDetails);
-        if (fetchedDetails.word && fetchedDetails.word !== word) {
+        setWord(fetchedDetails.word);
+        if (fetchedDetails.word && fetchedDetails.word.toLowerCase() !== word.toLowerCase()) {
           setShowTooltip(true);
-          setWord(fetchedDetails.word);
           setTimeout(() => {
             setShowTooltip(false);
           }, 3000);
