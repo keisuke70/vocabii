@@ -70,7 +70,8 @@ const AddWords: React.FC = () => {
                 onChange={(e) => {
                   handleWordChange(e.target.value);
                 }}
-                className="w-60 md:w-96"
+                className="w-60 md:w-96 text-base"
+                style={{ fontSize: '16px' }}
               />
             </TooltipTrigger>
           </Tooltip>
