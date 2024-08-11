@@ -64,13 +64,18 @@
       --input: 217.2 32.6% 17.5%;
       --ring: 212.7 26.8% 83.9%;
     }
-  }
 
-  @layer base {
     * {
       @apply border-border;
     }
+  
     body {
       @apply bg-background text-foreground;
+    }
+  
+    /* Custom h-screen class */
+    .h-screen {
+      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+      height: calc(var(--vh, 1vh) * 100);
     }
   }
