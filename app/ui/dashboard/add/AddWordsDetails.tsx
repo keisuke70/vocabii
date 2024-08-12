@@ -14,10 +14,9 @@ const fetchWordDetails = async (word: string) => {
   return data;
 };
 
-
 interface AddWordsDetailsProps {
   word: string;
-  setWord:  React.Dispatch<React.SetStateAction<string>>;
+  setWord: React.Dispatch<React.SetStateAction<string>>;
   setShowTooltip: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   Isloading: boolean;
@@ -54,7 +53,10 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
         const fetchedDetails = await fetchWordDetails(word);
         setDetails(fetchedDetails);
         setWord(fetchedDetails.word);
-        if (fetchedDetails.word && fetchedDetails.word.toLowerCase() !== word.toLowerCase()) {
+        if (
+          fetchedDetails.word &&
+          fetchedDetails.word.toLowerCase() !== word.toLowerCase()
+        ) {
           setShowTooltip(true);
           setTimeout(() => {
             setShowTooltip(false);
@@ -103,12 +105,17 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
       <div className="mb-4">
         <label className="block font-semibold">Example Sentences:</label>
         {details.exampleSentences.map((sentence, index) => (
-          <Input
+          <Textarea
             key={index}
-            type="text"
             name="exampleSentences"
             defaultValue={sentence}
-            className="w-full mb-2"
+            className="w-full mb-2 resize-none overflow-hidden whitespace-normal break-words"
+            style={{ height: "auto", minHeight: "20px" }}
+            onInput={(e) => {
+              const target = e.target as HTMLTextAreaElement;
+              target.style.height = "auto"; 
+              target.style.height = `${target.scrollHeight}px`;
+            }}
           />
         ))}
       </div>
@@ -135,12 +142,11 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
       {details.verbConjugations && (
         <div className="mb-4">
           <label className="block font-semibold">Verb Variation:</label>
-
-          <Input
-            type="text"
+          <Textarea
             name="verbConjugations"
             defaultValue={details.verbConjugations || ""}
-            className="w-full"
+            style={{ height: "auto", minHeight: "20px" }}
+            className="w-full mb-2 resize-none overflow-hidden whitespace-normal break-words"
           />
         </div>
       )}
