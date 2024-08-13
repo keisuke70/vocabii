@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense, useActionState } from "react";
+import React, { useState, useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert } from "@/components/ui/alert";
@@ -12,30 +12,12 @@ import {
 import { addWord, State } from "@/lib/actions";
 import AddWordsDetails from "@/app/ui/dashboard/add/AddWordsDetails";
 
-
-
 const AddWords: React.FC = () => {
   const [word, setWord] = useState("");
   const [fetchWord, setFetchWord] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [adding, setAdding] = useState(false);
-
-  const handleWordChange = (term: string) => {
-    setWord(term);
-  };
-
-  const handleAdding = () => {
-    setAdding(true);
-  };
-
-  const handleClicked = () => {
-    if(fetchWord==word) {
-      return;
-    }
-    setFetchWord(word);
-    setIsLoading(true);
-  };
 
   const initialState: State = {
     errors: undefined,
@@ -44,11 +26,39 @@ const AddWords: React.FC = () => {
 
   const [state, formAction] = useActionState(addWord, initialState);
 
+  const resetDetails = () => {
+    setFetchWord("");
+  };
+
+  const clearErrors = () => {
+    state.errors = undefined;
+  };
+
+  const handleAdding = () => {
+    setAdding(true);
+  };
+
+  const handleWordChange = (term: string) => {
+    setWord(term);
+    clearErrors();
+    resetDetails();
+  };
+
+  const handleClicked = () => {
+    if (fetchWord === word) {
+      return;
+    }
+    setFetchWord(word);
+    setIsLoading(true);
+  };
+
   return (
     <form action={formAction} autoComplete="off">
       <div className="max-w-2xl mx-auto p-4">
-        <div className="flex flex-col items-center space-y-9">
-          <h1 className="text-3xl md:text-4xl font-bold mt-2 mb-2">Add a New Word</h1>
+        <div className="flex flex-col items-center space-y-6 mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold mt-2">
+            Add a New Word
+          </h1>
           {state.errors && (
             <Alert className="mb-4">
               {Object.entries(state.errors).map(([key, errors]) => (
@@ -59,7 +69,7 @@ const AddWords: React.FC = () => {
           <Tooltip open={showTooltip}>
             <TooltipContent side="top">
               Word corrected to
-              <div className="text-lg text-center text-sky-800">{word}</div>
+              <div className="text-lg text-center text-orange-600">{word}</div>
             </TooltipContent>
             <TooltipTrigger type="button">
               <Input
@@ -67,11 +77,9 @@ const AddWords: React.FC = () => {
                 name="word"
                 placeholder="Enter a word"
                 value={word}
-                onChange={(e) => {
-                  handleWordChange(e.target.value);
-                }}
+                onChange={(e) => handleWordChange(e.target.value)}
                 className="w-60 md:w-96 text-base"
-                style={{ fontSize: '16px' }}
+                style={{ fontSize: "16px" }}
               />
             </TooltipTrigger>
           </Tooltip>
@@ -81,18 +89,18 @@ const AddWords: React.FC = () => {
             disabled={isLoading}
             className="bg-sky-800 hover:bg-sky-900 mt-2"
           >
-            {isLoading ? "Fetching..." : "Fetch Details"}
+            {isLoading ? "Generating..." : "Generate"}
           </Button>
         </div>
         {fetchWord && (
           <div>
-              <AddWordsDetails
-                word={fetchWord}
-                setWord={setWord}
-                setShowTooltip={setShowTooltip}
-                setIsLoading={setIsLoading}
-                Isloading={isLoading}
-              />
+            <AddWordsDetails
+              word={fetchWord}
+              setWord={setWord}
+              setShowTooltip={setShowTooltip}
+              setIsLoading={setIsLoading}
+              Isloading={isLoading}
+            />
 
             <div className="flex justify-center">
               <Button

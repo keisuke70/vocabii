@@ -59,7 +59,6 @@ export async function GET(req: NextRequest) {
     SELECT * FROM words WHERE word = ${word};
   `;
     if (res.rows.length > 0) {
-      // Return the word details from the database
       const wordDetails = res.rows[0];
 
       return NextResponse.json(

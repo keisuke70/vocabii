@@ -15,3 +15,14 @@ export interface Word {
     examplesentences: string;
     detaileddescription: string;
   }
+
+export interface Details {
+  word: string;
+  pronunciation: string;
+  keyMeanings: string[];
+  exampleSentences: string[];
+  detailedDescription: string;
+  audioUrl: string;
+  nounPlural: string | null;
+  verbConjugations: string | null;
+}

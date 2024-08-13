@@ -3,6 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Alert } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import AddWordSkelton from "@/app/ui/dashboard/add/skelton";
+import { Button } from "@/components/ui/button";
+import { FaCirclePlay } from "react-icons/fa6";
+import { Details } from "@/lib/definitions";
 
 const fetchWordDetails = async (word: string) => {
   const lowerCaseWord = word.toLowerCase();
@@ -29,7 +32,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
   setIsLoading,
   Isloading,
 }) => {
-  const [details, setDetails] = useState({
+  const [details, setDetails] = useState<Details>({
     word: "",
     pronunciation: "",
     keyMeanings: [""],
@@ -60,7 +63,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           setShowTooltip(true);
           setTimeout(() => {
             setShowTooltip(false);
-          }, 3000);
+          }, 5000);
         }
       } catch (error) {
         setError(`${error}`);
@@ -83,12 +86,23 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
     <div>
       <div className="mb-4">
         <label className="block font-semibold">Pronunciation:</label>
-        <Input
-          type="text"
-          name="pronunciation"
-          defaultValue={details.pronunciation}
-          className="w-full"
-        />
+        <div className="flex items-center space-x-6">
+          <Input
+            type="text"
+            name="pronunciation"
+            defaultValue={details.pronunciation}
+           />
+          <Button
+            type="button"
+            className="rounded-full bg-gray-700 hover:bg-gray-800 md:text-base text-xs px-2 py-1"
+            onClick={() => {
+              new Audio(details.audioUrl).play();
+            }}
+          >
+            <FaCirclePlay className="mr-1 text-xs md:text-lg md:mr-2" />
+            <div className="md:text-base text-xs">Play</div>
+          </Button>
+        </div>
       </div>
       <div className="mb-4">
         <label className="block font-semibold">Key Meanings:</label>
@@ -113,7 +127,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             style={{ height: "auto", minHeight: "20px" }}
             onInput={(e) => {
               const target = e.target as HTMLTextAreaElement;
-              target.style.height = "auto"; 
+              target.style.height = "auto";
               target.style.height = `${target.scrollHeight}px`;
             }}
           />
