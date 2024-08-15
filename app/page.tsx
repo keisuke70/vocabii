@@ -12,10 +12,10 @@ export default function Home() {
           {appName}で英単語の学習を最適化
         </h1>
         <h4 className="px-3 text-lg md:text-2xl lg:text-3xl font-semibold text-center mb-4">
-          AIの力で英単語を 調べる・記録する を完全に自動化。
+          英単語を 調べる・記録する を同時に実現
         </h4>
         <p className="mt-4 text-center text-base md:text-xl max-w-3xl leading-relaxed">
-          覚えたい単語を入力すると、例文・発音を含む本当に必要な情報だけを、一括出力 & 1 clickで登録。
+          覚えたい単語を入力すると、最新AIの力で例文・発音を含む本当に必要な情報だけを、一括出力 & 1 clickでオリジナル単語帳に登録。
         </p>
 
         <div className="mt-12 flex justify-center">

@@ -15,17 +15,11 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://vocabii.com/icon.png",
-        width: 500,
-        height: 350,
+        width: 208,
+        height: 208,
         alt: "Vocabii Logo",
       },
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Vocabii",
-    description: "Expand your vocabulary effortlessly with Vocabii.",
-    images: ["https://vocabii.com/icon.png"], 
   },
 };
 
