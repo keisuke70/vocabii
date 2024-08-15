@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://vocabii.com/icon.png",
+        url: "https://vocabii.com/icon.ico",
         width: 208,
         height: 208,
         alt: "Vocabii Logo",
