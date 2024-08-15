@@ -1,8 +1,8 @@
-import UserButton from "../../userButton";
+import UserButton from "../../standalone/userButton";
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/auth";
-import { SignIn } from "../../auth-components";
+import { SignIn } from "../../standalone/auth-components";
 import NavLinks from "../sidebar/navLinks";
 
 export default async function DashboardHeader() {

@@ -1,4 +1,4 @@
-import AddButton from '../ui/addButton';
+import AddButton from '../ui/standalone/addButton';
 import WordTable from '../ui/dashboard/wordbook/wordTable';
 import { fetchWord } from '@/lib/data';
 

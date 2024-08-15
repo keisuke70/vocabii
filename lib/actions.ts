@@ -10,7 +10,7 @@ import { sql, db, VercelPoolClient } from "@vercel/postgres";
 import format from "pg-format";
 import { v4 as uuidv4 } from "uuid";
 import { Resend } from "resend";
-import { EmailTemplate } from "@/app/ui/email-template";
+import { EmailTemplate } from "@/app/ui/standalone/email-template";
 import { NextResponse } from "next/server";
 import crypto from 'crypto';
 

@@ -1,8 +1,8 @@
-import Header from "@/app/ui/header";
+import Header from "@/app/ui/standalone/header";
 import Image from "next/image";
 
 export default function Home() {
-  const appName = "Vocabii"; 
+  const appName = "Vocabii";
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-purple-700 via-indigo-600 to-blue-600 text-white">
@@ -15,7 +15,8 @@ export default function Home() {
           英単語を 調べる・記録する を同時に実現
         </h4>
         <p className="mt-4 text-center text-base md:text-xl max-w-3xl leading-relaxed">
-          覚えたい単語を入力すると、最新AIの力で例文・発音を含む本当に必要な情報だけを、一括出力 & 1 clickでオリジナル単語帳に登録。
+          覚えたい単語を入力すると、最新AIの力で例文・発音を含む本当に必要な情報だけを、一括出力
+          & 1 clickでオリジナル単語帳に登録。
         </p>
 
         <div className="mt-12 flex justify-center">
