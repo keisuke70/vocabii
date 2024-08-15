@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { SignIn } from "../../auth-components";
-import UserButton from "../userButton";
+import UserButton from "../../userButton";
 
 export default async function UserProfile() {
   const session = await auth();

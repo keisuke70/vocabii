@@ -1,5 +1,5 @@
-import AddSkeleton from "@/app/ui/dashboard/add/AddSkeleton";
+import AddPageSkeleton from "@/app/ui/dashboard/add/addPageSkeleton";
  
 export default function Loading() {
-  return <AddSkeleton />;
+  return <AddPageSkeleton />;
 }

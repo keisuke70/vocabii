@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Alert } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
-import AddWordSkelton from "@/app/ui/dashboard/add/skelton";
+import AddDetaildsSkelton from "@/app/ui/dashboard/add/detailsSkeleton";
 import { Button } from "@/components/ui/button";
 import { FaCirclePlay } from "react-icons/fa6";
 import { Details } from "@/lib/definitions";
@@ -79,7 +79,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
   }
 
   if (Isloading) {
-    return <AddWordSkelton />;
+    return <AddDetaildsSkelton />;
   }
 
   return (

@@ -1,4 +1,4 @@
-import UserButton from "../userButton";
+import UserButton from "../../userButton";
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/auth";
@@ -12,7 +12,7 @@ export default async function DashboardHeader() {
     <header className="flex justify-between items-center w-full h-20 px-4 py-2 bg-gradient-to-b from-customBlue to-white">
       <div className="flex items-center space-x-4">
         <Link
-          className="flex h-5 items-center justify-center rounded-md"
+          className="flex h-5 items-center justify-center rounded-md hover:shadow-lg transition-shadow duration-200"
           href="/"
         >
           <div className="overflow-hidden rounded-lg">
