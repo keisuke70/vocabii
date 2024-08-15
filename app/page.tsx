@@ -12,13 +12,10 @@ export default function Home() {
           {appName}で英単語の学習を最適化
         </h1>
         <h4 className="px-3 text-lg md:text-2xl lg:text-3xl font-semibold text-center mb-4">
-          AIの力で英単語を調べると記録するを完全に自動化。
+          AIの力で英単語を 調べる・記録する を完全に自動化。
         </h4>
         <p className="mt-4 text-center text-base md:text-xl max-w-3xl leading-relaxed">
           覚えたい単語を入力すると、例文・発音を含む本当に必要な情報だけを、一括出力 & 1 clickで登録。
-        </p>
-        <p className="mt-4 text-center text-sm md:text-xl max-w-3xl leading-relaxed">
-          パソコンはもちろんスマートフォンやタブレット端末など、様々なデバイスから利用できます。単語帳を持ち運ぶ必要がないので、外出先や通勤・通学時でも手軽に暗記できます。
         </p>
 
         <div className="mt-12 flex justify-center">
@@ -30,6 +27,9 @@ export default function Home() {
             className="w-full max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-lg shadow-lg"
           />
         </div>
+        <p className="mt-8 text-center text-sm md:text-xl max-w-3xl leading-relaxed">
+          パソコンはもちろんスマートフォンやタブレット端末など、様々なデバイスから利用できます。単語帳を持ち運ぶ必要がないので、外出先や通勤・通学時でも手軽に暗記できます。
+        </p>
       </div>
     </main>
   );

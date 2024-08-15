@@ -15,7 +15,7 @@ export function SignIn(props: React.ComponentPropsWithRef<typeof Button>) {
 export function SignUp(props: React.ComponentPropsWithRef<typeof Button>) {
   return (
     <Link href="/signup" passHref>
-      <Button {...props} className="text-white bg-green-500 hover:bg-green-600">
+      <Button {...props} className="text-white bg-lime-500 hover:bg-lime-600">
         Sign Up
       </Button>
     </Link>
