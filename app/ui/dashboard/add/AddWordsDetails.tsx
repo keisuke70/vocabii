@@ -91,7 +91,8 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             type="text"
             name="pronunciation"
             defaultValue={details.pronunciation}
-           />
+            style={{ fontSize: "16px" }}
+          />
           <Button
             type="button"
             className="rounded-full bg-gray-700 hover:bg-gray-800 md:text-base text-xs px-2 py-1"
@@ -113,6 +114,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             name="keyMeanings"
             defaultValue={meaning}
             className="w-full mb-2"
+            style={{ fontSize: "16px" }}
           />
         ))}
       </div>
@@ -124,7 +126,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             name="exampleSentences"
             defaultValue={sentence}
             className="w-full mb-2 resize-none overflow-hidden whitespace-normal break-words"
-            style={{ height: "auto", minHeight: "20px" }}
+            style={{ height: "auto", minHeight: "20px", fontSize: "16px" }}
             onInput={(e) => {
               const target = e.target as HTMLTextAreaElement;
               target.style.height = "auto";
@@ -140,6 +142,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           defaultValue={details.detailedDescription}
           className="w-full"
           rows={6}
+          style={{ fontSize: "16px" }}
         />
       </div>
       {details.nounPlural && (
@@ -150,21 +153,27 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             name="nounPlural"
             defaultValue={details.nounPlural || ""}
             className="w-full"
+            style={{ fontSize: "16px" }}
           />
         </div>
       )}
       {details.verbConjugations && (
         <div className="mb-4">
-          <label className="block font-semibold">Verb Variation:</label>
+          <label className="block font-semibold">Verb Conjugations:</label>
           <Textarea
             name="verbConjugations"
             defaultValue={details.verbConjugations || ""}
-            style={{ height: "auto", minHeight: "20px" }}
+            style={{ height: "auto", minHeight: "20px", fontSize: "16px" }}
             className="w-full mb-2 resize-none overflow-hidden whitespace-normal break-words"
           />
         </div>
       )}
-      <Input type="hidden" name="audioUrl" defaultValue={details.audioUrl} />
+      <Input
+        type="hidden"
+        name="audioUrl"
+        defaultValue={details.audioUrl}
+        style={{ fontSize: "16px" }}
+      />
     </div>
   );
 };
