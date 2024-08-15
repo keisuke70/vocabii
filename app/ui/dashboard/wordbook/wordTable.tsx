@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import React, { useState, useRef } from "react";
 import {
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import WordDetail from "./wordDetail";
-import { FaCirclePlay } from "react-icons/fa6";
+import { FaCirclePlay, FaChevronDown } from "react-icons/fa6";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./WordTable.css"; // Import the CSS file for transitions
 
@@ -79,7 +79,7 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
             <React.Fragment key={word.id}>
               <TableRow
                 onClick={() => handleWordClick(word.id)}
-                className="grid grid-cols-9 md:grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300"
+                className="grid grid-cols-9 md:grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300 relative group"
               >
                 <TableCell className="text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full min-w-[20px]">
@@ -104,6 +104,8 @@ const WordTable: React.FC<WordTableProps> = ({ words }) => {
                       <div className="md:text-base text-xs">Play</div>
                     </Button>
                   </div>
+                  {/* Icon visible when the row is hovered */}
+                  <FaChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </TableCell>
                 <TableCell className="py-1 col-span-3 md:col-span-2 whitespace-normal break-word">
                   <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs">
