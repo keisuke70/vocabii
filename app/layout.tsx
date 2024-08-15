@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description: "Your Open Graph Description",
     images: [
       {
-        url: "/logoww.png",
+        url: "/favicon.png",
         width: 800,
         height: 600,
         alt: "Description of the image",
