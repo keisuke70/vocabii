@@ -85,28 +85,31 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
   return (
     <div>
       <div className="mb-4">
-        <label className="block font-semibold">Pronunciation:</label>
-        <div className="flex items-center space-x-6">
+        <label className="block font-semibold mb-1">Pronunciation:</label>
+        <div className="flex space-x-2">
           <Input
             type="text"
             name="pronunciation"
             defaultValue={details.pronunciation}
             style={{ fontSize: "16px" }}
+            className="w-full max-w-10rem md:max-w-lg"
           />
-          <Button
-            type="button"
-            className="rounded-full bg-gray-700 hover:bg-gray-800 md:text-base text-xs px-2 py-1"
-            onClick={() => {
-              new Audio(details.audioUrl).play();
-            }}
-          >
-            <FaCirclePlay className="mr-1 text-xs md:text-lg md:mr-2" />
-            <div className="md:text-base text-xs">Play</div>
-          </Button>
+          <div className="flex-grow flex justify-center">
+            <Button
+              type="button"
+              className="rounded-full bg-gray-700 hover:bg-gray-800 md:text-base text-xs px-2 py-1" 
+              onClick={() => {
+                new Audio(details.audioUrl).play();
+              }}
+            >
+              <FaCirclePlay className="mr-1 text-xs md:text-lg md:mr-2" />
+              <div className="md:text-base text-xs">Play</div>
+            </Button>
+          </div>
         </div>
       </div>
       <div className="mb-4">
-        <label className="block font-semibold">Key Meanings:</label>
+        <label className="block font-semibold mb-1">Key Meanings:</label>
         {details.keyMeanings.map((meaning, index) => (
           <Input
             key={index}
@@ -119,7 +122,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
         ))}
       </div>
       <div className="mb-4">
-        <label className="block font-semibold">Example Sentences:</label>
+        <label className="block font-semibold mb-1">Example Sentences:</label>
         {details.exampleSentences.map((sentence, index) => (
           <Textarea
             key={index}
@@ -136,7 +139,9 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
         ))}
       </div>
       <div className="mb-4">
-        <label className="block font-semibold">Detailed Description:</label>
+        <label className="block font-semibold  mb-1">
+          Detailed Description:
+        </label>
         <Textarea
           name="detailedDescription"
           defaultValue={details.detailedDescription}
@@ -147,7 +152,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
       </div>
       {details.nounPlural && (
         <div className="mb-4">
-          <label className="block font-semibold">Noun Variation:</label>
+          <label className="block font-semibold mb-1">Noun Plural form:</label>
           <Input
             type="text"
             name="nounPlural"
@@ -159,7 +164,12 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
       )}
       {details.verbConjugations && (
         <div className="mb-4">
-          <label className="block font-semibold">Verb Conjugations:</label>
+          <label className="block font-semibold">
+            <span className="block mb-1">Verb Conjugations:</span>
+            <span className="block pb-2 text-xs md:text-sm">
+              ・ Pres. Part., Past, Past Part., 3rd Pers. Sing.
+            </span>
+          </label>
           <Textarea
             name="verbConjugations"
             defaultValue={details.verbConjugations || ""}
@@ -168,6 +178,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           />
         </div>
       )}
+
       <Input
         type="hidden"
         name="audioUrl"
