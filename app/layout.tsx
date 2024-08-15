@@ -14,9 +14,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://vocabii.com/favicon.png",
-        width: 800,
-        height: 600,
+        url: "https://vocabii.com/icon.png",
+        width: 500,
+        height: 350,
         alt: "Vocabii Logo",
       },
     ],
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Vocabii",
     description: "Expand your vocabulary effortlessly with Vocabii.",
-    images: ["https://vocabii.com/favicon.png"], 
+    images: ["https://vocabii.com/icon.png"], 
   },
 };
 
@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="https://vocabii.com/favicon.png" />
+        <link rel="icon" href="https://vocabii.com/icon.png" />
         <meta
           name="viewport"
           content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
