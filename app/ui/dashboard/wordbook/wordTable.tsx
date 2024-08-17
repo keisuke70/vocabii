@@ -44,16 +44,17 @@ interface WordTableProps {
 }
 
 const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
+  const filteredWords = initialWords.filter((word) => word.priority !== 0);
+
   const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
   const nodeRef = useRef(null);
-  const [words, setWords] = useState<word[]>(initialWords);
+  const [words, setWords] = useState<word[]>(filteredWords);
 
   const sortWords = (words: word[]) => {
     return words.sort((a, b) => {
       if (b.priority !== a.priority) {
         return (b.priority || 0) - (a.priority || 0);
       }
-      // If priorities are the same, sort by order in descending order
       return (b.order || 0) - (a.order || 0);
     });
   };
@@ -72,25 +73,38 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
   };
 
   const handlePriorityChange = async (wordId: number, newPriority: number) => {
-    setWords((prevWords) =>
-      prevWords.map((word) =>
-        word.id === wordId ? { ...word, priority: newPriority } : word
-      )
-    );
+    if (newPriority === 0) {
+      setWords((prevWords) => prevWords.filter((word) => word.id !== wordId));
+    } else {
+      setWords((prevWords) =>
+        prevWords.map((word) =>
+          word.id === wordId ? { ...word, priority: newPriority } : word
+        )
+      );
+    }
+
     try {
       await updateWordPriority(wordId, newPriority);
     } catch (error) {
       console.error("Failed to update priority:", error);
-      setWords((prevWords) =>
-        prevWords.map((word) =>
-          word.id === wordId
-            ? {
-                ...word,
-                priority: prevWords.find((w) => w.id === wordId)?.priority,
-              }
-            : word
-        )
-      );
+
+      if (newPriority === 0) {
+        const wordToRestore = initialWords.find((word) => word.id === wordId);
+        if (wordToRestore) {
+          setWords((prevWords) => [...prevWords, wordToRestore]);
+        }
+      } else {
+        setWords((prevWords) =>
+          prevWords.map((word) =>
+            word.id === wordId
+              ? {
+                  ...word,
+                  priority: prevWords.find((w) => w.id === wordId)?.priority,
+                }
+              : word
+          )
+        );
+      }
     }
   };
 
@@ -99,18 +113,18 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
           <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-gray-300">
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300">
+            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300 px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
                 Word
               </div>
             </TableHead>
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300">
+            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300  px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
                 Pron.
-                <FaCirclePlay className="ml-1 p-1 text-xl text-blue-600" />
+                <FaCirclePlay className="ml-1 p-1 md:p-0.5 text-xl text-blue-500" />
               </div>
             </TableHead>
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300">
+            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300 px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
                 Priority
               </div>
@@ -154,26 +168,25 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                         handlePriorityChange(word.id, parseInt(value))
                       }
                     >
-                      <SelectTrigger className="w-[80px] sm:w-[100px] md:w-[120px] lg:w-[140px] xl:w-[160px] p-1 md:p-4">
+                      <SelectTrigger className="w-[80px] sm:w-[100px] md:w-[120px] lg:w-[140px] xl:w-[160px] p-1 md:p-2 lg:p-4">
                         <SelectValue>
                           <div className="flex items-center">
-                            {/* Display stars based on the selected priority */}
                             {word.priority === 3 && (
                               <>
-                                <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
-                                <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
-                                <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
+                                <FaStar className="text-yellow-400 bg-yellow-100 text-xs sm:text-sm md:text-base md:ml-1" />
+                                <FaStar className="text-yellow-400 bg-yellow-100 text-xs sm:text-sm md:text-base md:ml-1" />
+                                <FaStar className="text-yellow-400 bg-yellow-100 text-xs sm:text-sm md:text-base md:mx-1" />
                               </>
                             )}
                             {word.priority === 2 && (
                               <>
-                                <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
-                                <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
+                                <FaStar className="text-yellow-400 bg-yellow-100 text-xs ml-1 md:ml-2  sm:text-sm md:text-base" />
+                                <FaStar className="text-yellow-400 bg-yellow-100 text-xs sm:text-sm md:text-base md:mx-1" />
                               </>
                             )}
                             {word.priority === 1 && (
                               <>
-                                <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
+                                <FaStar className="text-yellow-400 bg-yellow-100 text-xs ml-2 md:ml-3 sm:text-sm md:text-base" />
                               </>
                             )}
                             {word.priority === 0 && (

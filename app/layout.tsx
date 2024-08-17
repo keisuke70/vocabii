@@ -36,9 +36,11 @@ export default function RootLayout({
           content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
       </head>
-      <body className={inter.className}>
-        <div className="flex flex-col justify-between w-full min-h-screen">
-          <main className="flex-grow w-full">{children}</main>
+      <body className={`${inter.className} h-screen overflow-hidden`}> 
+        <div className="flex flex-col justify-between w-full h-full">
+          <main className="flex-grow w-full h-full">
+            {children}
+          </main>
         </div>
       </body>
     </html>
