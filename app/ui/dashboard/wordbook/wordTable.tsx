@@ -36,16 +36,29 @@ export interface word {
   nounplural?: string | null;
   verbconjugations?: string | null;
   priority?: number; // Update to number
+  order: number; // Ensure the word has an order field
 }
 
 interface WordTableProps {
-  initialWords: word[]; // Rename the prop to `initialWords`
+  initialWords: word[];
 }
 
 const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
   const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
   const nodeRef = useRef(null);
   const [words, setWords] = useState<word[]>(initialWords);
+
+  const sortWords = (words: word[]) => {
+    return words.sort((a, b) => {
+      if (b.priority !== a.priority) {
+        return (b.priority || 0) - (a.priority || 0);
+      }
+      // If priorities are the same, sort by order in descending order
+      return (b.order || 0) - (a.order || 0);
+    });
+  };
+
+  const sortedWords = sortWords([...words]);
 
   const handleWordClick = (wordId: number) => {
     if (selectedWordId === wordId) {
@@ -111,7 +124,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
         </TableHeader>
 
         <TableBody>
-          {words.map((word) => (
+          {sortedWords.map((word) => (
             <React.Fragment key={word.id}>
               <TableRow
                 onClick={() => handleWordClick(word.id)}
@@ -137,7 +150,9 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                   <div className="flex justify-center items-center h-full">
                     <Select
                       value={word.priority?.toString() || ""}
-                      onValueChange={(value) => handlePriorityChange(word.id, parseInt(value))}
+                      onValueChange={(value) =>
+                        handlePriorityChange(word.id, parseInt(value))
+                      }
                     >
                       <SelectTrigger className="w-[80px] sm:w-[100px] md:w-[120px] lg:w-[140px] xl:w-[160px] p-1 md:p-4">
                         <SelectValue>
