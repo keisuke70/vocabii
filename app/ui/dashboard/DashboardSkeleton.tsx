@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { FaCirclePlay } from "react-icons/fa6";
 
 const DashboardSkeleton: React.FC = () => {
   const placeholders = Array(8).fill(0); // Array to generate 5 placeholder rows
@@ -27,11 +28,13 @@ const DashboardSkeleton: React.FC = () => {
             <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
                 Pron.
+                <FaCirclePlay className="ml-1 p-1 md:p-0.5 text-xl text-blue-500" />
               </div>
+              
             </TableHead>
             <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-word">
-                Play Pron.
+                Priority
               </div>
             </TableHead>
             <TableHead className="col-span-3 md:col-span-2">
@@ -70,7 +73,6 @@ const DashboardSkeleton: React.FC = () => {
                   </ul>
                 </TableCell>
               </TableRow>
-
             </React.Fragment>
           ))}
         </TableBody>

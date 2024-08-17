@@ -1,19 +1,31 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
+import { Button } from "@/components/ui/button";
+import { FaCirclePlay } from "react-icons/fa6";
 const AddWordSkeleton: React.FC = () => {
   return (
-    <div className="p-3 md:p-6 bg-gray-100 rounded-md shadow-lg">
+    <div>
       <div className="mb-4">
-        <label className="block font-semibold animate-pulse">
+        <label className="block font-semibold animate-pulse mb-1">
           Pronunciation:
         </label>
-        <Input
-          type="text"
-          className="w-full animate-pulse bg-gray-200 rounded h-10"
-          disabled
-        />
+        <div className="flex space-x-2">
+          <Input
+            type="text"
+            className="w-full max-w-10rem md:max-w-lg animate-pulse bg-gray-200 rounded h-10"
+            disabled
+          />
+          <div className="flex-grow flex justify-center">
+            <Button
+              type="button"
+              className="rounded-full bg-gray-700 animate-pulse text-xs px-2 py-1"
+            >
+              <FaCirclePlay className="mr-1 text-xs md:text-lg md:mr-2" />
+              <div className="md:text-base text-xs">Play</div>
+            </Button>
+          </div>
+        </div>
       </div>
       <div className="mb-4">
         <label className="block font-semibold animate-pulse">
@@ -76,7 +88,10 @@ const AddWordSkeleton: React.FC = () => {
       </div>
       <div className="mb-4">
         <label className="block font-semibold animate-pulse">
-          Verb Conjugations:
+          <span className="block mb-1">Verb Conjugations:</span>
+          <span className="block pb-2 text-xs md:text-sm">
+            ・ Pres. Part., Past, Past Part., 3rd Pers. Sing.
+          </span>
         </label>
         <Input
           type="text"
@@ -84,11 +99,16 @@ const AddWordSkeleton: React.FC = () => {
           disabled
         />
       </div>
-      <Input
-        type="hidden"
-        className="animate-pulse bg-gray-200 rounded"
-        disabled
-      />
+      <div className="mb-4">
+        <label className="block font-semibold mb-1 animate-pulse">
+          Priority:
+        </label>
+        <Input
+          type="text"
+          className="w-full max-w-10rem animate-pulse bg-gray-200 rounded h-10"
+          disabled
+        />
+      </div>
     </div>
   );
 };

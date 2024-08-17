@@ -15,7 +15,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectValue,
 } from "@/components/ui/select";
 import WordDetail from "./wordDetail";
@@ -35,8 +34,8 @@ export interface word {
   detaileddescription: string;
   nounplural?: string | null;
   verbconjugations?: string | null;
-  priority?: number; // Update to number
-  order: number; // Ensure the word has an order field
+  priority?: number;
+  order: number;
 }
 
 interface WordTableProps {

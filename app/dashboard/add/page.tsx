@@ -92,7 +92,7 @@ const AddWords: React.FC = () => {
             {isLoading ? "Generating..." : "Generate"}
           </Button>
         </div>
-        {true && (
+        {fetchWord && (
           <div>
             <AddWordsDetails
               word={fetchWord}
