@@ -160,7 +160,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                     {word.pronunciation}
                   </div>
                 </TableCell>
-                <TableCell className="p-1 md:px-8 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 whitespace-normal break-all">
+                <TableCell className="md:px-8 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 relative whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full">
                     <Select
                       value={word.priority?.toString() || ""}
@@ -168,7 +168,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                         handlePriorityChange(word.id, parseInt(value))
                       }
                     >
-                      <SelectTrigger className="w-[80px] sm:w-[100px] md:w-[120px] lg:w-[140px] xl:w-[160px] p-1 md:p-2 lg:p-4">
+                      <SelectTrigger className="w-[50px] sm:w-[80px] md:w-[80px] lg:w-[120px] xl:w-[160px] p-1 md:p-2 lg:p-4">
                         <SelectValue>
                           <div className="flex items-center">
                             {word.priority === 3 && (
@@ -226,6 +226,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                       </SelectContent>
                     </Select>
                   </div>
+                  <FaChevronDown className="absolute left-1 md:left-6 bottom-0 transform -translate-y-1/2 opacity-0 group-hover:opacity-30 transition-opacity" />
                 </TableCell>
 
                 <TableCell className="py-1 col-span-3 md:col-span-2 whitespace-normal break-word">
