@@ -35,7 +35,7 @@ export interface word {
   detaileddescription: string;
   nounplural?: string | null;
   verbconjugations?: string | null;
-  priority?: string;
+  priority?: number; // Update to number
 }
 
 interface WordTableProps {
@@ -58,7 +58,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
     }
   };
 
-  const handlePriorityChange = async (wordId: number, newPriority: string) => {
+  const handlePriorityChange = async (wordId: number, newPriority: number) => {
     setWords((prevWords) =>
       prevWords.map((word) =>
         word.id === wordId ? { ...word, priority: newPriority } : word
@@ -136,34 +136,32 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 <TableCell className="p-1 md:px-8 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full">
                     <Select
-                      value={word.priority || ""}
-                      onValueChange={(value: any) =>
-                        handlePriorityChange(word.id, value)
-                      }
+                      value={word.priority?.toString() || ""}
+                      onValueChange={(value) => handlePriorityChange(word.id, parseInt(value))}
                     >
                       <SelectTrigger className="w-[80px] sm:w-[100px] md:w-[120px] lg:w-[140px] xl:w-[160px] p-1 md:p-4">
                         <SelectValue>
                           <div className="flex items-center">
-                            {/* Display stars in a row based on the selected priority */}
-                            {word.priority === "star3" && (
+                            {/* Display stars based on the selected priority */}
+                            {word.priority === 3 && (
                               <>
                                 <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
                                 <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
                                 <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
                               </>
                             )}
-                            {word.priority === "star2" && (
+                            {word.priority === 2 && (
                               <>
                                 <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
                                 <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
                               </>
                             )}
-                            {word.priority === "star1" && (
+                            {word.priority === 1 && (
                               <>
                                 <FaStar className="text-yellow-500 text-xs sm:text-sm md:text-base" />
                               </>
                             )}
-                            {word.priority === "remove" && (
+                            {word.priority === 0 && (
                               <span className="text-red-500 text-xs sm:text-sm md:text-base">
                                 Delete
                               </span>
@@ -173,25 +171,25 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="star3">
+                          <SelectItem value="3">
                             <div className="flex items-center">
                               <FaStar className="text-yellow-500 mr-1 text-xs sm:text-sm md:text-base" />
                               <FaStar className="text-yellow-500 mr-1 text-xs sm:text-sm md:text-base" />
                               <FaStar className="text-yellow-500 mr-1 text-xs sm:text-sm md:text-base" />
                             </div>
                           </SelectItem>
-                          <SelectItem value="star2">
+                          <SelectItem value="2">
                             <div className="flex items-center">
                               <FaStar className="text-yellow-500 mr-1 text-xs sm:text-sm md:text-base" />
                               <FaStar className="text-yellow-500 mr-1 text-xs sm:text-sm md:text-base" />
                             </div>
                           </SelectItem>
-                          <SelectItem value="star1">
+                          <SelectItem value="1">
                             <div className="flex items-center">
                               <FaStar className="text-yellow-500 mr-1 text-xs sm:text-sm md:text-base" />
                             </div>
                           </SelectItem>
-                          <SelectItem value="remove">
+                          <SelectItem value="0">
                             <span className="text-red-500 text-xs sm:text-sm md:text-base">
                               Delete
                             </span>

@@ -4,8 +4,17 @@ import { Alert } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import AddDetaildsSkelton from "@/app/ui/dashboard/add/detailsSkeleton";
 import { Button } from "@/components/ui/button";
-import { FaCirclePlay } from "react-icons/fa6";
+import { FaCirclePlay, FaStar } from "react-icons/fa6";
 import { Details } from "@/lib/definitions";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectValue,
+} from "@/components/ui/select";
 
 const fetchWordDetails = async (word: string) => {
   const lowerCaseWord = word.toLowerCase();
@@ -42,7 +51,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
     nounPlural: null,
     verbConjugations: null,
   });
-
+  const [priority, setPriority] = useState(3);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -97,7 +106,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           <div className="flex-grow flex justify-center">
             <Button
               type="button"
-              className="rounded-full bg-gray-700 hover:bg-gray-800 md:text-base text-xs px-2 py-1" 
+              className="rounded-full bg-gray-700 hover:bg-gray-800 md:text-base text-xs px-2 py-1"
               onClick={() => {
                 new Audio(details.audioUrl).play();
               }}
@@ -178,7 +187,62 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           />
         </div>
       )}
-
+      <div className="mb-4">
+        <label className="block font-semibold mb-1">Priority:</label>
+        <Select
+          value={priority.toString()} // Convert number to string for Select component
+          onValueChange={(value) => setPriority(parseInt(value))} // Convert back to number on change
+          name="priority"
+        >
+          <SelectTrigger className="w-full max-w-[150px]">
+            <SelectValue>
+              <div className="flex items-center">
+                {priority === 3 && (
+                  <>
+                    <FaStar className="text-yellow-500" />
+                    <FaStar className="text-yellow-500" />
+                    <FaStar className="text-yellow-500" />
+                  </>
+                )}
+                {priority === 2 && (
+                  <>
+                    <FaStar className="text-yellow-500" />
+                    <FaStar className="text-yellow-500" />
+                  </>
+                )}
+                {priority === 1 && (
+                  <>
+                    <FaStar className="text-yellow-500" />
+                  </>
+                )}
+              </div>
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Priority</SelectLabel>
+              <SelectItem value="3">
+                <div className="flex items-center">
+                  <FaStar className="text-yellow-500 mr-1" />
+                  <FaStar className="text-yellow-500 mr-1" />
+                  <FaStar className="text-yellow-500 mr-1" />
+                </div>
+              </SelectItem>
+              <SelectItem value="2">
+                <div className="flex items-center">
+                  <FaStar className="text-yellow-500 mr-1" />
+                  <FaStar className="text-yellow-500 mr-1" />
+                </div>
+              </SelectItem>
+              <SelectItem value="1">
+                <div className="flex items-center">
+                  <FaStar className="text-yellow-500 mr-1" />
+                </div>
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
       <Input
         type="hidden"
         name="audioUrl"

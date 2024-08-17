@@ -40,6 +40,7 @@ const WordFormSchema = z.object({
   audioUrl: z.string().optional(),
   nounPlural: z.string().nullable().optional(),
   verbConjugations: z.string().nullable().optional(),
+  priority: z.number().int(),
 });
 
 export type State = {
@@ -76,7 +77,8 @@ async function ensureUserTable(userId: string, client: VercelPoolClient) {
       audiourl TEXT,
       nounplural TEXT,
       verbconjugations TEXT,
-      "order" INT DEFAULT nextval('word_order_seq')
+      "order" INT DEFAULT nextval('word_order_seq'),
+      priority INT
     );`,
     tableName
   );
@@ -94,6 +96,8 @@ export async function addWord(prevState: State, formData: FormData) {
   const session = await auth();
   const userId = sanitizeEmail(session?.user?.email!);
 
+  const parsedPriority = parseInt(formData.get("priority") as string, 10);
+
   // Validate form fields using Zod
   const validatedFields = WordFormSchema.safeParse({
     word: formData.get("word"),
@@ -104,6 +108,7 @@ export async function addWord(prevState: State, formData: FormData) {
     audioUrl: formData.get("audioUrl"),
     nounPlural: formData.get("nounPlural"),
     verbConjugations: formData.get("verbConjugations"),
+    priority: parsedPriority,
   });
 
   if (!validatedFields.success) {
@@ -123,6 +128,7 @@ export async function addWord(prevState: State, formData: FormData) {
     audioUrl,
     nounPlural,
     verbConjugations,
+    priority,
   } = validatedFields.data;
 
   const keyMeaningsString = JSON.stringify(keyMeanings);
@@ -144,8 +150,8 @@ export async function addWord(prevState: State, formData: FormData) {
   try {
     const insertQuery = format(
       `
-      INSERT INTO %I (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations)
-      VALUES (%L, %L, %L, %L, %L, %L, %L, %L);
+      INSERT INTO %I (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations, priority)
+      VALUES (%L, %L, %L, %L, %L, %L, %L, %L, %L);
       `,
       userTableName,
       word,
@@ -155,7 +161,8 @@ export async function addWord(prevState: State, formData: FormData) {
       detailedDescription,
       audioUrl,
       nounPlural,
-      verbConjugations
+      verbConjugations,
+      priority
     );
 
     await client.query(insertQuery);
@@ -170,6 +177,36 @@ export async function addWord(prevState: State, formData: FormData) {
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
+
+export async function updateWordPriority(wordId: number, priority: number) {
+  const session = await auth();
+  const userId = sanitizeEmail(session?.user?.email!);
+  const userTableName = `user_words_${userId}`;
+  const client = await db.connect();
+  
+  try {
+    const updateQuery = format(
+      `UPDATE %I SET priority = %L WHERE id = %L;`,
+      userTableName,
+      priority,
+      wordId
+    );
+
+    await client.query(updateQuery);
+
+    return {
+      message: "Priority updated successfully.",
+    };
+  } catch (error) {
+    console.error("Database Error:", error);
+    return {
+      message: "Database Error: Failed to update priority.",
+    };
+  } finally {
+    client.release();
+  }
+}
+
 
 export async function authenticate(
   prevState: string | undefined,
