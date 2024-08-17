@@ -33,7 +33,7 @@ export default function RootLayout({
       <head>
         <meta
           name="viewport"
-          content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+          content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content"
         />
       </head>
       <body className={`${inter.className} h-[100dvh] overflow-hidden`}> 
