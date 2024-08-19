@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -46,6 +46,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
   const filteredWords = initialWords.filter((word) => word.priority !== 0);
 
   const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
+  const [disabledHover, setDisabledHover] = useState<boolean>(false);
   const nodeRef = useRef(null);
   const [words, setWords] = useState<word[]>(filteredWords);
 
@@ -81,6 +82,8 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
         )
       );
     }
+    // Disable hover temporarily
+    setDisabledHover(true);
 
     try {
       await updateWordPriority(wordId, newPriority);
@@ -105,6 +108,11 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
         );
       }
     }
+
+    // Re-enable hover after 2 seconds
+    setTimeout(() => {
+      setDisabledHover(false);
+    }, 1000);
   };
 
   return (
@@ -141,7 +149,9 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
             <React.Fragment key={word.id}>
               <TableRow
                 onClick={() => handleWordClick(word.id)}
-                className="grid grid-cols-9 md:grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300 group"
+                className={`grid grid-cols-9 md:grid-cols-5 cursor-pointer ${
+                  !disabledHover ? "hover:bg-blue-50/50" : "hover:bg-gray-0"
+                } border-b border-gray-300 group`}
               >
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full min-w-[20px]">
@@ -167,7 +177,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                         handlePriorityChange(word.id, parseInt(value))
                       }
                     >
-                      <SelectTrigger className="w-[50px] sm:w-[80px] md:w-[80px] lg:w-[120px] xl:w-[160px] p-1 md:p-2 lg:p-4">
+                      <SelectTrigger className="w-[50px] sm:w-[80px] md:w-[80px] lg:w-[100px] p-1 md:p-2 lg:p-4">
                         <SelectValue>
                           <div className="flex items-center">
                             {word.priority === 3 && (

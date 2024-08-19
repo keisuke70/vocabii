@@ -5,7 +5,7 @@ import UserProfile from "./UserProfile";
 
 export default function SideNav() {
   return (
-    <div className="flex h-50 h-screen flex-col p-4 lg:p-6 bg-gradient-to-b from-customGray to-customWhite shadow-lg rounded-lg text-gray-900">
+    <div className="flex h-50 h-screen flex-col p-4 lg:p-6 bg-gradient-to-b from-customGray to-customWhite shadow-lg rounded-lg ">
       <Link
         className="mb-6 flex h-15 items-center justify-center rounded-md md:h-29 hover:shadow-md transition-shadow duration-200"
         href="/"

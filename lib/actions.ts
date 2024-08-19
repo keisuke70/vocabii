@@ -69,7 +69,7 @@ async function ensureUserTable(userId: string, client: VercelPoolClient) {
     `
     CREATE TABLE IF NOT EXISTS %I (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      word TEXT UNIQUE,
+      word TEXT,
       pronunciation TEXT,
       keymeanings TEXT,
       examplesentences TEXT,

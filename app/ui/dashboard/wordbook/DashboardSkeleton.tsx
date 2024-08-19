@@ -47,7 +47,7 @@ const DashboardSkeleton: React.FC = () => {
         <TableBody>
           {placeholders.map((_, index) => (
             <React.Fragment key={index}>
-              <TableRow className="grid grid-cols-9 md:grid-cols-5 cursor-pointer hover:bg-gray-100 border-b border-gray-300">
+              <TableRow className="grid grid-cols-9 md:grid-cols-5 cursor-pointer hover:bg-blue-50/50 border-b border-gray-300">
                 <TableCell className="text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full min-w-[20px]">
                     <div className="py-4 animate-pulse bg-gray-200 rounded h-6 w-24"></div>
