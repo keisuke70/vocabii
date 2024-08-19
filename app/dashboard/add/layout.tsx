@@ -20,12 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       document.body.style.overflow = 'hidden';
     } else {
       // Restore scroll behavior when the keyboard is closed
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.bottom = '';
-      document.body.style.overflow = '';
+      document.body.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [isKeyboardOpen]);
 
