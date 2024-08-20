@@ -5,15 +5,18 @@ export type User = {
     password: string;
   };
 
-
-export interface Word {
+  export interface word {
     id: number;
     word: string;
     pronunciation: string;
-    keymeanings: string;
+    keymeanings: string[];
     audiourl?: string;
-    examplesentences: string;
+    examplesentences: string[];
     detaileddescription: string;
+    nounplural?: string | null;
+    verbconjugations?: string | null;
+    priority?: number;
+    order: number;
   }
 
 export interface Details {

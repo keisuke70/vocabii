@@ -16,26 +16,40 @@ import {
   SelectGroup,
   SelectItem,
   SelectValue,
+  SelectLabel,
 } from "@/components/ui/select";
 import WordDetail from "./wordDetail";
 import { FaCirclePlay, FaChevronDown, FaStar } from "react-icons/fa6";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { updateWordPriority } from "@/lib/actions";
+
 import "./WordTable.css"; // Import the CSS file for transitions
 import { word } from "@/lib/definitions";
 
 
-interface WordTableProps {
+interface removedWordTableProps {
   initialWords: word[];
+  setSelectedWordIds: (ids: number[]) => void;
+  selectedWordIds: number[];
 }
 
-const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
-  const filteredWords = initialWords.filter((word) => word.priority !== 0);
+const RemovedWordTable: React.FC<removedWordTableProps> = ({
+  initialWords,
+  setSelectedWordIds,
+  selectedWordIds,
+}) => {
+    
+    const [words, setWords] = useState<word[]>([]);
 
-  const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
-  const [disabledHover, setDisabledHover] = useState<boolean>(false);
-  const nodeRef = useRef(null);
-  const [words, setWords] = useState<word[]>(filteredWords);
+    
+    useEffect(() => {
+      const filteredWords = initialWords.filter((word) => word.priority === 0);
+      setWords(filteredWords);
+    }, [initialWords]);
+  
+    const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
+    const [disabledHover, setDisabledHover] = useState<boolean>(false);
+    const nodeRef = useRef(null);
 
   const sortWords = (words: word[]) => {
     return words.sort((a, b) => {
@@ -59,17 +73,16 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
     }
   };
 
+  const handleCheckboxChange = (wordId: number) => {
+    const updatedSelection = selectedWordIds.includes(wordId)
+      ? selectedWordIds.filter((id) => id !== wordId)
+      : [...selectedWordIds, wordId];
+    setSelectedWordIds(updatedSelection);
+  };
+  
+
   const handlePriorityChange = async (wordId: number, newPriority: number) => {
-    if (newPriority === 0) {
-      setWords((prevWords) => prevWords.filter((word) => word.id !== wordId));
-    } else {
-      setWords((prevWords) =>
-        prevWords.map((word) =>
-          word.id === wordId ? { ...word, priority: newPriority } : word
-        )
-      );
-    }
-    // Disable hover temporarily
+    setWords((prevWords) => prevWords.filter((word) => word.id !== wordId));
     setDisabledHover(true);
 
     try {
@@ -77,26 +90,12 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
     } catch (error) {
       console.error("Failed to update priority:", error);
 
-      if (newPriority === 0) {
-        const wordToRestore = initialWords.find((word) => word.id === wordId);
-        if (wordToRestore) {
-          setWords((prevWords) => [...prevWords, wordToRestore]);
-        }
-      } else {
-        setWords((prevWords) =>
-          prevWords.map((word) =>
-            word.id === wordId
-              ? {
-                  ...word,
-                  priority: prevWords.find((w) => w.id === wordId)?.priority,
-                }
-              : word
-          )
-        );
+      const wordToRestore = initialWords.find((word) => word.id === wordId);
+      if (wordToRestore) {
+        setWords((prevWords) => [...prevWords, wordToRestore]);
       }
     }
 
-    // Re-enable hover after 2 seconds
     setTimeout(() => {
       setDisabledHover(false);
     }, 1000);
@@ -106,7 +105,12 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
     <div>
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
-          <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-gray-300">
+          <TableRow className="grid grid-cols-10 md:grid-cols-6 border-b border-gray-300">
+            <TableHead className="border-r col-span-1 border-gray-300 px-1 md:px-4">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
+                Select
+              </div>
+            </TableHead>
             <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300 px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
                 Word
@@ -120,7 +124,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
             </TableHead>
             <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300 px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
-                Priority
+                Restore
               </div>
             </TableHead>
             <TableHead className="col-span-3 md:col-span-2">
@@ -136,10 +140,20 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
             <React.Fragment key={word.id}>
               <TableRow
                 onClick={() => handleWordClick(word.id)}
-                className={`grid grid-cols-9 md:grid-cols-5 cursor-pointer ${
+                className={`grid grid-cols-10 md:grid-cols-6 cursor-pointer ${
                   !disabledHover ? "hover:bg-blue-50/50" : "hover:bg-gray-0"
                 } border-b border-gray-300 group`}
               >
+                <TableCell className="p-2 text-xs col-span-1 border-r border-gray-300 whitespace-normal break-all">
+                  <div className="flex justify-center items-center h-full">
+                    <input
+                      type="checkbox"
+                      checked={selectedWordIds.includes(word.id)}
+                      onChange={() => handleCheckboxChange(word.id)}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                </TableCell>
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full min-w-[20px]">
                     {word.word}
@@ -156,7 +170,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                     {word.pronunciation}
                   </div>
                 </TableCell>
-                <TableCell className="md:px-8 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 relative whitespace-normal break-all">
+                <TableCell className="p-1 md:px-8 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 relative whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full">
                     <Select
                       value={word.priority?.toString() || ""}
@@ -164,7 +178,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                         handlePriorityChange(word.id, parseInt(value))
                       }
                     >
-                      <SelectTrigger className="w-[50px] sm:w-[80px] md:w-[80px] lg:w-[100px] p-0 md:p-2 lg:p-4">
+                      <SelectTrigger className="w-[80px] lg:w-[100px] p-0 md:p-2 lg:p-4">
                         <SelectValue>
                           <div className="flex items-center">
                             {word.priority === 3 && (
@@ -186,15 +200,16 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                               </>
                             )}
                             {word.priority === 0 && (
-                              <span className="text-red-500 text-xs sm:text-sm md:text-base">
-                                Delete
+                              <span className="text-red-400 text-xs ml-2 md:ml-0">
+                                restore
                               </span>
                             )}
                           </div>
                         </SelectValue>
                       </SelectTrigger>
-                      <SelectContent position="popper" sideOffset={5} >
+                      <SelectContent position="popper" sideOffset={5}>
                         <SelectGroup>
+                          <SelectLabel>Restore with priority</SelectLabel>
                           <SelectItem value="3">
                             <div className="flex items-center">
                               <FaStar className="text-yellow-500 mr-1 text-xs sm:text-sm md:text-base" />
@@ -213,11 +228,6 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                               <FaStar className="text-yellow-500 mr-1 text-xs sm:text-sm md:text-base" />
                             </div>
                           </SelectItem>
-                          <SelectItem value="0">
-                            <span className="text-red-500 text-xs ml-1 md:ml-0">
-                              Remove
-                            </span>
-                          </SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -225,7 +235,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                   <FaChevronDown className="absolute left-1 md:left-6 bottom-0 transform -translate-y-1/2 opacity-0 group-hover:opacity-30 transition-opacity" />
                 </TableCell>
 
-                <TableCell className="p-1 col-span-3 md:col-span-2 whitespace-normal break-word">
+                <TableCell className="p-2 col-span-3 md:col-span-2 whitespace-normal break-word">
                   <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs">
                     {word.keymeanings.map((km, index) => (
                       <li key={index}>{km}</li>
@@ -268,4 +278,4 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
   );
 };
 
-export default WordTable;
+export default RemovedWordTable;

@@ -13,7 +13,7 @@ import { Resend } from "resend";
 import { EmailTemplate } from "@/app/ui/standalone/email-template";
 import { NextResponse } from "next/server";
 import crypto from 'crypto';
-
+import { unstable_noStore as noStore } from "next/cache";
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 const SALT = process.env.SALT;
@@ -53,6 +53,7 @@ export type State = {
     audioUrl?: string[];
     nounPlural?: string[];
     verbConjugations?: string[];
+    priority?: string[];
   };
   message?: string | null;
 };
@@ -293,4 +294,47 @@ export async function signup(
 
 export async function googleAuthenticate() {
   await signIn("google");
+}
+
+
+export async function fetchRemovedWord() {
+  noStore();
+  const session = await auth();
+  const userId = sanitizeEmail(session?.user?.email!);
+  const tableName = `user_words_${userId}`;
+  try {
+    const tableCheckQuery = format(
+      `
+SELECT EXISTS (
+  SELECT FROM information_schema.tables 
+  WHERE table_schema = 'public' 
+  AND table_name = %L
+) as exists`,
+      tableName
+    );
+    const client = await db.connect();
+    const tableCheckResult = await client.query(tableCheckQuery);
+
+    const tableExists = tableCheckResult.rows[0]?.exists;
+
+    if (!tableExists) {
+      return [];
+    }
+
+    // Fetch data from the table where priority is 0
+    const fetchQuery = format(`SELECT * FROM %I WHERE priority = 0`, tableName);
+    const data = await client.query(fetchQuery);
+
+    // Parsing keyMeanings to ensure it's an array of strings
+    const removedWords = data.rows.map((word) => ({
+      ...word,
+      keymeanings: JSON.parse(word.keymeanings),
+      examplesentences: JSON.parse(word.examplesentences),
+    }));
+
+    return removedWords;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch removed words.");
+  }
 }

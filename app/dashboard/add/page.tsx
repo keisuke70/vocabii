@@ -75,7 +75,7 @@ const AddWords: React.FC = () => {
               <Input
                 type="text"
                 name="word"
-                placeholder="Enter a word"
+                placeholder="Enter a word to search"
                 value={word}
                 onChange={(e) => handleWordChange(e.target.value)}
                 className="w-60 md:w-96 text-base"
