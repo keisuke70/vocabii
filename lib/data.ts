@@ -10,8 +10,6 @@ function sanitizeEmail(email: string) {
 export async function fetchWord() {
   noStore();
   const session = await auth();
-  //id can't be retrived by default and since email is unique for the auth.js,
-  //using email for the id.
   const userId = sanitizeEmail(session?.user?.email!);
   const tableName = `user_words_${userId}`;
   try {

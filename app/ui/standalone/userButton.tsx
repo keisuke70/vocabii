@@ -20,7 +20,7 @@ export default function UserButton({ imageUrl, userName }: UserButtonProps) {
             {imageUrl ? (
               <AvatarImage src={imageUrl} alt={userName ?? ""} />
             ) : (
-                <AvatarImage src={"defaultuser.png"} alt={userName ?? ""} />
+                <AvatarImage src={"defaulticon.png"} alt={userName ?? ""} />
             )}
             <AvatarFallback>{userName?.[0]}</AvatarFallback>
           </Avatar>

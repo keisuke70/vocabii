@@ -19,26 +19,26 @@ const DashboardSkeleton: React.FC = () => {
     <div className="overflow-x-auto">
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
-          <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-gray-300">
+          <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-gray-300  hover:bg-gray-0">
             <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
                 Word
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
                 Pron.
                 <FaCirclePlay className="ml-1 p-1 md:p-0.5 text-xl text-blue-500" />
               </div>
               
             </TableHead>
             <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-word">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-word text-white">
                 Priority
               </div>
             </TableHead>
             <TableHead className="col-span-3 md:col-span-2">
-              <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word">
+              <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word text-white">
                 Key Meanings
               </div>
             </TableHead>
@@ -47,7 +47,7 @@ const DashboardSkeleton: React.FC = () => {
         <TableBody>
           {placeholders.map((_, index) => (
             <React.Fragment key={index}>
-              <TableRow className="grid grid-cols-9 md:grid-cols-5 cursor-pointer hover:bg-blue-50/50 border-b border-gray-300">
+              <TableRow className="grid grid-cols-9 md:grid-cols-5 cursor-pointer hover:bg-blue-50/20 border-b border-gray-300">
                 <TableCell className="text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full min-w-[20px]">
                     <div className="py-4 animate-pulse bg-gray-200 rounded h-6 w-24"></div>
@@ -68,8 +68,9 @@ const DashboardSkeleton: React.FC = () => {
                 </TableCell>
                 <TableCell className="p-2 col-span-3 md:col-span-2 whitespace-normal break-word">
                   <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs">
-                    <li className="animate-pulse bg-gray-200 rounded h-6 w-24"></li>
-                    <li className="animate-pulse bg-gray-200 rounded h-6 w-24 mt-2"></li>
+                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36"></li>
+                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36"></li>
+                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36 mt-2"></li>
                   </ul>
                 </TableCell>
               </TableRow>

@@ -15,32 +15,32 @@ const RemovedDashboardSkeleton: React.FC = () => {
 
   return (
     <div className="overflow-x-auto">
-      <Table className="min-w-full border-collapse border border-gray-300">
+      <Table className="min-w-full border-collapse border border-gray-300 hover:bg-gray-0">
         <TableHeader>
           <TableRow className="grid grid-cols-10 border-b border-gray-300">
             <TableHead className="border-r col-span-1 md:col-span-1 border-gray-300 px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[30px] md:text-base text-xs whitespace-normal break-all">
+              <div className="flex justify-center items-center h-full min-w-[30px] md:text-base text-xs whitespace-normal break-all text-white">
                 Select
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 border-gray-300 px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
                 Word
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 border-gray-300 px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
                 Pron.
                 <FaCirclePlay className="ml-1 p-1 md:p-0.5 text-xl text-blue-500" />
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 border-gray-300 px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
                 Restore
               </div>
             </TableHead>
             <TableHead className="col-span-3">
-              <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word">
+              <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word text-white">
                 Key Meanings
               </div>
             </TableHead>
@@ -49,7 +49,7 @@ const RemovedDashboardSkeleton: React.FC = () => {
         <TableBody>
           {placeholders.map((_, index) => (
             <React.Fragment key={index}>
-              <TableRow className="grid grid-cols-10 cursor-pointer hover:bg-blue-50/50 border-b border-gray-300">
+              <TableRow className="grid grid-cols-10 cursor-pointer hover:bg-blue-50/20 border-b border-gray-300">
                 <TableCell className="p-2 text-xs col-span-1 border-r border-gray-300 whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full">
                     <div className="animate-pulse bg-gray-200 rounded h-6 w-6"></div>
@@ -74,8 +74,9 @@ const RemovedDashboardSkeleton: React.FC = () => {
 
                 <TableCell className="p-2 col-span-3 whitespace-normal break-word">
                   <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs">
-                    <li className="animate-pulse bg-gray-200 rounded h-6 w-24"></li>
-                    <li className="animate-pulse bg-gray-200 rounded h-6 w-24 mt-2"></li>
+                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36"></li>
+                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36"></li>
+                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 mt-2 md:w-36"></li>
                   </ul>
                 </TableCell>
               </TableRow>

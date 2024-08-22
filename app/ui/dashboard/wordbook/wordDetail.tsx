@@ -25,7 +25,7 @@ const WordDetail: React.FC<WordDetailProps> = ({
   const hasBothConjugationsAndNounPlural = verbConjugations && nounPlural;
 
   return (
-    <div className=" p-3 md:p-6 bg-gray-100 rounded-md shadow-lg">
+    <div className=" p-3 md:p-6 backdrop-blur bg-white/15 rounded-md shadow-lg">
       {(nounPlural || verbConjugations) && (
         <div className="flex flex-col md:flex-row mb-4  md:space-y-0 md:space-x-6">
           {verbConjugations && (
