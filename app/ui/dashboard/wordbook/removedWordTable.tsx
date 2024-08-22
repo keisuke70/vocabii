@@ -137,7 +137,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
                   </div>
                 </TableCell>
                 <TableCell className="p-2 text-xs col-span-2 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
-                  <div className="flex justify-center items-center h-full min-w-[20px] font-serif font-bold">
+                  <div className="flex justify-center items-center h-full min-w-[20px] font-bold">
                     {word.word}
                   </div>
                 </TableCell>

@@ -8,8 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div
       className="flex flex-col md:flex-row h-[100dvh] bg-cover bg-center"
       style={{
-        backgroundImage: 'url(/bgim.png)',
-
+        backgroundImage: 'url(/bgim.png)'
       }}
     >
       <div className="block md:hidden w-full h-auto">

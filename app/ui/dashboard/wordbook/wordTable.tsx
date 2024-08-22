@@ -140,13 +140,13 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 } border-b border-gray-300 group`}
               >
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
-                  <div className="flex justify-center items-center h-full min-w-[20px] font-serif font-bold">
+                  <div className="flex justify-center items-center h-full min-w-[20px] font-bold">
                     {word.word}
                   </div>
                 </TableCell>
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 whitespace-normal break-all">
                   <div
-                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-white hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
+                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-teal-100 hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
                     onClick={(e) => {
                       e.stopPropagation();
                       new Audio(word.audiourl).play();

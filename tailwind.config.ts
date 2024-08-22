@@ -21,7 +21,7 @@ const config = {
       colors: {
         customGray: "#94a3b8",
         customBlue: "#d5e1f2",
-        customGreen: "#88bfbd",
+        customGreen: "#354a96",
         customWhite: "#c3d9f7",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
