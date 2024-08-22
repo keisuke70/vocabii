@@ -12,14 +12,11 @@ const Removed: React.FC = () => {
   const [selectedWordIds, setSelectedWordIds] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
 
-  let fetchedWord = []
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const words = await fetchRemovedWord();
         setFetchedWords(words);
-        fetchedWord=words;
       } catch (error) {
         console.error("Failed to fetch words:", error);
       } finally {
