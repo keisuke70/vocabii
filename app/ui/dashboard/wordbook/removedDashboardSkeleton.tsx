@@ -75,7 +75,7 @@ const RemovedDashboardSkeleton: React.FC = () => {
                 <TableCell className="p-2 col-span-3 whitespace-normal break-word">
                   <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs">
                     <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36"></li>
-                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36"></li>
+                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 mt-2 md:w-36"></li>
                     <li className="animate-pulse bg-gray-200 rounded h-6 w-14 mt-2 md:w-36"></li>
                   </ul>
                 </TableCell>

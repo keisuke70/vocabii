@@ -69,7 +69,7 @@ const DashboardSkeleton: React.FC = () => {
                 <TableCell className="p-2 col-span-3 md:col-span-2 whitespace-normal break-word">
                   <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs">
                     <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36"></li>
-                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36"></li>
+                    <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36 mt-2"></li>
                     <li className="animate-pulse bg-gray-200 rounded h-6 w-14 md:w-36 mt-2"></li>
                   </ul>
                 </TableCell>

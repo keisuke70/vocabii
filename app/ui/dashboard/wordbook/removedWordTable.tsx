@@ -217,7 +217,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
                   >
                     <TableRow
                       ref={nodeRef}
-                      className="grid grid-cols-1 bg-gray-50"
+                      className="grid grid-cols-1 hover:bg-blue-50/10"
                     >
                       <TableCell
                         colSpan={5}
