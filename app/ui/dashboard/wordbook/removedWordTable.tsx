@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {
   Table,
   TableBody,
@@ -22,10 +22,9 @@ import WordDetail from "./wordDetail";
 import { FaCirclePlay, FaChevronDown, FaStar } from "react-icons/fa6";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { updateWordPriority } from "@/lib/actions";
-
-import "./WordTable.css"; // Import the CSS file for transitions
 import { word } from "@/lib/definitions";
 
+import "./WordTable.css"; // Import the CSS file for transitions
 
 interface removedWordTableProps {
   initialWords: word[];
@@ -38,18 +37,10 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
   setSelectedWordIds,
   selectedWordIds,
 }) => {
-    
-    const [words, setWords] = useState<word[]>([]);
-
-    
-    useEffect(() => {
-      const filteredWords = initialWords.filter((word) => word.priority === 0);
-      setWords(filteredWords);
-    }, [initialWords]);
-  
-    const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
-    const [disabledHover, setDisabledHover] = useState<boolean>(false);
-    const nodeRef = useRef(null);
+  const filteredWords = initialWords.filter((word) => word.priority === 0);
+  const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
+  const [disabledHover, setDisabledHover] = useState<boolean>(false);
+  const nodeRef = useRef(null);
 
   const sortWords = (words: word[]) => {
     return words.sort((a, b) => {
@@ -60,7 +51,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
     });
   };
 
-  const sortedWords = sortWords([...words]);
+  const sortedWords = sortWords([...filteredWords]);
 
   const handleWordClick = (wordId: number) => {
     if (selectedWordId === wordId) {
@@ -79,21 +70,15 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
       : [...selectedWordIds, wordId];
     setSelectedWordIds(updatedSelection);
   };
-  
 
   const handlePriorityChange = async (wordId: number, newPriority: number) => {
-    setWords((prevWords) => prevWords.filter((word) => word.id !== wordId));
+    // You can remove this word from the list in page.tsx, not here
     setDisabledHover(true);
 
     try {
       await updateWordPriority(wordId, newPriority);
     } catch (error) {
       console.error("Failed to update priority:", error);
-
-      const wordToRestore = initialWords.find((word) => word.id === wordId);
-      if (wordToRestore) {
-        setWords((prevWords) => [...prevWords, wordToRestore]);
-      }
     }
 
     setTimeout(() => {
@@ -105,29 +90,29 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
     <div>
       <Table className="min-w-full border-collapse border border-gray-300">
         <TableHeader>
-          <TableRow className="grid grid-cols-10 md:grid-cols-6 border-b border-gray-300">
-            <TableHead className="border-r col-span-1 border-gray-300 px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
+          <TableRow className="grid grid-cols-10 border-b border-gray-300">
+            <TableHead className="border-r col-span-1 md:col-span-1 border-gray-300 px-1 md:px-4">
+              <div className="flex justify-center items-center h-full min-w-[30px] md:text-base text-xs whitespace-normal break-all">
                 Select
               </div>
             </TableHead>
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300 px-1 md:px-4">
+            <TableHead className="border-r col-span-2 border-gray-300 px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
                 Word
               </div>
             </TableHead>
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300  px-1 md:px-4">
+            <TableHead className="border-r col-span-2 border-gray-300  px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
                 Pron.
                 <FaCirclePlay className="ml-1 p-1 md:p-0.5 text-xl text-blue-500" />
               </div>
             </TableHead>
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300 px-1 md:px-4">
+            <TableHead className="border-r col-span-2 border-gray-300 px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all">
                 Restore
               </div>
             </TableHead>
-            <TableHead className="col-span-3 md:col-span-2">
+            <TableHead className="col-span-3">
               <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word">
                 Key Meanings
               </div>
@@ -140,7 +125,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
             <React.Fragment key={word.id}>
               <TableRow
                 onClick={() => handleWordClick(word.id)}
-                className={`grid grid-cols-10 md:grid-cols-6 cursor-pointer ${
+                className={`grid grid-cols-10 cursor-pointer ${
                   !disabledHover ? "hover:bg-blue-50/50" : "hover:bg-gray-0"
                 } border-b border-gray-300 group`}
               >
@@ -154,12 +139,12 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
                     />
                   </div>
                 </TableCell>
-                <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
+                <TableCell className="p-2 text-xs col-span-2 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full min-w-[20px]">
                     {word.word}
                   </div>
                 </TableCell>
-                <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 whitespace-normal break-all">
+                <TableCell className="p-2 text-xs col-span-2 md:text-base border-r border-gray-300 whitespace-normal break-all">
                   <div
                     className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-blue-600 hover:text-blue-900 rounded-lg bg-white"
                     onClick={(e) => {
@@ -170,7 +155,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
                     {word.pronunciation}
                   </div>
                 </TableCell>
-                <TableCell className="p-1 md:px-8 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 relative whitespace-normal break-all">
+                <TableCell className="p-1 md:px-8 text-xs col-span-2 md:text-base border-r border-gray-300 relative whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full">
                     <Select
                       value={word.priority?.toString() || ""}
@@ -232,10 +217,10 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
                       </SelectContent>
                     </Select>
                   </div>
-                  <FaChevronDown className="absolute left-1 md:left-6 bottom-0 transform -translate-y-1/2 opacity-0 group-hover:opacity-30 transition-opacity" />
+                  <FaChevronDown className="absolute left-1 bottom-0 transform -translate-y-1/2 opacity-0 group-hover:opacity-30 transition-opacity" />
                 </TableCell>
 
-                <TableCell className="p-2 col-span-3 md:col-span-2 whitespace-normal break-word">
+                <TableCell className="p-2 col-span-3 whitespace-normal break-word">
                   <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs">
                     {word.keymeanings.map((km, index) => (
                       <li key={index}>{km}</li>

@@ -338,3 +338,31 @@ SELECT EXISTS (
     throw new Error("Failed to fetch removed words.");
   }
 }
+
+export async function deleteSelected(wordIds: number[]) {
+  const session = await auth();
+  const userId = sanitizeEmail(session?.user?.email!);
+  const userTableName = `user_words_${userId}`;
+  const client = await db.connect();
+
+  try {
+    const deleteQuery = format(
+      `DELETE FROM %I WHERE id IN (%L);`,
+      userTableName,
+      wordIds
+    );
+
+    await client.query(deleteQuery);
+
+    return {
+      message: "Selected words deleted successfully.",
+    };
+  } catch (error) {
+    console.error("Database Error:", error);
+    return {
+      message: "Database Error: Failed to delete selected words.",
+    };
+  } finally {
+    client.release();
+  }
+}
