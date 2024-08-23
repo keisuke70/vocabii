@@ -103,21 +103,21 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
 
   return (
     <div>
-      <Table className="min-w-full border-collapse border border-gray-300">
+      <Table className="min-w-full border-collapse border border-white">
         <TableHeader>
-          <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-gray-300 hover:bg-gray-0">
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300 px-1 md:px-4">
+          <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-white hover:bg-gray-0">
+            <TableHead className="border-r col-span-2 md:col-span-1 border-white px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
                 Word
               </div>
             </TableHead>
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300  px-1 md:px-4">
+            <TableHead className="border-r col-span-2 md:col-span-1 border-white  px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
                 Pron.
                 <FaCirclePlay className="ml-1 p-1 md:p-0.5 text-xl text-blue-500" />
               </div>
             </TableHead>
-            <TableHead className="border-r col-span-2 md:col-span-1 border-gray-300 px-1 md:px-4">
+            <TableHead className="border-r col-span-2 md:col-span-1 border-white px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
                 Priority
               </div>
@@ -137,16 +137,16 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 onClick={() => handleWordClick(word.id)}
                 className={`grid grid-cols-9 md:grid-cols-5 cursor-pointer ${
                   !disabledHover ? "hover:bg-blue-50/20" : "hover:bg-gray-0"
-                } border-b border-gray-300 group`}
+                } border-b border-white group`}
               >
-                <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-gray-300 whitespace-normal break-all">
-                  <div className="flex justify-center items-center h-full min-w-[20px] font-bold">
+                <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-white whitespace-normal break-all">
+                  <div className="flex justify-center items-center h-full min-w-[20px] font-bold text-outline">
                     {word.word}
                   </div>
                 </TableCell>
-                <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 whitespace-normal break-all">
+                <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r border-white whitespace-normal break-all">
                   <div
-                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-teal-100 hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
+                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-white hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
                     onClick={(e) => {
                       e.stopPropagation();
                       new Audio(word.audiourl).play();
@@ -155,7 +155,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                     {word.pronunciation}
                   </div>
                 </TableCell>
-                <TableCell className="md:px-8 text-xs col-span-2 md:col-span-1 md:text-base border-r border-gray-300 relative whitespace-normal break-all">
+                <TableCell className="md:px-8 text-xs col-span-2 md:col-span-1 md:text-base border-r border-white relative whitespace-normal break-all">
                   <div className="flex justify-center items-center h-full">
                     <Select
                       value={word.priority?.toString() || ""}
@@ -163,7 +163,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                         handlePriorityChange(word.id, parseInt(value))
                       }
                     >
-                      <SelectTrigger className="w-[50px] sm:w-[80px] md:w-[80px] lg:w-[100px] p-0 md:p-2 lg:p-4 backdrop-blur bg-white/5 hover:bg-customBlue">
+                      <SelectTrigger className="w-[50px] sm:w-[80px] md:w-[80px] lg:w-[100px] p-0 md:p-2 lg:p-4 backdrop-blur bg-white/5 hover:bg-customBlue shadow-md">
                         <SelectValue>
                           <div className="flex items-center">
                             {word.priority === 3 && (
@@ -225,7 +225,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 </TableCell>
 
                 <TableCell className="p-2 col-span-3 md:col-span-2 whitespace-normal break-word">
-                  <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs font-medium">
+                  <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs font-medium text-outline2">
                     {word.keymeanings.map((km, index) => (
                       <li key={index}>{km}</li>
                     ))}

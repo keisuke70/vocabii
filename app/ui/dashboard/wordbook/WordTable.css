@@ -22,3 +22,14 @@
     opacity: 0;
   }
   
+  .text-outline {
+    color: white;
+    text-shadow:
+      1px 1px 0 #343063;
+  }
+
+  .text-outline2 {
+    color: white;
+    text-shadow:
+      0.5px 0.5px 0 #343063;
+  }
