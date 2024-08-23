@@ -25,7 +25,7 @@
   .text-outline {
     color: white;
     text-shadow:
-      1px 1px 0 #343063;
+      0.5px 0.5px 0 black;
   }
 
   .text-outline2 {

@@ -107,23 +107,23 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
         <TableHeader>
           <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-white hover:bg-gray-0">
             <TableHead className="border-r col-span-2 md:col-span-1 border-white px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-outline font-bold">
                 Word
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 md:col-span-1 border-white  px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-outline font-bold">
                 Pron.
                 <FaCirclePlay className="ml-1 p-1 md:p-0.5 text-xl text-blue-500" />
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 md:col-span-1 border-white px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-outline font-bold">
                 Priority
               </div>
             </TableHead>
             <TableHead className="col-span-3 md:col-span-2">
-              <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word text-white">
+              <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word text-outline font-bold">
                 Key Meanings
               </div>
             </TableHead>
@@ -140,13 +140,13 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 } border-b border-white group`}
               >
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-white whitespace-normal break-all">
-                  <div className="flex justify-center items-center h-full min-w-[20px] font-bold text-outline">
+                  <div className="flex justify-center items-center h-full min-w-[20px] font-bold text-black">
                     {word.word}
                   </div>
                 </TableCell>
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r border-white whitespace-normal break-all">
                   <div
-                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-white hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
+                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-black hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
                     onClick={(e) => {
                       e.stopPropagation();
                       new Audio(word.audiourl).play();
@@ -225,7 +225,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 </TableCell>
 
                 <TableCell className="p-2 col-span-3 md:col-span-2 whitespace-normal break-word">
-                  <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs font-medium text-outline2">
+                  <ul className="list-disc list-inside sm:pl-5 md:text-lg text-xs font-medium text-black">
                     {word.keymeanings.map((km, index) => (
                       <li key={index}>{km}</li>
                     ))}
