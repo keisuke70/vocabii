@@ -262,4 +262,4 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
   );
 };
 
-export default AddWordsDetails;
+export default React.memo(AddWordsDetails);
