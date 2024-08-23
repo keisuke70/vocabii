@@ -168,20 +168,20 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                           <div className="flex items-center">
                             {word.priority === 3 && (
                               <>
-                                <FaStar className="text-yellow-400 text-xs sm:text-sm md:text-base ml-1" />
-                                <FaStar className="text-yellow-400 text-xs sm:text-sm md:text-base md:ml-1" />
-                                <FaStar className="text-yellow-400 text-xs sm:text-sm md:text-base md:mx-1" />
+                                <FaStar className="text-yellow-300 text-xs sm:text-sm md:text-base ml-1 shadow-md" />
+                                <FaStar className="text-yellow-300 text-xs sm:text-sm md:text-base md:ml-1 shadow-md" />
+                                <FaStar className="text-yellow-300 text-xs sm:text-sm md:text-base md:mx-1 shadow-md" />
                               </>
                             )}
                             {word.priority === 2 && (
                               <>
-                                <FaStar className="text-yellow-400 text-xs ml-1 md:ml-2  sm:text-sm md:text-base" />
-                                <FaStar className="text-yellow-400 text-xs sm:text-sm md:text-base md:mx-1" />
+                                <FaStar className="text-yellow-300 text-xs ml-1 md:ml-2 sm:text-sm md:text-base shadow-lg" />
+                                <FaStar className="text-yellow-300 text-xs sm:text-sm md:text-base md:mx-1 shadow-md" />
                               </>
                             )}
                             {word.priority === 1 && (
                               <>
-                                <FaStar className="text-yellow-400 text-xs ml-2 md:ml-3 sm:text-sm md:text-base" />
+                                <FaStar className="text-yellow-300 text-xs ml-2 md:ml-3 sm:text-sm md:text-base shadow-md" />
                               </>
                             )}
                             {word.priority === 0 && (
