@@ -50,7 +50,7 @@ export default function UserButton({ imageUrl, userName }: UserButtonProps) {
           >
             <button className="flex items-center gap-2">
               <PowerIcon className="w-6" />
-              <span>Sign Out</span>
+              <span>Log Out</span>
             </button>
           </form>
         </DropdownMenuItem>
