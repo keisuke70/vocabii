@@ -103,7 +103,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
 
   return (
     <div>
-      <Table className="min-w-full border-collapse border border-white">
+      <Table className="min-w-full border-collapse border border-white bg-blue-50/10">
         <TableHeader>
           <TableRow className="grid grid-cols-9 md:grid-cols-5 border-b border-white hover:bg-gray-0">
             <TableHead className="border-r col-span-2 md:col-span-1 border-white px-1 md:px-4">
@@ -136,7 +136,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
               <TableRow
                 onClick={() => handleWordClick(word.id)}
                 className={`grid grid-cols-9 md:grid-cols-5 cursor-pointer ${
-                  !disabledHover ? "hover:bg-blue-50/20" : "hover:bg-gray-0"
+                  !disabledHover ? "hover:bg-blue-50/10" : "hover:bg-gray-0"
                 } border-b border-white group`}
               >
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-white whitespace-normal break-all">
@@ -146,7 +146,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 </TableCell>
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r border-white whitespace-normal break-all">
                   <div
-                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-black hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
+                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-white hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
                     onClick={(e) => {
                       e.stopPropagation();
                       new Audio(word.audiourl).play();

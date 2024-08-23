@@ -91,6 +91,12 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
     return <AddDetaildsSkelton />;
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent form submission when pressing Enter in input fields
+    }
+  };
+
   return (
     <div>
       <div className="mb-4">
@@ -102,6 +108,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             defaultValue={details.pronunciation}
             style={{ fontSize: "16px" }}
             className="w-full max-w-10rem md:max-w-lg"
+            onKeyDown={handleKeyDown}
           />
           <div className="flex-grow flex justify-center">
             <Button
@@ -127,6 +134,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             defaultValue={meaning}
             className="w-full mb-2"
             style={{ fontSize: "16px" }}
+            onKeyDown={handleKeyDown}
           />
         ))}
       </div>
@@ -168,6 +176,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             defaultValue={details.nounPlural || ""}
             className="w-full"
             style={{ fontSize: "16px" }}
+            onKeyDown={handleKeyDown}
           />
         </div>
       )}
@@ -199,20 +208,20 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
               <div className="flex items-center">
                 {priority === 3 && (
                   <>
-                    <FaStar className="text-yellow-400 bg-yellow-100 ml-1" />
-                    <FaStar className="text-yellow-400 bg-yellow-100 ml-1" />
-                    <FaStar className="text-yellow-400 bg-yellow-100 ml-1" />
+                    <FaStar className="text-yellow-300 ml-1" />
+                    <FaStar className="text-yellow-300 ml-1" />
+                    <FaStar className="text-yellow-300 ml-1" />
                   </>
                 )}
                 {priority === 2 && (
                   <>
-                    <FaStar className="text-yellow-400 bg-yellow-100 ml-1" />
-                    <FaStar className="text-yellow-400 bg-yellow-100 ml-1" />
+                    <FaStar className="text-yellow-300 ml-1" />
+                    <FaStar className="text-yellow-300 ml-1" />
                   </>
                 )}
                 {priority === 1 && (
                   <>
-                    <FaStar className="text-yellow-400 bg-yellow-100 ml-1" />
+                    <FaStar className="text-yellow-300 ml-1" />
                   </>
                 )}
               </div>
@@ -223,20 +232,20 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
               <SelectLabel>Priority</SelectLabel>
               <SelectItem value="3">
                 <div className="flex items-center">
-                  <FaStar className="text-yellow-400 bg-yellow-100 mr-1" />
-                  <FaStar className="text-yellow-400 bg-yellow-100 mr-1" />
-                  <FaStar className="text-yellow-400 bg-yellow-100 mr-1" />
+                  <FaStar className="text-yellow-300" />
+                  <FaStar className="text-yellow-300" />
+                  <FaStar className="text-yellow-300" />
                 </div>
               </SelectItem>
               <SelectItem value="2">
                 <div className="flex items-center">
-                  <FaStar className="text-yellow-400 bg-yellow-100 mr-1" />
-                  <FaStar className="text-yellow-400 bg-yellow-100 mr-1" />
+                  <FaStar className="text-yellow-300" />
+                  <FaStar className="text-yellow-300" />
                 </div>
               </SelectItem>
               <SelectItem value="1">
                 <div className="flex items-center">
-                  <FaStar className="text-yellow-400 bg-yellow-100" />
+                  <FaStar className="text-yellow-300" />
                 </div>
               </SelectItem>
             </SelectGroup>

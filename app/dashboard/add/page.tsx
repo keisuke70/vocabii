@@ -52,13 +52,20 @@ const AddWords: React.FC = () => {
     setIsLoading(true);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
   return (
     <form action={formAction} autoComplete="off">
       <div className="max-w-2xl mx-auto p-4">
         <div className="flex flex-col items-center space-y-6 mb-2">
-          <h1 className="text-3xl md:text-4xl font-bold mt-2">
+          <h1 className="text-3xl md:text-5xl font-bold mt-2 bg-gradient-to-r from-sky-300 to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
             Add a New Word
           </h1>
+
           {state.errors && (
             <Alert className="mb-4">
               {Object.entries(state.errors).map(([key, errors]) => (
@@ -78,7 +85,8 @@ const AddWords: React.FC = () => {
                 placeholder="Enter a word to search"
                 value={word}
                 onChange={(e) => handleWordChange(e.target.value)}
-                className="w-60 md:w-96 text-base"
+                onKeyDown={handleKeyDown}
+                className="w-60 md:w-96 text-base shadow-xl focus:shadow-none active:opacity-[0.85] active:shadow-none"
                 style={{ fontSize: "16px" }}
               />
             </TooltipTrigger>
@@ -87,7 +95,7 @@ const AddWords: React.FC = () => {
             type="button"
             onClick={handleClicked}
             disabled={isLoading}
-            className="bg-sky-800 hover:bg-sky-900 mt-2"
+            className="bg-sky-700 hover:bg-sky-700 mt-2 shadow-mg hover:shadow-lg hover:shadow-blue-400/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           >
             {isLoading ? "Generating..." : "Generate"}
           </Button>
@@ -106,7 +114,7 @@ const AddWords: React.FC = () => {
               <Button
                 type="submit"
                 onClick={handleAdding}
-                className="px-4 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 justify-center"
+                className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 justify-center hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               >
                 {adding ? "Adding..." : "Add word"}
               </Button>

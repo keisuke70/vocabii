@@ -85,32 +85,32 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
 
   return (
     <div>
-      <Table className="min-w-full border-collapse border border-gray-300">
+      <Table className="min-w-full border-collapse border border-gray-300 bg-blue-50/10 shadow-lg">
         <TableHeader>
           <TableRow className="grid grid-cols-10 border-b border-gray-300 hover:bg-gray-0">
             <TableHead className="border-r col-span-1 md:col-span-1 border-gray-300 px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[30px] md:text-base text-xs whitespace-normal break-all text-white">
+              <div className="flex justify-center items-center h-full min-w-[30px] md:text-base text-xs whitespace-normal break-all text-outline font-bold">
                 Select
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 border-gray-300 px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-outline font-bold">
                 Word
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 border-gray-300  px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-outline font-bold">
                 Pron.
                 <FaCirclePlay className="ml-1 p-1 md:p-0.5 text-xl text-blue-500" />
               </div>
             </TableHead>
             <TableHead className="border-r col-span-2 border-gray-300 px-1 md:px-4">
-              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-white">
+              <div className="flex justify-center items-center h-full min-w-[40px] md:text-base text-xs whitespace-normal break-all text-outline font-bold">
                 Restore
               </div>
             </TableHead>
             <TableHead className="col-span-3">
-              <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word text-white">
+              <div className="flex justify-center items-center h-full min-w-[70px] text-xs md:text-base whitespace-normal break-word text-outline font-bold">
                 Key Meanings
               </div>
             </TableHead>
@@ -123,7 +123,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
               <TableRow
                 onClick={() => handleWordClick(word.id)}
                 className={`grid grid-cols-10 cursor-pointer ${
-                  !disabledHover ? "hover:bg-blue-50/20" : "hover:bg-gray-0"
+                  !disabledHover ? "hover:bg-blue-50/10" : "hover:bg-gray-0"
                 } border-b border-gray-300 group`}
               >
                 <TableCell className="p-2 text-xs col-span-1 border-r border-gray-300 whitespace-normal break-all">
