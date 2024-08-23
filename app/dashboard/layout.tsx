@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div
       className="flex flex-col md:flex-row h-[100dvh]"
       style={{
-        background: 'linear-gradient(to bottom, #4a6794, #516f9e, #6b8fc7,#9e9a82)',
+        background: 'linear-gradient(150deg, #334491, #344592, #476db8,  #6a9cd7, #c8d2dc,#dac9b9)',
       }}
     >
       <div className="block md:hidden w-full h-auto">

@@ -7,9 +7,9 @@ export function SignIn(props: React.ComponentPropsWithRef<typeof Button>) {
     <Link href="/login" passHref>
       <Button
         {...props}
-        className="text-white bg-blue-500 hover:bg-blue-600 text-sm md:text-base px-2 md:px-4 py-2 md:py-3"
+        className="text-white bg-blue-300/50 hover:bg-blue-200/20 text-sm md:text-base px-4 md:px-6 py-2 md:py-3 shadow-md"
       >
-        Sign In
+        Log In
       </Button>
     </Link>
   );
@@ -20,7 +20,7 @@ export function SignUp(props: React.ComponentPropsWithRef<typeof Button>) {
     <Link href="/signup" passHref>
       <Button
         {...props}
-        className="text-white bg-lime-500 hover:bg-lime-600 text-sm md:text-base px-2 md:px-4 py-2 md:py-3"
+        className="text-white bg-green-600 hover:bg-green-700 text-sm md:text-base px-2 md:px-4 py-2 md:py-3 shadow-md"
       >
         Sign Up
       </Button>
