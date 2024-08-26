@@ -84,9 +84,9 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
   };
 
   return (
-    <div>
-      <Table className="min-w-full border-collapse border border-gray-300 bg-blue-50/10 shadow-lg">
-        <TableHeader>
+    <div className="shadow-xl">
+      <Table className="min-w-full border-collapse border border-gray-300 bg-blue-50/10">
+        <TableHeader className="shadow-md">
           <TableRow className="grid grid-cols-10 border-b border-gray-300 hover:bg-gray-0">
             <TableHead className="border-r col-span-1 md:col-span-1 border-gray-300 px-1 md:px-4">
               <div className="flex justify-center items-center h-full min-w-[30px] md:text-base text-xs whitespace-normal break-all text-outline font-bold">
@@ -143,7 +143,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
                 </TableCell>
                 <TableCell className="p-2 text-xs col-span-2 md:text-base border-r border-gray-300 whitespace-normal break-all">
                   <div
-                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-white hover:text-blue-900 rounded-lg backdrop-blur bg-white/5 hover:bg-customBlue shadow-sm"
+                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-white hover:text-blue-900 rounded-lg backdrop-blur bg-white/10 hover:bg-customBlue shadow-md"
                     onClick={(e) => {
                       e.stopPropagation();
                       new Audio(word.audiourl).play();
