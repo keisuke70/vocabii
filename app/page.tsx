@@ -5,9 +5,9 @@ export default function Home() {
   const appName = "Vocabii";
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-purple-700 via-indigo-600 to-blue-600 text-white">
-      <Header appName={appName} />
-      <div className="flex flex-col items-center py-16 px-6 md:px-12 lg:px-24">
+    <main className="flex min-h-screen flex-col items-center text-white">
+      <HeaderWrapper appName={appName} />
+      <div className="flex flex-col items-center pt-32 py-16 px-6 md:px-12 lg:px-24">
         <h1 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-center mb-6">
           {appName}で英単語の学習を最適化
         </h1>
@@ -33,5 +33,13 @@ export default function Home() {
         </p>
       </div>
     </main>
+  );
+}
+
+function HeaderWrapper({ appName }: { appName: string }) {
+  return (
+    <div className="fixed top-0 left-0 w-full z-50">
+      <Header appName={appName} />
+    </div>
   );
 }

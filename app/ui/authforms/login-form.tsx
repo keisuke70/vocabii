@@ -58,6 +58,7 @@ export default function LoginForm() {
                   name="email"
                   placeholder="Enter your email address"
                   required
+                  style={{ fontSize: "16px" }}
                 />
                 <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
               </div>
@@ -78,13 +79,14 @@ export default function LoginForm() {
                   placeholder="Enter password"
                   required
                   minLength={6}
+                  style={{ fontSize: "16px" }}
                 />
                 <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
               </div>
             </div>
           </div>
           <Button
-            className="mt-8 w-full #0284c7 text-white border border-gray-200/80 hover:border-blue-400 hover:shadow-md bg-transparent hover:bg-blue-50/20 hover:text-blue-600 group"
+            className="mt-10 w-full #0284c7 text-white border border-gray-200/80 hover:border-blue-400 hover:shadow-md bg-transparent hover:bg-blue-50/20 hover:text-blue-600 group"
             aria-disabled={isPending}
           >
             Log in{" "}

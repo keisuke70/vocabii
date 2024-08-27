@@ -36,6 +36,18 @@ export default function RootLayout({
           content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
         <link rel="icon" href="https://vocabii.com/icon.ico"></link>
+        <style>
+          {`
+            html, body {
+              height: 100%;
+              margin: 0;
+              padding: 0;
+              background: linear-gradient(150deg, #334491, #344592, #476db8, #6a9cd7, #c8d2dc, #dac9b9);
+              background-attachment: fixed;
+              overflow-x: hidden;
+            }
+          `}
+        </style>
       </head>
       <body className={`${inter.className} h-[100dvh] overflow-hidden`}>
         <div className="flex flex-col justify-between w-full h-full">
