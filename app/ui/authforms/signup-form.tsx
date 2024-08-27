@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useActionState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
+
 export default function SignupForm() {
   const [errorMessage, formAction, isPending] = useActionState(
     signup,
@@ -20,7 +21,7 @@ export default function SignupForm() {
   );
 
   return (
-    <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 space-y-6">
+    <div className="max-w-md w-full bg-blue-50/10 rounded-lg shadow-md p-8 space-y-7">
       <h1
         className={`${lusitana.className} text-2xl font-bold text-center text-gray-800`}
       >
@@ -29,7 +30,7 @@ export default function SignupForm() {
       <form action={googleAuthenticate} className="mt-4">
         <button
           type="submit"
-          className="flex items-center justify-center w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 transition duration-300"
+          className="flex items-center justify-center w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-blue-50/10 hover:bg-gray-100 transition duration-300"
         >
           <FcGoogle className="mr-2 h-5 w-5" />
           Sign up with Google
@@ -38,11 +39,11 @@ export default function SignupForm() {
 
       <div className="relative flex items-center justify-center my-4">
         <div className="w-full border-t border-gray-300"></div>
-        <span className="absolute bg-white px-4 text-gray-500">or</span>
+        <span className="absolute  px-4 mt-6">or</span>
       </div>
 
       <form action={formAction} className="space-y-6">
-        <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-4">
+        <div className="flex-1 rounded-lg bg-blue-50/10 px-6 pb-4 pt-4 shadow-lg">
           <div className="w-full">
             <div>
               <label
@@ -105,10 +106,10 @@ export default function SignupForm() {
           </div>
           <Button
             type="submit"
-            className="mt-8 w-full #0284c7 text-white hover:bg-blue-600 transition duration-300"
+            className="mt-8 w-full #0284c7 text-white border border-gray-200/80 hover:border-blue-400 hover:shadow-md bg-transparent hover:bg-blue-50/20 hover:text-blue-600 group"
             aria-disabled={isPending}
           >
-            Signup <ArrowRightIcon className="ml-auto h-5 w-5 text-white" />
+            Signup <ArrowRightIcon className="ml-auto h-5 w-5 text-white group-hover:text-blue-600" />
           </Button>
           <div
             className="flex h-8 items-end space-x-1"

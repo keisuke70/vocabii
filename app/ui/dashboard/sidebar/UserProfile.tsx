@@ -7,17 +7,17 @@ export default async function UserProfile() {
   if (!session?.user) return <SignIn />;
 
   return (
-    <div className="p-2 bg-#f3f4f6 border border-gray-500 rounded-lg shadow-sm">
+    <div className="p-2 bg-blue-50/10 border border-white rounded-lg shadow-sm">
       <div className="flex items-center md:gap-1 lg:gap-3">
         <UserButton
           imageUrl={session.user.image!}
           userName={session.user.name!}
         />
         <div className="flex flex-col">
-          <p className="text-sm font-medium leading-none">
+          <p className="text-sm font-medium leading-none text-white">
             {session.user.name}
           </p>
-          <p className="text-xs leading-none text-muted-foreground whitespace-normal break-all">
+          <p className="text-xs leading-none text-muted-foreground whitespace-normal break-all text-black">
             {session.user.email}
           </p>
         </div>
