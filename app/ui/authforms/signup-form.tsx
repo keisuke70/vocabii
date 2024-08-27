@@ -109,7 +109,7 @@ export default function SignupForm() {
           </div>
           <Button
             type="submit"
-            className="mt-8 w-full #0284c7 text-white border border-gray-200/80 hover:border-blue-400 hover:shadow-md bg-transparent hover:bg-blue-50/20 hover:text-blue-600 group"
+            className="mt-8 mb-4 w-full #0284c7 text-white border border-gray-200/80 hover:border-blue-400 hover:shadow-md bg-transparent hover:bg-blue-50/20 hover:text-blue-600 group"
             aria-disabled={isPending}
           >
             Signup <ArrowRightIcon className="ml-auto h-5 w-5 text-white group-hover:text-blue-600" />

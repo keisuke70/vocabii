@@ -24,20 +24,21 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { updateWordPriority } from "@/lib/actions";
 import { word } from "@/lib/definitions";
 
-import "./WordTable.css"; // Import the CSS file for transitions
+import "./WordTable.css"; 
 
 interface removedWordTableProps {
   initialWords: word[];
+  setWords: (words: word[]) => void; 
   setSelectedWordIds: (ids: number[]) => void;
   selectedWordIds: number[];
 }
 
 const RemovedWordTable: React.FC<removedWordTableProps> = ({
   initialWords,
+  setWords,
   setSelectedWordIds,
   selectedWordIds,
 }) => {
-  const filteredWords = initialWords.filter((word) => word.priority === 0);
   const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
   const [disabledHover, setDisabledHover] = useState<boolean>(false);
   const nodeRef = useRef(null);
@@ -48,7 +49,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
     });
   };
 
-  const sortedWords = sortWords([...filteredWords]);
+  const sortedWords = sortWords([...initialWords.filter((word) => word.priority === 0)]);
 
   const handleWordClick = (wordId: number) => {
     if (selectedWordId === wordId) {
@@ -69,10 +70,11 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
   };
 
   const handlePriorityChange = async (wordId: number, newPriority: number) => {
-    // You can remove this word from the list in page.tsx, not here
     setDisabledHover(true);
 
     try {
+      const updatedWords = initialWords.filter((word) => word.id !== wordId);
+      setWords(updatedWords);
       await updateWordPriority(wordId, newPriority);
     } catch (error) {
       console.error("Failed to update priority:", error);
@@ -80,7 +82,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
 
     setTimeout(() => {
       setDisabledHover(false);
-    }, 1000);
+    }, 2000);
   };
 
   return (

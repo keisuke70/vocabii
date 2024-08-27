@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Resend } from "resend";
 import { EmailTemplate } from "@/app/ui/standalone/email-template";
 import { NextResponse } from "next/server";
-import crypto from 'crypto';
+import crypto from "crypto";
 import { unstable_noStore as noStore } from "next/cache";
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
@@ -21,10 +21,14 @@ const SALT = process.env.SALT;
 function encrypt(text: string): string {
   const iv = crypto.randomBytes(16);
   const key = crypto.scryptSync(ENCRYPTION_KEY!, SALT!, 32) as Buffer;
-  const cipher = crypto.createCipheriv('aes-256-cbc', key as unknown as Uint8Array, iv as unknown as Uint8Array);
-  let encrypted = cipher.update(text, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
-  return `${iv.toString('hex')}:${encrypted}`;
+  const cipher = crypto.createCipheriv(
+    "aes-256-cbc",
+    key as unknown as Uint8Array,
+    iv as unknown as Uint8Array
+  );
+  let encrypted = cipher.update(text, "utf8", "hex");
+  encrypted += cipher.final("hex");
+  return `${iv.toString("hex")}:${encrypted}`;
 }
 // Define the form schema for adding words
 const WordFormSchema = z.object({
@@ -57,7 +61,6 @@ export type State = {
   };
   message?: string | null;
 };
-
 
 async function ensureUserTable(userId: string, client: VercelPoolClient) {
   const tableName = `user_words_${userId}`;
@@ -184,7 +187,7 @@ export async function updateWordPriority(wordId: number, priority: number) {
   const userId = sanitizeEmail(session?.user?.email!);
   const userTableName = `user_words_${userId}`;
   const client = await db.connect();
-  
+
   try {
     const updateQuery = format(
       `UPDATE %I SET priority = %L WHERE id = %L;`,
@@ -208,7 +211,6 @@ export async function updateWordPriority(wordId: number, priority: number) {
   }
 }
 
-
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData
@@ -225,12 +227,7 @@ export async function authenticate(
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
-      }
+      return "Invalid credentials. Please try again.";
     }
     throw error;
   }
@@ -282,7 +279,6 @@ export async function signup(
 
   await sql`insert into users (name, email, password, verification_token) values( ${userName}, ${email}, ${encryptedPassword}, ${verificationToken}); `;
 
-
   try {
     const result = await sendEmail(email, verificationLink, userName);
   } catch (error) {
@@ -295,7 +291,6 @@ export async function signup(
 export async function googleAuthenticate() {
   await signIn("google");
 }
-
 
 export async function fetchRemovedWord() {
   noStore();

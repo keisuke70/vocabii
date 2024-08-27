@@ -31,6 +31,32 @@ export default function Home() {
         <p className="mt-8 text-center text-sm md:text-xl max-w-3xl leading-relaxed">
           パソコンはもちろんスマートフォンやタブレット端末など、様々なデバイスから利用できます。単語帳を持ち運ぶ必要がないので、外出先や通勤・通学時でも手軽に暗記できます。
         </p>
+        <div className="mt-12 flex flex-col md:flex-row justify-center items-center gap-8">
+          <div className="flex flex-col items-center">
+            <Image
+              src="/mainscreen.png"
+              width={200}
+              height={200}
+              alt="App screenshot for mobile"
+              className="w-1/2 max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-lg shadow-lg"
+            />
+            <p className="mt-4 text-sm md:text-lg">
+              モバイル画面
+            </p>
+          </div>
+          <div className="text-center">
+            <Image
+              src="/mainscreenpc.png"
+              width={300}
+              height={200}
+              alt="App screenshot for PC"
+              className="w-full max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-lg shadow-lg"
+            />
+            <p className="mt-4 text-sm md:text-lg">
+              PC画面
+            </p>
+          </div>
+        </div>
       </div>
     </main>
   );

@@ -55,6 +55,7 @@ const Removed: React.FC = () => {
       </h1>
       <RemovedWordTable
         initialWords={fetchedWords}
+        setWords={setFetchedWords}
         setSelectedWordIds={setSelectedWordIds}
         selectedWordIds={selectedWordIds}
       />

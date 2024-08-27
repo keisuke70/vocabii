@@ -98,7 +98,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
     // Re-enable hover after 2 seconds
     setTimeout(() => {
       setDisabledHover(false);
-    }, 1000);
+    }, 2000);
   };
 
   return (

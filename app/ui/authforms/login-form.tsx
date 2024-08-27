@@ -86,7 +86,7 @@ export default function LoginForm() {
             </div>
           </div>
           <Button
-            className="mt-10 w-full #0284c7 text-white border border-gray-200/80 hover:border-blue-400 hover:shadow-md bg-transparent hover:bg-blue-50/20 hover:text-blue-600 group"
+            className="mt-10 mb-4 w-full #0284c7 text-white border border-gray-200/80 hover:border-blue-400 hover:shadow-md bg-transparent hover:bg-blue-50/20 hover:text-blue-600 group"
             aria-disabled={isPending}
           >
             Log in{" "}
