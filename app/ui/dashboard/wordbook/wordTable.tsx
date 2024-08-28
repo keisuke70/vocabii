@@ -140,7 +140,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 } border-b border-white group`}
               >
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r font-medium border-white whitespace-normal break-all">
-                  <div className="flex justify-center items-center h-full min-w-[20px] font-bold text-black">
+                  <div className="flex justify-center items-center h-full min-w-[20px] font-bold text-outline">
                     {word.word}
                   </div>
                 </TableCell>
