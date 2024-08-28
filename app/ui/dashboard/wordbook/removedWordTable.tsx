@@ -145,7 +145,7 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
                 </TableCell>
                 <TableCell className="p-2 text-xs col-span-2 md:text-base border-r border-gray-300 whitespace-normal break-all">
                   <div
-                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-white hover:text-blue-900 rounded-lg backdrop-blur bg-white/10 hover:bg-customBlue shadow-md"
+                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-gray-100 hover:text-blue-900 rounded-lg backdrop-blur bg-white/10 hover:bg-customBlue shadow-md"
                     onClick={(e) => {
                       e.stopPropagation();
                       new Audio(word.audiourl).play();

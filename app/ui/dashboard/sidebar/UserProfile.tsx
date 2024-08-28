@@ -17,7 +17,7 @@ export default async function UserProfile() {
           <p className="text-sm font-medium leading-none text-white">
             {session.user.name}
           </p>
-          <p className="text-xs leading-none text-muted-foreground whitespace-normal break-all text-black">
+          <p className="text-xs leading-none whitespace-normal break-all text-gray-600 pr-1">
             {session.user.email}
           </p>
         </div>

@@ -33,6 +33,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
   const filteredWords = initialWords.filter((word) => word.priority !== 0);
   const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
   const [disabledHover, setDisabledHover] = useState<boolean>(false);
+  const [disabledDetail, setDisabledDetail] = useState<boolean>(false);
   const nodeRef = useRef(null);
   const [words, setWords] = useState<word[]>(filteredWords);
 
@@ -68,8 +69,9 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
         )
       );
     }
-    // Disable hover temporarily
+
     setDisabledHover(true);
+    setDisabledDetail(true);
 
     try {
       await updateWordPriority(wordId, newPriority);
@@ -94,6 +96,10 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
         );
       }
     }
+
+    setTimeout(()=> {
+      setDisabledDetail(false);
+    }, 500);
 
     // Re-enable hover after 2 seconds
     setTimeout(() => {
@@ -146,7 +152,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 </TableCell>
                 <TableCell className="p-2 text-xs col-span-2 md:col-span-1 md:text-base border-r border-white whitespace-normal break-all">
                   <div
-                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-white hover:text-blue-900 rounded-lg backdrop-blur bg-white/10 hover:bg-customBlue shadow-md p-1"
+                    className="flex justify-center items-center h-full min-w-[26px] cursor-pointer text-gray-100 hover:text-blue-700 rounded-lg backdrop-blur bg-white/10 hover:bg-customBlue shadow-md p-1"
                     onClick={(e) => {
                       e.stopPropagation();
                       new Audio(word.audiourl).play();
@@ -233,7 +239,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 </TableCell>
               </TableRow>
               <TransitionGroup component={null}>
-                {selectedWordId === word.id && (
+                {selectedWordId === word.id && !disabledDetail && (
                   <CSSTransition
                     key={word.id}
                     nodeRef={nodeRef}

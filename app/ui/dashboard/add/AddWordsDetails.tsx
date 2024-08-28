@@ -145,7 +145,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
             key={index}
             name="exampleSentences"
             defaultValue={sentence}
-            className="w-full mb-2 resize-none overflow-hidden whitespace-normal break-words"
+            className="w-full mb-2 resize-none whitespace-normal break-words"
             style={{ height: "auto", minHeight: "20px", fontSize: "16px" }}
             onInput={(e) => {
               const target = e.target as HTMLTextAreaElement;
