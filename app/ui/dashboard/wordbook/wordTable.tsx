@@ -33,7 +33,6 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
   const filteredWords = initialWords.filter((word) => word.priority !== 0);
   const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
   const [disabledHover, setDisabledHover] = useState<boolean>(false);
-  const [disabledDetail, setDisabledDetail] = useState<boolean>(false);
   const nodeRef = useRef(null);
   const [words, setWords] = useState<word[]>(filteredWords);
 
@@ -71,7 +70,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
     }
 
     setDisabledHover(true);
-    setDisabledDetail(true);
+    setSelectedWordId(null);
 
     try {
       await updateWordPriority(wordId, newPriority);
@@ -96,10 +95,6 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
         );
       }
     }
-
-    setTimeout(()=> {
-      setDisabledDetail(false);
-    }, 500);
 
     // Re-enable hover after 2 seconds
     setTimeout(() => {
@@ -239,7 +234,7 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
                 </TableCell>
               </TableRow>
               <TransitionGroup component={null}>
-                {selectedWordId === word.id && !disabledDetail && (
+                {selectedWordId === word.id && (
                   <CSSTransition
                     key={word.id}
                     nodeRef={nodeRef}

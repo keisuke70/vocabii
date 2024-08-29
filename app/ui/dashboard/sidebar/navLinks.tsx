@@ -2,12 +2,9 @@
 // this needs to be client side to use usePathname hook. only page.tsx can receive the path.params as an argument
 
 import {
-  PlusIcon,
   HomeIcon,
   ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
-import { FaSearchPlus } from "react-icons/fa";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline";
 
 import Link from "next/link";
@@ -38,7 +35,7 @@ export default function NavLinks() {
             key={link.name}
             href={link.href}
             className={clsx(
-              "flex  h-[28px] md:h-[48px] grow items-center justify-center gap-2 rounded-md  text-sm font-medium md:flex-none md:justify-start p-1 md:p-2 md:px-3 backdrop-blur bg-white/20 hover:shadow-md text-white md:text-blue-700"
+              "flex  h-[28px] md:h-[48px] grow items-center justify-start gap-2 rounded-md  text-sm font-medium md:flex-none md:justify-startmd:p-2 md:px-3 backdrop-blur hover:shadow-md text-white"
             )}
           >
             <LinkIcon className="w-6" />
