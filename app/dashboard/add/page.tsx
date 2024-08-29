@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useActionState } from "react";
+import React, { useState, useActionState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert } from "@/components/ui/alert";
@@ -57,6 +57,13 @@ const AddWords: React.FC = () => {
       event.preventDefault();
     }
   };
+
+  useEffect(() => {
+    if (state.errors) {
+      setAdding(false);
+    }
+  }, [state.errors]);
+
 
   return (
     <form action={formAction} autoComplete="off">
@@ -116,7 +123,7 @@ const AddWords: React.FC = () => {
                 onClick={handleAdding}
                 className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 justify-center hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               >
-                {adding&& !state.errors ? "Adding..." : "Add word"}
+                {adding ? "Adding..." : "Add word"}
               </Button>
             </div>
           </div>

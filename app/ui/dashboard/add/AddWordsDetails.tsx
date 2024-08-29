@@ -54,6 +54,19 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
   const [priority, setPriority] = useState(3);
   const [error, setError] = useState("");
 
+    const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    };
+  
+    // Add useEffect to adjust textarea height on load
+    useEffect(() => {
+      details.exampleSentences.forEach((_, index) => {
+        const textarea = document.getElementById(`exampleSentence-${index}`) as HTMLTextAreaElement;
+        if (textarea) adjustTextareaHeight(textarea);
+      });
+    }, [details.exampleSentences]);
+
   useEffect(() => {
     if (word.trim() === "") {
       setIsLoading(false);
@@ -143,15 +156,12 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
         {details.exampleSentences.map((sentence, index) => (
           <Textarea
             key={index}
+            id={`exampleSentence-${index}`}
             name="exampleSentences"
             defaultValue={sentence}
-            className="w-full mb-2 resize-none whitespace-normal break-words"
-            style={{ height: "auto", minHeight: "20px", fontSize: "16px" }}
-            onInput={(e) => {
-              const target = e.target as HTMLTextAreaElement;
-              target.style.height = "auto";
-              target.style.height = `${target.scrollHeight}px`;
-            }}
+            className="w-full mb-2 resize-none overflow-hidden"
+            style={{ height: "auto", minHeight: "12px", fontSize: "16px" }}
+            onInput={(e) => adjustTextareaHeight(e.currentTarget)}
           />
         ))}
       </div>
@@ -232,20 +242,20 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
               <SelectLabel>Priority</SelectLabel>
               <SelectItem value="3">
                 <div className="flex items-center">
-                  <FaStar className="text-yellow-300" />
-                  <FaStar className="text-yellow-300" />
-                  <FaStar className="text-yellow-300" />
+                  <FaStar className="text-yellow-500" />
+                  <FaStar className="text-yellow-500" />
+                  <FaStar className="text-yellow-500" />
                 </div>
               </SelectItem>
               <SelectItem value="2">
                 <div className="flex items-center">
-                  <FaStar className="text-yellow-300" />
-                  <FaStar className="text-yellow-300" />
+                  <FaStar className="text-yellow-500" />
+                  <FaStar className="text-yellow-500" />
                 </div>
               </SelectItem>
               <SelectItem value="1">
                 <div className="flex items-center">
-                  <FaStar className="text-yellow-300" />
+                  <FaStar className="text-yellow-500" />
                 </div>
               </SelectItem>
             </SelectGroup>
