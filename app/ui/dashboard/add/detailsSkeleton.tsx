@@ -6,7 +6,7 @@ import { FaCirclePlay } from "react-icons/fa6";
 const AddWordSkeleton: React.FC = () => {
   return (
     <div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold animate-pulse mb-1">
           Pronunciation:
         </label>
@@ -27,7 +27,7 @@ const AddWordSkeleton: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold animate-pulse">
           Key Meanings:
         </label>
@@ -47,7 +47,7 @@ const AddWordSkeleton: React.FC = () => {
           disabled
         />
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold animate-pulse">
           Example Sentences:
         </label>
@@ -67,7 +67,7 @@ const AddWordSkeleton: React.FC = () => {
           disabled
         />
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold animate-pulse">
           Detailed Description:
         </label>
@@ -76,7 +76,7 @@ const AddWordSkeleton: React.FC = () => {
           disabled
         />
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold animate-pulse">
           Noun Plural Form:
         </label>
@@ -86,7 +86,7 @@ const AddWordSkeleton: React.FC = () => {
           disabled
         />
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold animate-pulse">
           <span className="block mb-1">Verb Conjugations:</span>
           <span className="block pb-2 text-xs md:text-sm">
@@ -99,7 +99,7 @@ const AddWordSkeleton: React.FC = () => {
           disabled
         />
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold mb-1 animate-pulse">
           Priority:
         </label>

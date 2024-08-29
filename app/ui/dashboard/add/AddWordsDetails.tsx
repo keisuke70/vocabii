@@ -112,7 +112,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
 
   return (
     <div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold mb-1">Pronunciation:</label>
         <div className="flex space-x-2">
           <Input
@@ -137,7 +137,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           </div>
         </div>
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold mb-1">Key Meanings:</label>
         {details.keyMeanings.map((meaning, index) => (
           <Input
@@ -151,7 +151,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           />
         ))}
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold mb-1">Example Sentences:</label>
         {details.exampleSentences.map((sentence, index) => (
           <Textarea
@@ -165,7 +165,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           />
         ))}
       </div>
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold  mb-1">
           Detailed Description:
         </label>
@@ -178,7 +178,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
         />
       </div>
       {details.nounPlural && (
-        <div className="mb-4">
+        <div className="mb-5">
           <label className="block font-semibold mb-1">Noun Plural form:</label>
           <Input
             type="text"
@@ -191,7 +191,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
         </div>
       )}
       {details.verbConjugations && (
-        <div className="mb-4">
+        <div className="mb-5">
           <label className="block font-semibold">
             <span className="block mb-1">Verb Conjugations:</span>
             <span className="block pb-2 text-xs md:text-sm">
@@ -206,11 +206,11 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           />
         </div>
       )}
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block font-semibold mb-1">Priority:</label>
         <Select
-          value={priority.toString()} // Convert number to string for Select component
-          onValueChange={(value) => setPriority(parseInt(value))} // Convert back to number on change
+          value={priority.toString()}
+          onValueChange={(value) => setPriority(parseInt(value))}
           name="priority"
         >
           <SelectTrigger className="w-full max-w-[150px]">

@@ -64,7 +64,6 @@ const AddWords: React.FC = () => {
     }
   }, [state.errors]);
 
-
   return (
     <form action={formAction} autoComplete="off">
       <div className="max-w-2xl mx-auto p-4">
@@ -98,17 +97,29 @@ const AddWords: React.FC = () => {
               />
             </TooltipTrigger>
           </Tooltip>
-          <Button
-            type="button"
-            onClick={handleClicked}
-            disabled={isLoading}
-            className="bg-sky-700 hover:bg-sky-700 mt-2 shadow-mg hover:shadow-lg hover:shadow-blue-400/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-          >
-            {isLoading ? "Generating..." : "Generate"}
-          </Button>
+          {!fetchWord && (
+            <Button
+              type="button"
+              onClick={handleClicked}
+              disabled={isLoading}
+              className="bg-sky-700 hover:bg-sky-700 mt-2 shadow-mg hover:shadow-lg hover:shadow-blue-400/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+            >
+              {isLoading ? "Generating..." : "Generate"}
+            </Button>
+          )}
         </div>
         {fetchWord && (
           <div>
+            <div className="flex justify-center">
+              <Button
+                type="submit"
+                onClick={handleAdding}
+                disabled={isLoading}
+                className="px-4 py-2 my-5 bg-pink-600 text-white rounded-md hover:bg-pink-700 justify-center hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+              >
+                {adding ? "Adding..." : "Add to the WordTable"}
+              </Button>
+            </div>
             <AddWordsDetails
               word={fetchWord}
               setWord={setWord}
@@ -121,9 +132,9 @@ const AddWords: React.FC = () => {
               <Button
                 type="submit"
                 onClick={handleAdding}
-                className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 justify-center hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+                className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 justify-center hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               >
-                {adding ? "Adding..." : "Add word"}
+                {adding ? "Adding..." : "Add to the WordTable"}
               </Button>
             </div>
           </div>
