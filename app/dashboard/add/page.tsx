@@ -117,7 +117,7 @@ const AddWords: React.FC = () => {
                 disabled={isLoading}
                 className="px-4 py-2 my-5 bg-pink-500 text-white rounded-md hover:bg-pink-600 justify-center shadow-blue-500 hover:shadow-blue-500/40 focus:opacity-[0.85] active:opacity-[0.85] "
               >
-                {adding ? "Adding..." : "Add to the WordTable"}
+                {adding ? "Adding..." : "Add to WordTable"}
               </Button>
             </div>
             <AddWordsDetails
@@ -135,7 +135,7 @@ const AddWords: React.FC = () => {
                 disabled={isLoading}
                 className="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 justify-center hover:shadow-lg focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               >
-                {adding ? "Adding..." : "Add to the WordTable"}
+                {adding ? "Adding..." : "Add to WordTable"}
               </Button>
             </div>
           </div>
