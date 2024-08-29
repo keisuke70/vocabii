@@ -35,11 +35,11 @@ export default function NavLinks() {
             key={link.name}
             href={link.href}
             className={clsx(
-              "flex  h-[28px] md:h-[48px] grow items-center justify-start gap-2 rounded-md  text-sm font-medium md:flex-none md:justify-startmd:p-2 md:px-3 backdrop-blur hover:shadow-md text-white"
+              "flex h-[28px] md:h-[48px] grow items-center justify-start gap-2 rounded-md  text-sm font-medium md:flex-none md:justify-startmd:p-2 md:px-3 bg-blue-50/20 shadow-sm hover:shadow-md text-white"
             )}
           >
-            <LinkIcon className="w-6" />
-            <p className="hidden md:block md:pl-3">{link.name}</p>
+            <LinkIcon className="w-6 md:ml-2" />
+            <p className="hidden md:block md:pl-3 ">{link.name}</p>
           </Link>
         );
       })}
