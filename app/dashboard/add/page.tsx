@@ -102,7 +102,7 @@ const AddWords: React.FC = () => {
               type="button"
               onClick={handleClicked}
               disabled={isLoading}
-              className="bg-sky-700 hover:bg-sky-700 mt-2 shadow-mg hover:shadow-lg hover:shadow-blue-400/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+              className="bg-sky-700 hover:bg-sky-700/50 mt-2 shadow-md hover:shadow-lg hover:shadow-sky-800/50 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
             >
               {isLoading ? "Generating..." : "Generate"}
             </Button>
@@ -115,7 +115,7 @@ const AddWords: React.FC = () => {
                 type="submit"
                 onClick={handleAdding}
                 disabled={isLoading}
-                className="px-4 py-2 my-5 bg-pink-600 text-white rounded-md hover:bg-pink-700 justify-center hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+                className="px-4 py-2 my-5 bg-pink-500 text-white rounded-md hover:bg-pink-600 justify-center shadow-blue-500 hover:shadow-blue-500/40 focus:opacity-[0.85] active:opacity-[0.85] "
               >
                 {adding ? "Adding..." : "Add to the WordTable"}
               </Button>
@@ -132,7 +132,8 @@ const AddWords: React.FC = () => {
               <Button
                 type="submit"
                 onClick={handleAdding}
-                className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 justify-center hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+                disabled={isLoading}
+                className="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 justify-center hover:shadow-lg focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               >
                 {adding ? "Adding..." : "Add to the WordTable"}
               </Button>
