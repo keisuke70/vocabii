@@ -34,9 +34,9 @@ export default function Home() {
         <div className="mt-12 flex flex-col md:flex-row justify-center items-center gap-8">
           <div className="flex flex-col items-center">
             <Image
-              src="/mainscreen.png"
-              width={200}
-              height={200}
+              src="/mainscreen.jpg"
+              width={350}
+              height={250}
               alt="App screenshot for mobile"
               className="w-1/2 max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-lg shadow-lg"
             />
