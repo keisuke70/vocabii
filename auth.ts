@@ -20,7 +20,6 @@ async function getUser(email: string): Promise<User | undefined> {
 export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
   providers: [
-    // Email and Password Provider
     CredentialsProvider({
       async authorize(credentials) {
         const parsedCredentials = z
@@ -41,7 +40,43 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         return null;
       },
     }),
-    Google,
+    // Google OAuth login
+    Google
   ],
   secret: process.env.AUTH_SECRET,
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      if (!user || !user.email || !account || !profile) {
+        console.error("Required data is missing during sign-in.");
+        return false;
+      }
+     
+      const existingUser = await getUser(user.email);
+
+      if (!existingUser) {
+        // Create the new user in the database
+        const newUser = await sql`
+          INSERT INTO users (name, email, verified, provider, provider_account_id)
+          VALUES (${user.name}, ${user.email}, true, ${account.provider}, ${profile.id})
+          RETURNING *;
+        `;
+        user.id = newUser.rows[0].id;
+      } else {
+        // If user exists, use their existing ID
+        user.id = existingUser.id;4
+      }
+
+      return true; // Continue the sign-in process
+    },
+    jwt({ token, user }) {
+      if (user) {
+        token.id = user.id; // Add database user ID to the JWT token
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.user.id = token.id as string; // Expose the ID in the session
+      return session;
+    },
+  }
 });

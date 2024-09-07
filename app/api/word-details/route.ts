@@ -71,6 +71,7 @@ export async function GET(req: NextRequest) {
           audioUrl: wordDetails.audiourl || "",
           nounPlural: wordDetails.nounplural || null,
           verbConjugations: wordDetails.verbconjugations || null,
+          wordId: wordDetails.id,
         },
         { status: 200 }
       );
@@ -115,11 +116,25 @@ export async function GET(req: NextRequest) {
     const keyMeaningsString = JSON.stringify(object.keyMeanings);
     const exampleSentencesString = JSON.stringify(object.exampleSentences);
 
-    await sql`insert into words (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations)
-    VALUES( 
-    ${object.word}, ${object.pronunciation}, ${keyMeaningsString},${exampleSentencesString},${object.detailedDescription},${audioUrl},${object.nounPlural},${object.verbConjugations})`;
+    // Insert the word and get the ID of the newly inserted word
+    const insertResult = await sql`
+      INSERT INTO words (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations)
+      VALUES(
+        ${object.word}, 
+        ${object.pronunciation}, 
+        ${keyMeaningsString}, 
+        ${exampleSentencesString}, 
+        ${object.detailedDescription}, 
+        ${audioUrl}, 
+        ${object.nounPlural}, 
+        ${object.verbConjugations}
+      )
+      RETURNING id;
+    `;
 
-    return NextResponse.json({ ...object, audioUrl }, { status: 200 });
+    const wordId = insertResult.rows[0].id;
+
+    return NextResponse.json({ ...object, audioUrl, wordId }, { status: 200 });
   } catch (error) {
     let errorMessage = "An unknown error occurred";
     if (error instanceof Error) {

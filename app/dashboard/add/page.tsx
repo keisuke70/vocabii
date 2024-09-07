@@ -4,11 +4,7 @@ import React, { useState, useActionState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert } from "@/components/ui/alert";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { addWord, State } from "@/lib/actions";
 import AddWordsDetails from "@/app/ui/dashboard/add/AddWordsDetails";
 
@@ -18,6 +14,9 @@ const AddWords: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [modifiedFields, setModifiedFields] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const initialState: State = {
     errors: undefined,
@@ -57,6 +56,43 @@ const AddWords: React.FC = () => {
       event.preventDefault();
     }
   };
+
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    handleAdding();
+    event.preventDefault();
+  
+    const form = event.currentTarget.closest('form') as HTMLFormElement;
+  
+    Object.entries(modifiedFields).forEach(([key]) => {
+      if (key === "KeyMeanings" || key === "ExampleSentences") {
+        const elements = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+          `[name="${key}"]`
+        );
+  
+        elements.forEach((element) => {
+          const value = element.value || "";
+          const hiddenInput = document.createElement("input");
+          hiddenInput.type = "hidden";
+          hiddenInput.name = `custom${key}`;
+          hiddenInput.value = value;
+          form.appendChild(hiddenInput);
+        });
+      } else {
+        const value = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+          `[name="${key}"]`
+        )?.value || "";
+  
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = `custom${key}`;
+        hiddenInput.value = value;
+        form.appendChild(hiddenInput);
+      }
+    });
+  
+    form.requestSubmit();
+  };
+  
 
   useEffect(() => {
     if (state.errors) {
@@ -113,7 +149,7 @@ const AddWords: React.FC = () => {
             <div className="flex justify-center">
               <Button
                 type="submit"
-                onClick={handleAdding}
+                onClick={handleSubmit}
                 disabled={isLoading}
                 className="px-4 py-2 my-5 bg-pink-500 text-white rounded-md hover:bg-pink-600 justify-center shadow-blue-500 hover:shadow-blue-500/40 focus:opacity-[0.85] active:opacity-[0.85] "
               >
@@ -126,12 +162,15 @@ const AddWords: React.FC = () => {
               setShowTooltip={setShowTooltip}
               setIsLoading={setIsLoading}
               Isloading={isLoading}
+              onFieldChange={(fieldName) =>
+                setModifiedFields((prev) => ({ ...prev, [fieldName]: true }))
+              }
             />
 
             <div className="flex justify-center">
               <Button
                 type="submit"
-                onClick={handleAdding}
+                onClick={handleSubmit}
                 disabled={isLoading}
                 className="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 justify-center hover:shadow-lg focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               >

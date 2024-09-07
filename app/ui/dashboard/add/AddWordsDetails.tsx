@@ -57,6 +57,14 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
   const [error, setError] = useState("");
   const [priority, setPriority] = useState(3);
 
+  // State for controlled input values
+  const [inputValues, setInputValues] = useState({
+    Pronunciation: "",
+    KeyMeanings: [""],
+    ExampleSentences: [""],
+    DetailedDescription: "",
+  });
+
   const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
@@ -91,6 +99,15 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           verbConjugations: fetchedDetails.verbConjugations || null,
           wordId: fetchedDetails.wordId || null,
         });
+
+        // Update input state to reflect fetched details
+        setInputValues({
+          Pronunciation: fetchedDetails.pronunciation,
+          KeyMeanings: fetchedDetails.keyMeanings || [],
+          ExampleSentences: fetchedDetails.exampleSentences || [],
+          DetailedDescription: fetchedDetails.detailedDescription || "",
+        });
+
         setWord(fetchedDetails.word);
         if (
           fetchedDetails.word &&
@@ -118,8 +135,12 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
     return <AddDetaildsSkelton />;
   }
 
-  const handleInputChange = (name: string) => {
+  const handleInputChange = (name: string, value: any) => {
     onFieldChange(name);
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -136,11 +157,11 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           <Input
             type="text"
             name="Pronunciation"
-            defaultValue={details.pronunciation}
+            value={inputValues.Pronunciation}
             style={{ fontSize: "16px" }}
             className="w-full max-w-10rem md:max-w-lg"
             onKeyDown={handleKeyDown}
-            onChange={() => handleInputChange("Pronunciation")}
+            onChange={(e) => handleInputChange("Pronunciation", e.target.value)}
           />
           <div className="flex-grow flex justify-center">
             <Button
@@ -158,32 +179,42 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
       </div>
       <div className="mb-5">
         <label className="block font-semibold mb-1">Key Meanings:</label>
-        {details.keyMeanings.map((meaning, index) => (
+        {inputValues.KeyMeanings.map((meaning, index) => (
           <Input
             key={index}
             type="text"
             name={`KeyMeanings`}
-            defaultValue={meaning}
+            value={meaning}
             className="w-full mb-2"
             style={{ fontSize: "16px" }}
             onKeyDown={handleKeyDown}
-            onChange={() => handleInputChange(`KeyMeanings`)}
+            onChange={(e) =>
+              handleInputChange("KeyMeanings", [
+                ...inputValues.KeyMeanings.slice(0, index),
+                e.target.value,
+                ...inputValues.KeyMeanings.slice(index + 1),
+              ])
+            }
           />
         ))}
       </div>
       <div className="mb-5">
         <label className="block font-semibold mb-1">Example Sentences:</label>
-        {details.exampleSentences.map((sentence, index) => (
+        {inputValues.ExampleSentences.map((sentence, index) => (
           <Textarea
             key={index}
             id={`exampleSentence-${index}`}
             name={`ExampleSentences`}
-            defaultValue={sentence}
+            value={sentence}
             className="w-full mb-2 resize-none overflow-hidden"
             style={{ height: "auto", minHeight: "12px", fontSize: "16px" }}
             onInput={(e) => {
               adjustTextareaHeight(e.currentTarget);
-              handleInputChange(`ExampleSentences`);
+              handleInputChange("ExampleSentences", [
+                ...inputValues.ExampleSentences.slice(0, index),
+                e.currentTarget.value,
+                ...inputValues.ExampleSentences.slice(index + 1),
+              ]);
             }}
           />
         ))}
@@ -194,11 +225,13 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
         </label>
         <Textarea
           name="DetailedDescription"
-          defaultValue={details.detailedDescription}
+          value={inputValues.DetailedDescription}
           className="w-full"
           rows={6}
           style={{ fontSize: "16px" }}
-          onChange={() => handleInputChange("DetailedDescription")}
+          onChange={(e) =>
+            handleInputChange("DetailedDescription", e.target.value)
+          }
         />
       </div>
       {details.nounPlural && (
@@ -207,11 +240,11 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           <Input
             type="text"
             name="NounPlural"
-            defaultValue={details.nounPlural || ""}
+            value={details.nounPlural || ""}
             className="w-full"
             style={{ fontSize: "16px" }}
             onKeyDown={handleKeyDown}
-            onChange={() => handleInputChange("NounPlural")}
+            onChange={(e) => handleInputChange("NounPlural", e.target.value)}
           />
         </div>
       )}
@@ -225,10 +258,10 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           </label>
           <Textarea
             name="VerbConjugations"
-            defaultValue={details.verbConjugations || ""}
+            value={details.verbConjugations || ""}
             style={{ height: "auto", minHeight: "20px", fontSize: "16px" }}
             className="w-full mb-2 resize-none overflow-hidden whitespace-normal break-words"
-            onChange={() => handleInputChange("VerbConjugations")}
+            onChange={(e) => handleInputChange("VerbConjugations", e.target.value)}
           />
         </div>
       )}
@@ -238,7 +271,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
           value={priority.toString()}
           onValueChange={(value) => {
             setPriority(parseInt(value));
-            handleInputChange("priority");
+            handleInputChange("priority", value);
           }}
           name="priority"
         >
@@ -294,7 +327,7 @@ const AddWordsDetails: React.FC<AddWordsDetailsProps> = ({
       <Input
         type="hidden"
         name="audioUrl"
-        defaultValue={details.audioUrl}
+        value={details.audioUrl}
         style={{ fontSize: "16px" }}
       />
       <Input type="hidden" name="wordId" value={details.wordId || ""} />

@@ -15,107 +15,55 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { unstable_noStore as noStore } from "next/cache";
 
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
-const SALT = process.env.SALT;
-
-function encrypt(text: string): string {
-  const iv = crypto.randomBytes(16);
-  const key = crypto.scryptSync(ENCRYPTION_KEY!, SALT!, 32) as Buffer;
-  const cipher = crypto.createCipheriv(
-    "aes-256-cbc",
-    key as unknown as Uint8Array,
-    iv as unknown as Uint8Array
-  );
-  let encrypted = cipher.update(text, "utf8", "hex");
-  encrypted += cipher.final("hex");
-  return `${iv.toString("hex")}:${encrypted}`;
-}
-// Define the form schema for adding words
 const WordFormSchema = z.object({
-  word: z.string().min(1, "Word is required."),
-  pronunciation: z.string().min(1, "Pronunciation is required."),
-  keyMeanings: z
-    .array(z.string())
-    .min(1, "At least one key meaning is required."),
-  exampleSentences: z
-    .array(z.string())
-    .min(1, "At least one example sentence is required."),
-  detailedDescription: z.string().min(1, "Detailed description is required."),
-  audioUrl: z.string().optional(),
-  nounPlural: z.string().nullable().optional(),
-  verbConjugations: z.string().nullable().optional(),
+  wordId: z.string().uuid(),
   priority: z.number().int(),
+  customPronunciation: z.string().nullable().optional(),
+  customKeyMeanings: z.array(z.string()).nullable().optional(),
+  customExampleSentences: z.array(z.string()).nullable().optional(),
+  customDetailedDescription: z.string().nullable().optional(),
+  customAudioUrl: z.string().nullable().optional(),
+  customNounPlural: z.string().nullable().optional(),
+  customVerbConjugations: z.string().nullable().optional(),
 });
 
 export type State = {
   errors?: {
-    word?: string[];
-    pronunciation?: string[];
-    keyMeanings?: string[];
-    exampleSentences?: string[];
-    detailedDescription?: string[];
-    audioUrl?: string[];
-    nounPlural?: string[];
-    verbConjugations?: string[];
+    wordId?: string[];
     priority?: string[];
+    customPronunciation?: string[];
+    customKeyMeanings?: string[];
+    customExampleSentences?: string[];
+    customDetailedDescription?: string[];
+    customAudioUrl?: string[];
+    customNounPlural?: string[];
+    customVerbConjugations?: string[];
   };
   message?: string | null;
 };
 
-async function ensureUserTable(userId: string, client: VercelPoolClient) {
-  const tableName = `user_words_${userId}`;
-
-  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-  await client.query(`
-    CREATE SEQUENCE IF NOT EXISTS word_order_seq;
-  `);
-  const query = format(
-    `
-    CREATE TABLE IF NOT EXISTS %I (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      word TEXT,
-      pronunciation TEXT,
-      keymeanings TEXT,
-      examplesentences TEXT,
-      detaileddescription TEXT,
-      audiourl TEXT,
-      nounplural TEXT,
-      verbconjugations TEXT,
-      "order" INT DEFAULT nextval('word_order_seq'),
-      priority INT
-    );`,
-    tableName
-  );
-
-  await client.query(query);
-
-  return tableName;
-}
-
-function sanitizeEmail(email: string) {
-  return email.replace(/[^a-zA-Z0-9]/g, "_");
-}
-
 export async function addWord(prevState: State, formData: FormData) {
   const session = await auth();
-  const userId = sanitizeEmail(session?.user?.email!);
+  const userId = session?.user?.id;
 
   const parsedPriority = parseInt(formData.get("priority") as string, 10);
 
-  // Validate form fields using Zod
   const validatedFields = WordFormSchema.safeParse({
-    word: formData.get("word"),
-    pronunciation: formData.get("pronunciation"),
-    keyMeanings: formData.getAll("keyMeanings"),
-    exampleSentences: formData.getAll("exampleSentences"),
-    detailedDescription: formData.get("detailedDescription"),
-    audioUrl: formData.get("audioUrl"),
-    nounPlural: formData.get("nounPlural"),
-    verbConjugations: formData.get("verbConjugations"),
+    wordId: formData.get("wordId"),
     priority: parsedPriority,
+    customPronunciation: formData.get("customPronunciation"),
+    customKeyMeanings: formData.getAll("customKeyMeanings"),
+    customExampleSentences: formData.getAll("customExampleSentences"),
+    customDetailedDescription: formData.get("customDetailedDescription"),
+    customAudioUrl: formData.get("customAudioUrl"),
+    customNounPlural: formData.get("customNounPlural"),
+    customVerbConjugations: formData.get("customVerbConjugations"),
   });
 
+  console.log("Validation result:", validatedFields);
+
   if (!validatedFields.success) {
+    console.error("Validation failed:", validatedFields.error.flatten().fieldErrors);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Validation failed. Please check the fields.",
@@ -124,67 +72,115 @@ export async function addWord(prevState: State, formData: FormData) {
 
   // Prepare data for insertion into the database
   const {
-    word,
-    pronunciation,
-    keyMeanings,
-    exampleSentences,
-    detailedDescription,
-    audioUrl,
-    nounPlural,
-    verbConjugations,
+    wordId,
     priority,
+    customPronunciation,
+    customKeyMeanings,
+    customExampleSentences,
+    customDetailedDescription,
+    customAudioUrl,
+    customNounPlural,
+    customVerbConjugations,
   } = validatedFields.data;
 
-  const keyMeaningsString = JSON.stringify(keyMeanings);
-  const exampleSentencesString = JSON.stringify(exampleSentences);
 
+  const customKeyMeaningsString = customKeyMeanings && customKeyMeanings.length > 0 ? JSON.stringify(customKeyMeanings) : null;
+  const customExampleSentencesString = customExampleSentences && customExampleSentences.length > 0 ? JSON.stringify(customExampleSentences) : null; 
   const client = await db.connect();
-
-  const userTableName = await ensureUserTable(userId, client);
-
-  const existingWord = await client.query(
-    format(`SELECT 1 FROM %I WHERE word = %L;`, userTableName, word)
-  );
-
-  if (existingWord.rowCount > 0) {
-    redirect("/dashboard");
-  }
-
-  // Insert data into the database
   try {
-    const insertQuery = format(
+    // Check if the user already has a custom entry for this word
+    const checkUserWordQuery = format(
+      `SELECT 1 FROM userwords WHERE user_id = %L AND word_id = %L;`,
+      userId,
+      wordId
+    );
+    
+    const existingUserWordResult = await client.query(checkUserWordQuery);
+
+    if (existingUserWordResult.rowCount > 0) {
+      // Update the existing UserWords entry
+      const updateUserWordQuery = format(
+        `
+        UPDATE userwords 
+        SET 
+          custom_pronunciation = COALESCE(%L, custom_pronunciation),
+          custom_key_meanings = COALESCE(%L, custom_key_meanings),
+          custom_example_sentences = COALESCE(%L, custom_example_sentences),
+          custom_detailed_description = COALESCE(%L, custom_detailed_description),
+          custom_audio_url = COALESCE(%L, custom_audio_url),
+          custom_noun_plural = COALESCE(%L, custom_noun_plural),
+          custom_verb_conjugations = COALESCE(%L, custom_verb_conjugations)
+        WHERE user_id = %L AND word_id = %L;
+        `,
+        customPronunciation,
+        customKeyMeaningsString,
+        customExampleSentencesString,
+        customDetailedDescription,
+        customAudioUrl,
+        customNounPlural,
+        customVerbConjugations,
+        userId,
+        wordId
+      );
+      await client.query(updateUserWordQuery);
+    } else {
+      // Insert a new UserWords entry
+      const insertUserWordQuery = format(
+        `
+        INSERT INTO userwords (
+          user_id, word_id, custom_pronunciation, custom_key_meanings, 
+          custom_example_sentences, custom_detailed_description, 
+          custom_audio_url, custom_noun_plural, custom_verb_conjugations
+        ) VALUES (
+          %L, %L, %L, %L, %L, %L, %L, %L, %L
+        );
+        `,
+        userId,
+        wordId,
+        customPronunciation,
+        customKeyMeaningsString,
+        customExampleSentencesString,
+        customDetailedDescription,
+        customAudioUrl,
+        customNounPlural,
+        customVerbConjugations
+      );
+      await client.query(insertUserWordQuery);
+    }
+
+    // Insert or update the UserWordSets entry
+    const insertOrUpdateUserWordSetQuery = format(
       `
-      INSERT INTO %I (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations, priority)
-      VALUES (%L, %L, %L, %L, %L, %L, %L, %L, %L);
+      INSERT INTO userwordsets (user_id, word_id, priority, created_at)
+      VALUES (%L, %L, %L, NOW())
+      ON CONFLICT (user_id, word_id) 
+      DO UPDATE SET priority = %L;
       `,
-      userTableName,
-      word,
-      pronunciation,
-      keyMeaningsString,
-      exampleSentencesString,
-      detailedDescription,
-      audioUrl,
-      nounPlural,
-      verbConjugations,
+      userId,
+      wordId,
+      priority,
       priority
     );
-
-    await client.query(insertQuery);
+    await client.query(insertOrUpdateUserWordSetQuery);
   } catch (error) {
     console.error("Database Error:", error);
     return {
-      message: "Database Error: Failed to Add word.",
+      message: "Database Error: Failed to add word.",
     };
+  } finally {
+    client.release();
   }
 
-  // Revalidate the cache for the invoices page and redirect the user.
+  // Revalidate the cache for the dashboard page and redirect the user.
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
 
+
+
 export async function updateWordPriority(wordId: number, priority: number) {
   const session = await auth();
-  const userId = sanitizeEmail(session?.user?.email!);
+  const userId = session?.user?.id;
   const userTableName = `user_words_${userId}`;
   const client = await db.connect();
 
@@ -258,6 +254,22 @@ const sendEmail = async (
   }
 };
 
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
+const SALT = process.env.SALT;
+
+function encrypt(text: string): string {
+  const iv = crypto.randomBytes(16);
+  const key = crypto.scryptSync(ENCRYPTION_KEY!, SALT!, 32) as Buffer;
+  const cipher = crypto.createCipheriv(
+    "aes-256-cbc",
+    key as unknown as Uint8Array,
+    iv as unknown as Uint8Array
+  );
+  let encrypted = cipher.update(text, "utf8", "hex");
+  encrypted += cipher.final("hex");
+  return `${iv.toString("hex")}:${encrypted}`;
+}
+
 export async function signup(
   prevState: string | undefined,
   formData: FormData
@@ -295,7 +307,7 @@ export async function googleAuthenticate() {
 export async function fetchRemovedWord() {
   noStore();
   const session = await auth();
-  const userId = sanitizeEmail(session?.user?.email!);
+  const userId = session?.user?.id;
   const tableName = `user_words_${userId}`;
   try {
     const tableCheckQuery = format(
@@ -336,7 +348,7 @@ SELECT EXISTS (
 
 export async function deleteSelected(wordIds: number[]) {
   const session = await auth();
-  const userId = sanitizeEmail(session?.user?.email!);
+  const userId = session?.user?.id;
   const userTableName = `user_words_${userId}`;
   const client = await db.connect();
 
