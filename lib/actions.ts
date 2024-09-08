@@ -13,7 +13,6 @@ import { Resend } from "resend";
 import { EmailTemplate } from "@/app/ui/standalone/email-template";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { unstable_noStore as noStore } from "next/cache";
 
 const WordFormSchema = z.object({
   wordId: z.string().uuid(),
@@ -22,7 +21,6 @@ const WordFormSchema = z.object({
   customKeyMeanings: z.array(z.string()).nullable().optional(),
   customExampleSentences: z.array(z.string()).nullable().optional(),
   customDetailedDescription: z.string().nullable().optional(),
-  customAudioUrl: z.string().nullable().optional(),
   customNounPlural: z.string().nullable().optional(),
   customVerbConjugations: z.string().nullable().optional(),
 });
@@ -35,7 +33,6 @@ export type State = {
     customKeyMeanings?: string[];
     customExampleSentences?: string[];
     customDetailedDescription?: string[];
-    customAudioUrl?: string[];
     customNounPlural?: string[];
     customVerbConjugations?: string[];
   };
@@ -55,12 +52,9 @@ export async function addWord(prevState: State, formData: FormData) {
     customKeyMeanings: formData.getAll("customKeyMeanings"),
     customExampleSentences: formData.getAll("customExampleSentences"),
     customDetailedDescription: formData.get("customDetailedDescription"),
-    customAudioUrl: formData.get("customAudioUrl"),
     customNounPlural: formData.get("customNounPlural"),
     customVerbConjugations: formData.get("customVerbConjugations"),
   });
-
-  console.log("Validation result:", validatedFields);
 
   if (!validatedFields.success) {
     console.error("Validation failed:", validatedFields.error.flatten().fieldErrors);
@@ -78,14 +72,18 @@ export async function addWord(prevState: State, formData: FormData) {
     customKeyMeanings,
     customExampleSentences,
     customDetailedDescription,
-    customAudioUrl,
     customNounPlural,
     customVerbConjugations,
   } = validatedFields.data;
 
-
-  const customKeyMeaningsString = customKeyMeanings && customKeyMeanings.length > 0 ? JSON.stringify(customKeyMeanings) : null;
-  const customExampleSentencesString = customExampleSentences && customExampleSentences.length > 0 ? JSON.stringify(customExampleSentences) : null; 
+  const customKeyMeaningsString =
+    customKeyMeanings && customKeyMeanings.length > 0
+      ? JSON.stringify(customKeyMeanings)
+      : null;
+  const customExampleSentencesString =
+    customExampleSentences && customExampleSentences.length > 0
+      ? JSON.stringify(customExampleSentences)
+      : null;
   const client = await db.connect();
   try {
     // Check if the user already has a custom entry for this word
@@ -94,7 +92,7 @@ export async function addWord(prevState: State, formData: FormData) {
       userId,
       wordId
     );
-    
+
     const existingUserWordResult = await client.query(checkUserWordQuery);
 
     if (existingUserWordResult.rowCount > 0) {
@@ -107,7 +105,6 @@ export async function addWord(prevState: State, formData: FormData) {
           custom_key_meanings = COALESCE(%L, custom_key_meanings),
           custom_example_sentences = COALESCE(%L, custom_example_sentences),
           custom_detailed_description = COALESCE(%L, custom_detailed_description),
-          custom_audio_url = COALESCE(%L, custom_audio_url),
           custom_noun_plural = COALESCE(%L, custom_noun_plural),
           custom_verb_conjugations = COALESCE(%L, custom_verb_conjugations)
         WHERE user_id = %L AND word_id = %L;
@@ -116,7 +113,6 @@ export async function addWord(prevState: State, formData: FormData) {
         customKeyMeaningsString,
         customExampleSentencesString,
         customDetailedDescription,
-        customAudioUrl,
         customNounPlural,
         customVerbConjugations,
         userId,
@@ -130,9 +126,9 @@ export async function addWord(prevState: State, formData: FormData) {
         INSERT INTO userwords (
           user_id, word_id, custom_pronunciation, custom_key_meanings, 
           custom_example_sentences, custom_detailed_description, 
-          custom_audio_url, custom_noun_plural, custom_verb_conjugations
+          custom_noun_plural, custom_verb_conjugations
         ) VALUES (
-          %L, %L, %L, %L, %L, %L, %L, %L, %L
+          %L, %L, %L, %L, %L, %L, %L, %L
         );
         `,
         userId,
@@ -141,7 +137,6 @@ export async function addWord(prevState: State, formData: FormData) {
         customKeyMeaningsString,
         customExampleSentencesString,
         customDetailedDescription,
-        customAudioUrl,
         customNounPlural,
         customVerbConjugations
       );
@@ -174,37 +169,6 @@ export async function addWord(prevState: State, formData: FormData) {
   // Revalidate the cache for the dashboard page and redirect the user.
   revalidatePath("/dashboard");
   redirect("/dashboard");
-}
-
-
-
-export async function updateWordPriority(wordId: number, priority: number) {
-  const session = await auth();
-  const userId = session?.user?.id;
-  const userTableName = `user_words_${userId}`;
-  const client = await db.connect();
-
-  try {
-    const updateQuery = format(
-      `UPDATE %I SET priority = %L WHERE id = %L;`,
-      userTableName,
-      priority,
-      wordId
-    );
-
-    await client.query(updateQuery);
-
-    return {
-      message: "Priority updated successfully.",
-    };
-  } catch (error) {
-    console.error("Database Error:", error);
-    return {
-      message: "Database Error: Failed to update priority.",
-    };
-  } finally {
-    client.release();
-  }
 }
 
 export async function authenticate(
@@ -302,74 +266,4 @@ export async function signup(
 
 export async function googleAuthenticate() {
   await signIn("google");
-}
-
-export async function fetchRemovedWord() {
-  noStore();
-  const session = await auth();
-  const userId = session?.user?.id;
-  const tableName = `user_words_${userId}`;
-  try {
-    const tableCheckQuery = format(
-      `
-SELECT EXISTS (
-  SELECT FROM information_schema.tables 
-  WHERE table_schema = 'public' 
-  AND table_name = %L
-) as exists`,
-      tableName
-    );
-    const client = await db.connect();
-    const tableCheckResult = await client.query(tableCheckQuery);
-
-    const tableExists = tableCheckResult.rows[0]?.exists;
-
-    if (!tableExists) {
-      return [];
-    }
-
-    // Fetch data from the table where priority is 0
-    const fetchQuery = format(`SELECT * FROM %I WHERE priority = 0`, tableName);
-    const data = await client.query(fetchQuery);
-
-    // Parsing keyMeanings to ensure it's an array of strings
-    const removedWords = data.rows.map((word) => ({
-      ...word,
-      keymeanings: JSON.parse(word.keymeanings),
-      examplesentences: JSON.parse(word.examplesentences),
-    }));
-
-    return removedWords;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch removed words.");
-  }
-}
-
-export async function deleteSelected(wordIds: number[]) {
-  const session = await auth();
-  const userId = session?.user?.id;
-  const userTableName = `user_words_${userId}`;
-  const client = await db.connect();
-
-  try {
-    const deleteQuery = format(
-      `DELETE FROM %I WHERE id IN (%L);`,
-      userTableName,
-      wordIds
-    );
-
-    await client.query(deleteQuery);
-
-    return {
-      message: "Selected words deleted successfully.",
-    };
-  } catch (error) {
-    console.error("Database Error:", error);
-    return {
-      message: "Database Error: Failed to delete selected words.",
-    };
-  } finally {
-    client.release();
-  }
 }

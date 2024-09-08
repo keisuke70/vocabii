@@ -16,7 +16,7 @@ export type User = {
     nounplural?: string | null;
     verbconjugations?: string | null;
     priority?: number;
-    order: number;
+    created_at: number;
   }
 
 export interface Details {

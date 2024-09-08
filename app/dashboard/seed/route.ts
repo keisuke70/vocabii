@@ -17,7 +17,6 @@
 //         custom_key_meanings TEXT,
 //         custom_example_sentences TEXT,
 //         custom_detailed_description TEXT,
-//         custom_audio_url VARCHAR,
 //         custom_noun_plural TEXT,
 //         custom_verb_conjugations TEXT,
 //         PRIMARY KEY (user_id, word_id)  -- Composite primary key

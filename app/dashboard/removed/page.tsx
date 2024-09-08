@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import RemovedWordTable from "../../ui/dashboard/wordbook/removedWordTable";
-import { deleteSelected, fetchRemovedWord } from "@/lib/actions";
+import { deleteSelected, fetchRemovedWord } from "@/lib/data";
 import DeleteButton from "@/app/ui/standalone/deleteButton";
 import { word } from "@/lib/definitions";
 import RemovedDashboardSkeleton from "@/app/ui/dashboard/wordbook/removedDashboardSkeleton";
