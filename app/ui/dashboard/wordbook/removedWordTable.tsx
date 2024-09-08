@@ -21,7 +21,7 @@ import {
 import WordDetail from "./wordDetail";
 import { FaCirclePlay, FaChevronDown, FaStar } from "react-icons/fa6";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { updateWordPriority } from "@/lib/actions";
+import { updateWordPriority } from "@/lib/data";
 import { word } from "@/lib/definitions";
 
 import "./WordTable.css"; 
@@ -45,7 +45,10 @@ const RemovedWordTable: React.FC<removedWordTableProps> = ({
 
   const sortWords = (words: word[]) => {
     return words.sort((a, b) => {
-      return (b.order || 0) - (a.order || 0);
+      if (b.priority !== a.priority) {
+        return (b.priority || 0) - (a.priority || 0);
+      }
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
   };
 
