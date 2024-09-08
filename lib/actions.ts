@@ -43,6 +43,12 @@ export async function addWord(prevState: State, formData: FormData) {
   const session = await auth();
   const userId = session?.user?.id;
 
+  if (!userId) {
+    return {
+      message: "User not authenticated.",
+    };
+  }
+
   const parsedPriority = parseInt(formData.get("priority") as string, 10);
 
   const validatedFields = WordFormSchema.safeParse({
@@ -84,63 +90,75 @@ export async function addWord(prevState: State, formData: FormData) {
     customExampleSentences && customExampleSentences.length > 0
       ? JSON.stringify(customExampleSentences)
       : null;
+
   const client = await db.connect();
   try {
-    // Check if the user already has a custom entry for this word
-    const checkUserWordQuery = format(
-      `SELECT 1 FROM userwords WHERE user_id = %L AND word_id = %L;`,
-      userId,
-      wordId
-    );
+    // Check if there is any customization
+    const hasCustomization =
+      customPronunciation ||
+      customKeyMeaningsString ||
+      customExampleSentencesString ||
+      customDetailedDescription ||
+      customNounPlural ||
+      customVerbConjugations;
 
-    const existingUserWordResult = await client.query(checkUserWordQuery);
-
-    if (existingUserWordResult.rowCount > 0) {
-      // Update the existing UserWords entry
-      const updateUserWordQuery = format(
-        `
-        UPDATE userwords 
-        SET 
-          custom_pronunciation = COALESCE(%L, custom_pronunciation),
-          custom_key_meanings = COALESCE(%L, custom_key_meanings),
-          custom_example_sentences = COALESCE(%L, custom_example_sentences),
-          custom_detailed_description = COALESCE(%L, custom_detailed_description),
-          custom_noun_plural = COALESCE(%L, custom_noun_plural),
-          custom_verb_conjugations = COALESCE(%L, custom_verb_conjugations)
-        WHERE user_id = %L AND word_id = %L;
-        `,
-        customPronunciation,
-        customKeyMeaningsString,
-        customExampleSentencesString,
-        customDetailedDescription,
-        customNounPlural,
-        customVerbConjugations,
+    if (hasCustomization) {
+      // Check if the user already has a custom entry for this word
+      const checkUserWordQuery = format(
+        `SELECT 1 FROM userwords WHERE user_id = %L AND word_id = %L;`,
         userId,
         wordId
       );
-      await client.query(updateUserWordQuery);
-    } else {
-      // Insert a new UserWords entry
-      const insertUserWordQuery = format(
-        `
-        INSERT INTO userwords (
-          user_id, word_id, custom_pronunciation, custom_key_meanings, 
-          custom_example_sentences, custom_detailed_description, 
-          custom_noun_plural, custom_verb_conjugations
-        ) VALUES (
-          %L, %L, %L, %L, %L, %L, %L, %L
+
+      const existingUserWordResult = await client.query(checkUserWordQuery);
+
+      if (existingUserWordResult.rowCount > 0) {
+        // Update the existing UserWords entry
+        const updateUserWordQuery = format(
+          `
+          UPDATE userwords 
+          SET 
+            custom_pronunciation = COALESCE(%L, custom_pronunciation),
+            custom_key_meanings = COALESCE(%L, custom_key_meanings),
+            custom_example_sentences = COALESCE(%L, custom_example_sentences),
+            custom_detailed_description = COALESCE(%L, custom_detailed_description),
+            custom_noun_plural = COALESCE(%L, custom_noun_plural),
+            custom_verb_conjugations = COALESCE(%L, custom_verb_conjugations)
+          WHERE user_id = %L AND word_id = %L;
+          `,
+          customPronunciation,
+          customKeyMeaningsString,
+          customExampleSentencesString,
+          customDetailedDescription,
+          customNounPlural,
+          customVerbConjugations,
+          userId,
+          wordId
         );
-        `,
-        userId,
-        wordId,
-        customPronunciation,
-        customKeyMeaningsString,
-        customExampleSentencesString,
-        customDetailedDescription,
-        customNounPlural,
-        customVerbConjugations
-      );
-      await client.query(insertUserWordQuery);
+        await client.query(updateUserWordQuery);
+      } else {
+        // Insert a new UserWords entry
+        const insertUserWordQuery = format(
+          `
+          INSERT INTO userwords (
+            user_id, word_id, custom_pronunciation, custom_key_meanings, 
+            custom_example_sentences, custom_detailed_description, 
+            custom_noun_plural, custom_verb_conjugations
+          ) VALUES (
+            %L, %L, %L, %L, %L, %L, %L, %L
+          );
+          `,
+          userId,
+          wordId,
+          customPronunciation,
+          customKeyMeaningsString,
+          customExampleSentencesString,
+          customDetailedDescription,
+          customNounPlural,
+          customVerbConjugations
+        );
+        await client.query(insertUserWordQuery);
+      }
     }
 
     // Insert or update the UserWordSets entry
