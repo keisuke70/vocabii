@@ -53,34 +53,19 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const CorrectedWordSchema = z.object({ correctedWord: z.string() });
-
-    const completion = await openai.beta.chat.completions.parse({
+    const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         {
           role: "user",
-          content: `Please check and correct the spelling of the word "${word}". If the word is correct, return it as is.`,
+          content: `Please correct any spelling mistakes in the following text and return only the corrected text without any additional comments: "${word}"`,
         },
       ],
-      response_format: zodResponseFormat(
-        CorrectedWordSchema,
-        "corrected_word_response"
-      ),
+      temperature: 1,
+      max_tokens: 20,
     });
 
-    const message = completion.choices[0].message;
-
-    if (message.parsed) {
-      const correctedObject = message.parsed;
-      word = correctedObject.correctedWord;
-    } else if (message.refusal) {
-      // Handle refusal
-      throw new Error("OpenAI refused to process the request.");
-    } else {
-      // Handle parsing errors
-      throw new Error("Failed to parse OpenAI response.");
-    }
+    word = completion.choices[0].message.content!.trim();
 
     const res = await sql`SELECT * FROM words WHERE word = ${word};`;
     if (res.rows.length > 0) {
