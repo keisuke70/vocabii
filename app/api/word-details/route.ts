@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateObject } from "ai";
 import { z } from "zod";
-import { openai } from "@ai-sdk/openai";
+import OpenAI from "openai";
+import { zodResponseFormat } from "openai/helpers/zod";
 import * as textToSpeech from "@google-cloud/text-to-speech";
 import { Storage } from "@google-cloud/storage";
 import { v4 as uuidv4 } from "uuid";
@@ -11,15 +11,20 @@ let options: { credentials: any } | undefined;
 
 function getOptions() {
   if (!options) {
-    const base64EncodedCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+    const base64EncodedCredentials =
+      process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
 
-    const decodedCredentials = Buffer.from(base64EncodedCredentials!, "base64").toString("utf8");
+    const decodedCredentials = Buffer.from(
+      base64EncodedCredentials!,
+      "base64"
+    ).toString("utf8");
     options = {
       credentials: JSON.parse(decodedCredentials),
     };
   }
   return options;
 }
+
 const wordSchema = z.object({
   word: z.string(),
   pronunciation: z.string(),
@@ -30,6 +35,7 @@ const wordSchema = z.object({
   verbConjugations: z.string().nullable(),
 });
 
+const openai = new OpenAI();
 const client = new textToSpeech.TextToSpeechClient(getOptions());
 const storage = new Storage(getOptions());
 
@@ -47,17 +53,36 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const { object: correctedObject } = await generateObject({
-      model: openai("gpt-4o"),
-      schema: z.object({ correctedWord: z.string() }),
-      prompt: `Please check and correct the spelling of the word "${word}". If the word is correct, return it as is.`,
+    const CorrectedWordSchema = z.object({ correctedWord: z.string() });
+
+    const completion = await openai.beta.chat.completions.parse({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "user",
+          content: `Please check and correct the spelling of the word "${word}". If the word is correct, return it as is.`,
+        },
+      ],
+      response_format: zodResponseFormat(
+        CorrectedWordSchema,
+        "corrected_word_response"
+      ),
     });
 
-    word = correctedObject.correctedWord;
+    const message = completion.choices[0].message;
 
-    const res = await sql`
-    SELECT * FROM words WHERE word = ${word};
-  `;
+    if (message.parsed) {
+      const correctedObject = message.parsed;
+      word = correctedObject.correctedWord;
+    } else if (message.refusal) {
+      // Handle refusal
+      throw new Error("OpenAI refused to process the request.");
+    } else {
+      // Handle parsing errors
+      throw new Error("Failed to parse OpenAI response.");
+    }
+
+    const res = await sql`SELECT * FROM words WHERE word = ${word};`;
     if (res.rows.length > 0) {
       const wordDetails = res.rows[0];
 
@@ -77,64 +102,85 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const { object } = await generateObject({
-      model: openai("gpt-4o"),
-      schema: wordSchema,
-      prompt: `Please give detailed information about the '${word}'. Include the following:
-      - Pronunciation (using IPA),
-      - keyMeanings (main meaning only, expressed in short words),
-      - Example sentences,
-      - DetailedDescription (useful description of the word. For nouns, please include a description of countability),
-      - nounPlural: plural for countable nouns, null otherwise,
-      - Verb conjugation: verb (if not null) present participle, past tense, past participle, third person singular present tense, separated by commas and spaces.`,
+    // Get word details from OpenAI
+    const completionWordInfo = await openai.beta.chat.completions.parse({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "user",
+          content: `Please give detailed information about the '${word}'. Include the following:
+          - Pronunciation (using IPA),
+          - keyMeanings (main meaning only, expressed in short words),
+          - Example sentences,
+          - DetailedDescription (useful description of the word. For nouns, please include a description of countability),
+          - nounPlural: plural for countable nouns, null otherwise,
+          - Verb conjugation: verb (if not null) present participle, past tense, past participle, third person singular present tense, separated by commas and spaces.`,
+        },
+      ],
+      response_format: zodResponseFormat(wordSchema, "word_info"),
     });
 
-    const request: textToSpeech.protos.google.cloud.texttospeech.v1.ISynthesizeSpeechRequest =
-      {
-        input: { text: word },
-        voice: { languageCode: "en-US", ssmlGender: "NEUTRAL" },
-        audioConfig: { audioEncoding: "MP3" },
-      };
+    const messageWordInfo = completionWordInfo.choices[0].message;
 
-    const [response] = await client.synthesizeSpeech(request);
+    if (messageWordInfo.parsed) {
+      const object = messageWordInfo.parsed;
 
-    const audioContent = response.audioContent as unknown as Buffer;
+      const request: textToSpeech.protos.google.cloud.texttospeech.v1.ISynthesizeSpeechRequest =
+        {
+          input: { text: word },
+          voice: { languageCode: "en-US", ssmlGender: "NEUTRAL" },
+          audioConfig: { audioEncoding: "MP3" },
+        };
 
-    if (audioContent.length === 0) {
-      throw new Error("Audio content is empty");
+      const [response] = await client.synthesizeSpeech(request);
+
+      const audioContent = response.audioContent as unknown as Buffer;
+
+      if (audioContent.length === 0) {
+        throw new Error("Audio content is empty");
+      }
+
+      const filename = `${uuidv4()}.mp3`;
+      const file = storage.bucket(bucketName).file(filename);
+
+      await file.save(audioContent, {
+        contentType: "audio/mpeg",
+      });
+
+      const audioUrl = `https://storage.googleapis.com/${bucketName}/${filename}`;
+
+      const keyMeaningsString = JSON.stringify(object.keyMeanings);
+      const exampleSentencesString = JSON.stringify(object.exampleSentences);
+
+      // Insert the word and get the ID of the newly inserted word
+      const insertResult = await sql`
+        INSERT INTO words (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations)
+        VALUES(
+          ${object.word}, 
+          ${object.pronunciation}, 
+          ${keyMeaningsString}, 
+          ${exampleSentencesString}, 
+          ${object.detailedDescription}, 
+          ${audioUrl}, 
+          ${object.nounPlural}, 
+          ${object.verbConjugations}
+        )
+        RETURNING id;
+      `;
+
+      const wordId = insertResult.rows[0].id;
+
+      return NextResponse.json(
+        { ...object, audioUrl, wordId },
+        { status: 200 }
+      );
+    } else if (messageWordInfo.refusal) {
+      // Handle refusal
+      throw new Error("OpenAI refused to provide word information.");
+    } else {
+      // Handle parsing errors
+      throw new Error("Failed to parse OpenAI response for word information.");
     }
-
-    const filename = `${uuidv4()}.mp3`;
-    const file = storage.bucket(bucketName).file(filename);
-
-    await file.save(audioContent, {
-      contentType: "audio/mpeg",
-    });
-
-    const audioUrl = `https://storage.googleapis.com/${bucketName}/${filename}`;
-
-    const keyMeaningsString = JSON.stringify(object.keyMeanings);
-    const exampleSentencesString = JSON.stringify(object.exampleSentences);
-
-    // Insert the word and get the ID of the newly inserted word
-    const insertResult = await sql`
-      INSERT INTO words (word, pronunciation, keymeanings, examplesentences, detaileddescription, audiourl, nounplural, verbconjugations)
-      VALUES(
-        ${object.word}, 
-        ${object.pronunciation}, 
-        ${keyMeaningsString}, 
-        ${exampleSentencesString}, 
-        ${object.detailedDescription}, 
-        ${audioUrl}, 
-        ${object.nounPlural}, 
-        ${object.verbConjugations}
-      )
-      RETURNING id;
-    `;
-
-    const wordId = insertResult.rows[0].id;
-
-    return NextResponse.json({ ...object, audioUrl, wordId }, { status: 200 });
   } catch (error) {
     let errorMessage = "An unknown error occurred";
     if (error instanceof Error) {

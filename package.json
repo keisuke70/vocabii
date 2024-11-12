@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^0.0.36",
     "@google-cloud/storage": "^7.12.0",
     "@google-cloud/text-to-speech": "^5.3.0",
     "@heroicons/react": "^2.0.18",
@@ -24,14 +23,13 @@
     "@types/node": "20.5.7",
     "@types/pg-format": "^1.0.5",
     "@vercel/postgres": "^0.5.0",
-    "ai": "^3.2.22",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.396.0",
     "next": "15.0.0-canary.28",
     "next-auth": "5.0.0-beta.19",
-    "openai": "^4.52.7",
+    "openai": "^4.71.1",
     "pg-format": "^1.0.4",
     "react": "19.0.0-rc-6230622a1a-20240610",
     "react-dom": "19.0.0-rc-6230622a1a-20240610",
@@ -43,7 +41,7 @@
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^9.0.4",
     "uuid": "^10.0.0",
-    "zod": "^3.22.2"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.1",
