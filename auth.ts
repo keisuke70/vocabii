@@ -1,19 +1,19 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import Google from "next-auth/providers/google"
-import bcrypt from 'bcrypt';
-import { sql } from '@vercel/postgres';
-import { z } from 'zod';
-import type { User } from '@/lib/definitions';
-import { authConfig } from './auth.config';
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import bcrypt from "bcrypt";
+import { sql } from "@vercel/postgres";
+import { z } from "zod";
+import type { User } from "@/lib/definitions";
+import { authConfig } from "./auth.config";
 
 async function getUser(email: string): Promise<User | undefined> {
   try {
     const user = await sql<User>`SELECT * FROM users WHERE email=${email}`;
     return user.rows[0];
   } catch (error) {
-    console.error('Failed to fetch user:', error);
-    throw new Error('Failed to fetch user.');
+    console.error("Failed to fetch user:", error);
+    throw new Error("Failed to fetch user.");
   }
 }
 
@@ -35,35 +35,37 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
           const passwordsMatch = await bcrypt.compare(password, user.password);
           if (passwordsMatch) return user;
         }
-
-        console.log('Invalid credentials');
         return null;
       },
     }),
     // Google OAuth login
-    Google
+    Google,
   ],
   secret: process.env.AUTH_SECRET,
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (!user || !user.email || !account || !profile) {
+      if (!user || !user.email) {
         console.error("Required data is missing during sign-in.");
         return false;
       }
-     
+
       const existingUser = await getUser(user.email);
 
       if (!existingUser) {
         // Create the new user in the database
+        const provider = account?.provider ?? null;
+        const providerAccountId = profile?.id ?? null;
+
         const newUser = await sql`
           INSERT INTO users (name, email, verified, provider, provider_account_id)
-          VALUES (${user.name}, ${user.email}, true, ${account.provider}, ${profile.id})
+          VALUES (${user.name}, ${user.email}, true, ${provider}, ${providerAccountId})
           RETURNING *;
         `;
         user.id = newUser.rows[0].id;
       } else {
         // If user exists, use their existing ID
-        user.id = existingUser.id;4
+        user.id = existingUser.id;
+        4;
       }
 
       return true; // Continue the sign-in process
@@ -78,5 +80,5 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       session.user.id = token.id as string; // Expose the ID in the session
       return session;
     },
-  }
+  },
 });
