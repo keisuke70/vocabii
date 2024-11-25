@@ -44,7 +44,10 @@ export async function POST(request: NextRequest) {
       throw new Error("Failed to retrieve client secret from subscription.");
     }
 
-    return NextResponse.json({ clientSecret });
+    return NextResponse.json({
+      clientSecret: clientSecret,
+      intentType: subscription.pending_setup_intent ? "setup" : "payment",
+    });
   } catch (error) {
     console.error("Error creating subscription:", error);
     return NextResponse.json(

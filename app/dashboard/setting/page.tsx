@@ -3,7 +3,11 @@
 import React, { useEffect, useState } from "react";
 import CheckoutPage from "@/app/ui/standalone/checkoutPage";
 import { Elements } from "@stripe/react-stripe-js";
-import { Appearance, StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
+import {
+  Appearance,
+  StripeElementsOptions,
+  loadStripe,
+} from "@stripe/stripe-js";
 import { useSession } from "next-auth/react";
 
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) {
@@ -15,6 +19,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 export default function Home() {
   const { data: session, status } = useSession();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [intentType, setIntentType] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,7 +32,6 @@ export default function Home() {
 
     const customerId = session.user.stripeCustomerId;
 
-    // Fetch the client secret for the subscription
     const fetchClientSecret = async () => {
       try {
         const response = await fetch("/api/create-subscription", {
@@ -47,6 +51,8 @@ export default function Home() {
           setErrorMessage(data.error);
         } else {
           setClientSecret(data.clientSecret);
+          setIntentType(data.intentType);
+          console.log(data.clientSecret);
         }
       } catch (error) {
         console.error("Failed to initialize payment:", error);
@@ -57,9 +63,9 @@ export default function Home() {
     fetchClientSecret();
   }, [session, status]);
 
-const appearance: Appearance = {
-  theme: "stripe",
-};
+  const appearance: Appearance = {
+    theme: "stripe",
+  };
 
   const options: StripeElementsOptions | undefined = clientSecret
     ? {
@@ -81,7 +87,7 @@ const appearance: Appearance = {
 
       {options ? (
         <Elements stripe={stripePromise} options={options}>
-          <CheckoutPage />
+          <CheckoutPage intentType={intentType} />
         </Elements>
       ) : errorMessage ? (
         <div className="text-red-500">{errorMessage}</div>
