@@ -1,10 +1,11 @@
 import AddButton from "@/app/ui/standalone/addButton";
 import WordTable from "@/app/ui/dashboard/wordbook/wordTable";
-import { fetchWord } from "@/lib/data";
+import { fetchWord, hasActiveSubscription } from "@/lib/data";
 import { FaExclamationTriangle } from "react-icons/fa";
 
 const Dashboard: React.FC = async () => {
   const fetchedWords = await fetchWord();
+  const isSubscribed = await hasActiveSubscription();
 
   return (
     <div>
@@ -12,7 +13,7 @@ const Dashboard: React.FC = async () => {
         Your WordTable
       </h1>
       {fetchedWords.length > 0 ? (
-        <WordTable initialWords={fetchedWords} />
+        <WordTable initialWords={fetchedWords} isSubscribed ={isSubscribed}/>
       ) : (
         <h2 className="text-sm md:text-xl font-semibold text-center flex flex-col items-center justify-center space-y-2 mt-8 mb-6">
           <div className="flex items-center space-x-2">

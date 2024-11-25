@@ -27,9 +27,10 @@ import { word } from "@/lib/definitions";
 
 interface WordTableProps {
   initialWords: word[];
+  isSubscribed: boolean;
 }
 
-const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
+const WordTable: React.FC<WordTableProps> = ({ initialWords, isSubscribed}) => {
   const filteredWords = initialWords.filter((word) => word.priority !== 0);
   const [selectedWordId, setSelectedWordId] = useState<number | null>(null);
   const [disabledHover, setDisabledHover] = useState<boolean>(false);
@@ -46,6 +47,8 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords }) => {
   };
 
   const sortedWords = sortWords([...words]);
+
+  console.log(isSubscribed);
 
   const handleWordClick = (wordId: number) => {
     if (selectedWordId === wordId) {

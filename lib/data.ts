@@ -4,6 +4,8 @@ import { unstable_noStore as noStore } from "next/cache";
 import { auth } from "@/auth";
 import format from "pg-format";
 
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 export async function fetchWord() {
   noStore();
   const session = await auth();
@@ -193,5 +195,36 @@ export async function updateWordPriority(wordId: number, priority: number) {
     };
   } finally {
     client.release();
+  }
+}
+
+export async function hasActiveSubscription(): Promise<boolean> {
+  noStore(); // Ensure no caching for sensitive operations
+  try {
+    // Retrieve the authenticated user session
+    const session = await auth();
+    const customerId = session?.user?.stripeCustomerId;
+
+    if (!customerId) {
+      console.error("Customer ID is missing from the session.");
+      return false;
+    }
+
+    // Fetch subscriptions for the customer from Stripe
+    const subscriptions = await stripe.subscriptions.list({
+      customer: customerId,
+      limit: 1,
+    });
+
+    // Check if any subscription has the status 'active' or 'trialing'
+    const hasValidSubscription = subscriptions.data.some(
+      (subscription: { status: string }) =>
+        subscription.status === "active" || subscription.status === "trialing"
+    );
+
+    return hasValidSubscription;
+  } catch (error) {
+    console.error("Error checking subscription status:", error);
+    return false;
   }
 }
