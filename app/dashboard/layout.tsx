@@ -1,5 +1,6 @@
 import SideNav from "@/app/ui/dashboard/sidebar/sideNav";
 import DashboardHeader from "@/app/ui/dashboard/header/DashboardHeader";
+import { SessionProvider } from "next-auth/react";
 
 export const experimental_ppr = true;
 
@@ -8,7 +9,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div
       className="flex flex-col md:flex-row h-[100dvh]"
       style={{
-        background: 'linear-gradient(150deg, #334491, #344592, #476db8,  #6a9cd7, #c8d2dc,#dac9b9)',
+        background:
+          "linear-gradient(150deg, #334491, #344592, #476db8,  #6a9cd7, #c8d2dc,#dac9b9)",
       }}
     >
       <div className="block md:hidden w-full h-auto">
@@ -20,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       <div className="flex-grow p-3 md:p-10 overflow-y-auto h-full">
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </div>
     </div>
   );

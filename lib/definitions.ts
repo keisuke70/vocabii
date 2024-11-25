@@ -1,9 +1,10 @@
 export type User = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-  };
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  stripe_customer_id: string;
+};
 
   export interface word {
     id: number;
