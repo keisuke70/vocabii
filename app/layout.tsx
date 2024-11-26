@@ -12,14 +12,6 @@ export const metadata: Metadata = {
     description: "Expand your vocabulary effortlessly with Vocabii.",
     url: "https://vocabii.com",
     type: "website",
-    images: [
-      {
-        url: "https://vocabii.com/icon.ico",
-        width: 208,
-        height: 208,
-        alt: "Vocabii Logo",
-      },
-    ],
   },
 };
 
@@ -35,6 +27,20 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
+        <link
+          rel="icon"
+          type="image/png"
+          href="/favicon-96x96.png"
+          sizes="96x96"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
         <style>
           {`
             html, body {
