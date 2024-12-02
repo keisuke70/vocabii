@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Vocabii
 
-## Getting Started
+Optimize your English vocabulary learning experience with **Vocabii**!  
+Seamlessly **look up** and **record** English words, all in one place.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 📚 Comprehensive Vocabulary Management
+- Input a word to get detailed information curated by AI:
+  - **Key Meanings**: The most relevant definitions for effective understanding.
+  - **Example Sentences**: Contextual usage examples for better retention.
+  - **General Description**: Overview of the word’s usage and history.
+  - **Pronunciation**: Includes phonetic representation and **Text-to-Speech playback**.
+  - **Verb Conjugations**: Conjugations for verbs (e.g., past, present, future).
+  - **Plural Forms**: Proper pluralization for nouns.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🖱️ User-Friendly Table View
+- Easily review word details in a structured table format:
+  - Columns include key meanings, example sentences, descriptions, and more.
+  - Rows prioritize the most relevant information to streamline memorization.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 🔄 Priority Selection for Better Memorization
+- Customize and prioritize the details you want to focus on, ensuring an efficient learning experience tailored to your needs.
 
-## Learn More
+### 🔊 Play Pronunciation
+- Hear the correct pronunciation using integrated **Text-to-Speech**.
 
-To learn more about Next.js, take a look at the following resources:
+### 🖋️ Spell Auto-Correction
+- Automatically corrects misspelled words to ensure accurate results and suggestions.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### ✏️ Editable Word Details
+- Modify AI-generated word information, including definitions, sentences, and descriptions.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 🖱️ One-Click Registration
+- Save words directly to your personalized vocabulary list with just one click.
 
-## Deploy on Vercel
+### 🏃‍♂️ Learn Anywhere
+- No need to carry physical flashcards.  
+  Study effortlessly while commuting, traveling, or during your spare time.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🔧 How It Works
+
+1. **Search for a Word**: Enter a word to retrieve curated AI-powered content.
+2. **Review the Output**: Explore word details in a **user-friendly table view**, including:
+   - Key meanings
+   - Example sentences
+   - General description
+   - Pronunciation (with playback)
+   - Verb conjugations and plural forms
+3. **Listen and Edit**:
+   - **Play Pronunciation**: Use Text-to-Speech to hear the word.
+   - **Edit Details**: Customize the generated content to suit your learning style.
+4. **Set Priorities**: Highlight the most relevant details for memorization.
+5. **Save to Your List**: Add words to your custom vocabulary list for future review.
+
+---
+
+## 🎯 Why Vocabii?
+
+Vocabii empowers you to focus on what truly matters:  
+Efficient, effective vocabulary learning, anytime, anywhere.
+
+---
+
+## 📩 Get Started
+
+Vocabii is still in active development.  
+Follow this repository for updates and release announcements.
+
+---
+
+### 🌐 Access Vocabii
+Vocabii is accessible at [https://vocabii.com](https://vocabii.com).  
+The subscription feature is currently under development—stay tuned for updates!
+
+---
+
+## 📬 Contact
+
+For inquiries or feedback, reach out via [keith235670@gmail.com](mailto:keith235670@gmail.com).  
+
+Happy learning with **Vocabii**! 🎓
+
