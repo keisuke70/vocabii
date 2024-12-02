@@ -21,13 +21,13 @@ export default function UserButton({ imageUrl, userName }: UserButtonProps) {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full p-0 mr-3 md:mr-1 lg:mr-3 flex-shrink-0 focus:ring-0"
+          className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full p-0 mr-3 md:mr-1 lg:mr-3 flex-shrink-0 focus:ring-0"
         >
           <Avatar className="w-full h-full">
             {imageUrl ? (
               <AvatarImage src={imageUrl} alt={userName ?? ""} />
             ) : (
-              <AvatarImage src={"defaulticon.png"} alt={userName ?? ""} />
+              <AvatarImage src="/defaulticon.png" alt={userName ?? ""} />
             )}
             <AvatarFallback>{userName?.[0]}</AvatarFallback>
           </Avatar>

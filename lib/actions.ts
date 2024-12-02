@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { auth } from "@/auth";
-import { sql, db, VercelPoolClient } from "@vercel/postgres";
+import { sql, db } from "@vercel/postgres";
 import format from "pg-format";
 import { v4 as uuidv4 } from "uuid";
 import { Resend } from "resend";
