@@ -66,13 +66,6 @@ Efficient, effective vocabulary learning, anytime, anywhere.
 
 ---
 
-## 🖥️ Demo
-
-🎥 **Coming Soon**: A walkthrough of Vocabii in action!  
-Stay tuned for updates.
-
----
-
 ## 📩 Get Started
 
 Vocabii is still in active development.  
@@ -80,13 +73,11 @@ Follow this repository for updates and release announcements.
 
 ---
 
-## 🌟 Contributing
-
-We welcome contributions!  
-Feel free to submit bug reports or suggest features through **Issues** or **Pull Requests**.
+### 🌐 Access Vocabii
+Vocabii is accessible at [https://vocabii.com](https://vocabii.com).  
+The subscription feature is currently under development—stay tuned for updates!
 
 ---
-
 
 ## 📬 Contact
 
