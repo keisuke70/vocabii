@@ -52,7 +52,6 @@ export default function Home() {
         } else {
           setClientSecret(data.clientSecret);
           setIntentType(data.intentType);
-          console.log(data.clientSecret);
         }
       } catch (error) {
         console.error("Failed to initialize payment:", error);

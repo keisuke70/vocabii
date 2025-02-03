@@ -16,10 +16,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ intentType }) => {
   const elements = useElements();
   const [loading, setLoading] = useState(false);
 
-
-
-    console.log(intentType);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);

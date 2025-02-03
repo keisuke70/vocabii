@@ -6,6 +6,7 @@ import * as textToSpeech from "@google-cloud/text-to-speech";
 import { Storage } from "@google-cloud/storage";
 import { v4 as uuidv4 } from "uuid";
 import { sql } from "@vercel/postgres";
+import { type } from "os";
 
 let options: { credentials: any } | undefined;
 
@@ -66,8 +67,12 @@ export async function GET(req: NextRequest) {
     });
 
     word = completion.choices[0].message.content!.trim();
-
+    console.log(JSON.stringify(word));
+    if (word.startsWith('"') && word.endsWith('"')) {
+      word = word.slice(1, -1);
+    }
     const res = await sql`SELECT * FROM words WHERE word = ${word};`;
+
     if (res.rows.length > 0) {
       const wordDetails = res.rows[0];
 

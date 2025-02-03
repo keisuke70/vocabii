@@ -48,8 +48,6 @@ const WordTable: React.FC<WordTableProps> = ({ initialWords, isSubscribed}) => {
 
   const sortedWords = sortWords([...words]);
 
-  console.log(isSubscribed);
-
   const handleWordClick = (wordId: number) => {
     if (selectedWordId === wordId) {
       setSelectedWordId(null);
