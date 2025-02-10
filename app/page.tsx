@@ -16,45 +16,63 @@ export default function Home() {
         </h4>
         <p className="mt-4 text-center text-base md:text-xl max-w-3xl leading-relaxed">
           覚えたい単語を入力すると、最新AIの力で例文・発音を含む本当に必要な情報だけを、一括出力
-          & 1 clickでオリジナル単語帳に登録。
+          &amp; 1 clickでオリジナル単語帳に登録。
         </p>
 
         <div className="mt-12 flex justify-center">
           <Image
-            src="/toppage.jpeg"
+            src="/toppage.png"
             width={800}
             height={500}
             alt="App screenshot"
             className="w-full max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-lg shadow-lg"
           />
         </div>
+        <div className="my-16 flex flex-col items-center">
+          <p className="text-md font-bold text-center">
+            AIによる自動スペル修正機能を使ってスペルがあいまいな単語も楽々登録！
+          </p>
+          <div className="mt-4 flex flex-col md:flex-row justify-center items-center gap-8">
+            <Image
+              src="/autocorrection1.png"
+              width={350}
+              height={250}
+              alt="Autocorrection Screenshot 1"
+              className="w-full max-w-sm h-auto rounded-lg shadow-lg"
+            />
+            <Image
+              src="/autocorrection2.png"
+              width={350}
+              height={250}
+              alt="Autocorrection Screenshot 2"
+              className="w-full max-w-sm h-auto rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+
         <p className="mt-8 text-center text-sm md:text-xl max-w-3xl leading-relaxed">
           パソコンはもちろんスマートフォンやタブレット端末など、様々なデバイスから利用できます。単語帳を持ち運ぶ必要がないので、外出先や通勤・通学時でも手軽に暗記できます。
         </p>
         <div className="mt-12 flex flex-col md:flex-row justify-center items-center gap-8">
           <div className="flex flex-col items-center">
             <Image
-              src="/mainscreen.jpg"
+              src="/phone.png"
               width={350}
               height={250}
               alt="App screenshot for mobile"
-              className="w-1/2 max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-lg shadow-lg"
+              className="w-1/2 max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-xl shadow-lg"
             />
-            <p className="mt-4 text-sm md:text-lg">
-              モバイル画面
-            </p>
+            <p className="mt-4 text-sm md:text-lg">モバイル画面</p>
           </div>
           <div className="text-center">
             <Image
-              src="/mainscreenpc.png"
+              src="/tablet.png"
               width={300}
               height={200}
               alt="App screenshot for PC"
-              className="w-full max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-lg shadow-lg"
+              className="w-full max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-xl shadow-lg"
             />
-            <p className="mt-4 text-sm md:text-lg">
-              PC画面
-            </p>
+            <p className="mt-4 text-sm md:text-lg">タブレット画面</p>
           </div>
         </div>
       </div>
