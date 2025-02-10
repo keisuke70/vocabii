@@ -80,7 +80,7 @@ export default function Home() {
         <h2 className="text-2xl">
           has requested
           <span className="font-bold"> ¥700</span>
-          <span className="text-lg"> /per month</span>
+          <span className="text-lg"> /per month (currently Demo)</span>
         </h2>
       </div>
 

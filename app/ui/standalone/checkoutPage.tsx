@@ -68,7 +68,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ intentType }) => {
         disabled={!stripe || loading}
         className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse"
       >
-        {!loading ? "Subscribe Now" : "Processing..."}
+        {!loading ? "Subscribe Now (no real transaction)" : "Processing..."}
       </button>
     </form>
   );

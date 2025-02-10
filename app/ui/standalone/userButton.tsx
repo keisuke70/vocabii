@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PowerIcon, CogIcon } from "@heroicons/react/24/outline";
+import { CreditCardIcon, PowerIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { signOut } from "@/auth";
 
@@ -41,10 +41,10 @@ export default function UserButton({ imageUrl, userName }: UserButtonProps) {
         forceMount
       >
         <DropdownMenuItem asChild>
-          <Link href="/dashboard/setting" passHref>
+          <Link href="/dashboard/subscription" passHref>
             <button className="flex items-center gap-2">
-              <CogIcon className="w-6" />
-              <span>Settings</span>
+              <CreditCardIcon className="w-6" />
+              <span>Subscription</span>
             </button>
           </Link>
         </DropdownMenuItem>
@@ -56,7 +56,7 @@ export default function UserButton({ imageUrl, userName }: UserButtonProps) {
             }}
           >
             <button className="flex items-center gap-2">
-              <PowerIcon className="w-6" />
+              <PowerIcon className="w-5" />
               <span>Log Out</span>
             </button>
           </form>
